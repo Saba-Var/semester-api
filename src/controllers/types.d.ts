@@ -3,3 +3,7 @@ export type NewUserReqBody = {
   password: string
   email: string
 }
+
+export type Email = {
+  email: string
+}

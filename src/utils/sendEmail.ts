@@ -17,7 +17,8 @@ const sendEmail = async (
   const jwtToken = jwt.sign(jwtData, process.env.JWT_SECRET!)
 
   const data = {
-    html: '<h1>Activate account<h1>',
+    html: `<h1>${process.env
+      .FRONTEND_URI!}/account-activation?token=${jwtToken}<h1>`,
     from: process.env.EMAIL_SENDER!,
     subject,
     to,
