@@ -7,3 +7,8 @@ export type NewUserReqBody = {
 export type Email = {
   email: string
 }
+
+export type RegisterGoogleMemberReq = {
+  username: string
+  email: string
+}

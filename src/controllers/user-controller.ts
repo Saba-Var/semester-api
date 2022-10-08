@@ -1,5 +1,5 @@
+import { NewUserReqBody, Email, RegisterGoogleMemberReq } from './types'
 import { RequestBody, Response, RequestQuery, Token } from 'types.d'
-import { NewUserReqBody, Email } from './types'
 import jwt_decode from 'jwt-decode'
 import { sendEmail } from 'utils'
 import jwt from 'jsonwebtoken'
@@ -30,7 +30,6 @@ export const registerUser = async (
       res,
       {
         email,
-        username,
       }
     )
   } catch (error: any) {
@@ -73,5 +72,30 @@ export const userAccountActivation = async (
     return res.status(500).json({
       message: error.message,
     })
+  }
+}
+
+export const googleAuth = async (
+  req: RequestBody<RegisterGoogleMemberReq>,
+  res: Response
+) => {
+  try {
+    const { username, email } = req.body
+
+    const existingUser = await User.findOne({ email })
+
+    const token = jwt.sign({ email, username }, process.env.JWT_SECRET!)
+
+    if (!existingUser) {
+      const newUser = await User.create({ username, email })
+      newUser.verified = true
+      await newUser.save()
+    }
+
+    return res.status(200).json({
+      token,
+    })
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message })
   }
 }
