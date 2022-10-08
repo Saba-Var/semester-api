@@ -128,6 +128,14 @@ export const changePassword = async (
       return res.status(404).json({ message: 'User not found!' })
     }
 
+    const email = jwt_decode<Email>(token).email
+
+    if (existingUser.email !== email) {
+      return res.status(401).json({
+        message: "You don't have permission to change password",
+      })
+    }
+
     if (!existingUser.password) {
       return res.status(409).json({
         message:
