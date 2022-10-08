@@ -1,6 +1,6 @@
 import { RequestBody, Response } from 'types.d'
 import { NewUserReqBody } from './types'
-// import jwt from 'jsonwebtoken'
+import { sendEmail } from 'utils'
 import bcrypt from 'bcryptjs'
 import { User } from 'models'
 
@@ -14,17 +14,24 @@ export const registerUser = async (
     const existingUser = await User.findOne({ email })
 
     if (existingUser) {
-      return res.status(409).json({ message: 'User is already registered!' })
+      if (existingUser.verified) {
+        return res.status(409).json({ message: 'User is already registered!' })
+      }
+    } else {
+      const hashedPassword = await bcrypt.hash(password, 12)
+      await User.create({ username, email, password: hashedPassword })
     }
 
-    // const emailToken = jwt.sign({ email, username }, process.env.JWT_SECRET!)
-
-    const hashedPassword = await bcrypt.hash(password, 12)
-    await User.create({ username, email, password: hashedPassword })
-
-    return res.status(201).json({
-      message: 'User registered successfully!',
-    })
+    return sendEmail(
+      'Activate your account!',
+      'account-activation',
+      email,
+      res,
+      {
+        email,
+        username,
+      }
+    )
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
   }
