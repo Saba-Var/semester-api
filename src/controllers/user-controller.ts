@@ -1,10 +1,15 @@
-import { NewUserReqBody, Email, RegisterGoogleMemberReq } from './types'
 import { RequestBody, Response, RequestQuery, Token } from 'types.d'
+import { sendEmail, validObjectId } from 'utils'
 import jwt_decode from 'jwt-decode'
-import { sendEmail } from 'utils'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { User } from 'models'
+import {
+  RegisterGoogleMemberReq,
+  NewUserReqBody,
+  NewPasswordReq,
+  Email,
+} from './types'
 
 export const registerUser = async (
   req: RequestBody<NewUserReqBody>,
@@ -95,6 +100,45 @@ export const registerGoogleUser = async (
     return res.status(200).json({
       token,
     })
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message })
+  }
+}
+
+export const changePassword = async (
+  req: RequestBody<NewPasswordReq>,
+  res: Response
+) => {
+  try {
+    const { id, newPassword, token } = req.body
+
+    if (!validObjectId(id)) {
+      return res.status(422).json({ message: 'Enter valid id' })
+    }
+
+    const verified = jwt.verify(token, process.env.JWT_SECRET!)
+    if (!verified) {
+      return res.status(401).json({
+        message: 'JWT is not valid!',
+      })
+    }
+
+    const existingUser = await User.findById(id)
+    if (!existingUser) {
+      return res.status(404).json({ message: 'User not found!' })
+    }
+
+    if (!existingUser.password) {
+      return res.status(409).json({
+        message:
+          "User is registered with google account. You can't change password of google user!",
+      })
+    }
+
+    existingUser.password = await bcrypt.hash(newPassword, 12)
+    await existingUser.save()
+
+    return res.status(200).json({ message: 'Password changed successfully' })
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
   }

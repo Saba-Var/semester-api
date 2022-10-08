@@ -12,3 +12,9 @@ export type RegisterGoogleMemberReq = {
   username: string
   email: string
 }
+
+export type NewPasswordReq = {
+  newPassword: string
+  token: string
+  id: string
+}
