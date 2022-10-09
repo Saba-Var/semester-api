@@ -9,6 +9,7 @@ import {
   NewUserReqBody,
   NewPasswordReq,
   Email,
+  Id,
 } from './types'
 
 export const registerUser = async (
@@ -24,14 +25,23 @@ export const registerUser = async (
         return res.status(409).json({ message: 'User is already registered!' })
       }
     } else {
-      const salt = await bcrypt.genSalt()
-      const hashedPassword = await bcrypt.hash(password, salt)
-      await User.create({ username, email, password: hashedPassword })
-    }
+      const hashedPassword = await bcrypt.hash(password, 12)
+      const newUser = await User.create({
+        username,
+        email,
+        password: hashedPassword,
+      })
 
-    return sendEmail('Activate your account!', 'activate-account', email, res, {
-      email,
-    })
+      return sendEmail(
+        'Activate your account!',
+        'activate-account',
+        email,
+        res,
+        {
+          id: newUser.id,
+        }
+      )
+    }
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
   }
@@ -53,9 +63,9 @@ export const userAccountActivation = async (
     const verified = jwt.verify(token, process.env.JWT_SECRET!)
 
     if (verified) {
-      const email = jwt_decode<Email>(token).email
+      const userId = jwt_decode<Id>(token).id
 
-      const existingUser = await User.findOne({ email })
+      const existingUser = await User.findById(userId)
       if (!existingUser) {
         return res.status(404).json({ message: 'User is not registered yet!' })
       } else if (existingUser.verified) {
@@ -64,7 +74,7 @@ export const userAccountActivation = async (
         })
       }
 
-      await User.updateOne({ email }, { verified: true })
+      await User.updateOne({ id: userId }, { verified: true })
 
       return res.status(200).json({
         message: 'Account activated successfully!',
@@ -91,20 +101,24 @@ export const registerGoogleUser = async (
 
     const existingUser = await User.findOne({ email })
 
-    const token = jwt.sign({ email }, process.env.JWT_SECRET!, {
-      expiresIn: '15h',
-    })
+    let token = ''
 
     if (!existingUser) {
       const newUser = await User.create({ username, email })
       newUser.verified = true
       await newUser.save()
+      token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET!, {
+        expiresIn: '15h',
+      })
     } else {
       if (existingUser.password) {
         return res.status(409).json({
           message: 'User with this email address already exists',
         })
       }
+      token = jwt.sign({ id: existingUser.id }, process.env.JWT_SECRET!, {
+        expiresIn: '15h',
+      })
     }
 
     return res.status(200).json({
@@ -137,7 +151,7 @@ export const passwordChangeRequestEmail = async (
     }
 
     return sendEmail('Change password', 'change-password', email, res, {
-      email,
+      id: existingUser.id,
     })
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
@@ -158,9 +172,9 @@ export const changePassword = async (
       })
     }
 
-    const email = jwt_decode<Email>(token).email
+    const userId = jwt_decode<Id>(token).id
 
-    const existingUser = await User.findOne({ email })
+    const existingUser = await User.findById(userId)
 
     if (!existingUser) {
       return res.status(404).json({ message: 'User not found!' })
@@ -173,8 +187,7 @@ export const changePassword = async (
       })
     }
 
-    const salt = await bcrypt.genSalt()
-    existingUser.password = await bcrypt.hash(password, salt)
+    existingUser.password = await bcrypt.hash(password, 12)
     await existingUser.save()
 
     return res.status(200).json({ message: 'Password changed successfully' })

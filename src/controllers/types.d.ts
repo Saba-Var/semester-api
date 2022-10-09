@@ -18,3 +18,7 @@ export type NewPasswordReq = {
   token: string
   id: string
 }
+
+export type Id = {
+  id: string
+}
