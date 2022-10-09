@@ -1,6 +1,6 @@
 import { RequestBody, Response, RequestQuery, Token } from 'types.d'
-import { sendEmail, validObjectId } from 'utils'
 import jwt_decode from 'jwt-decode'
+import { sendEmail } from 'utils'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { User } from 'models'
@@ -106,11 +106,11 @@ export const registerGoogleUser = async (
 }
 
 export const passwordChangeRequestEmail = async (
-  req: RequestBody<Email>,
+  req: RequestQuery<Email>,
   res: Response
 ) => {
   try {
-    const { email } = req.body
+    const { email } = req.query
 
     const existingUser = await User.findOne({ email })
     if (!existingUser) {
@@ -135,11 +135,7 @@ export const changePassword = async (
   res: Response
 ) => {
   try {
-    const { id, newPassword, token } = req.body
-
-    if (!validObjectId(id)) {
-      return res.status(422).json({ message: 'Enter valid id' })
-    }
+    const { password, token } = req.body
 
     const verified = jwt.verify(token, process.env.JWT_SECRET!)
     if (!verified) {
@@ -148,16 +144,12 @@ export const changePassword = async (
       })
     }
 
-    const existingUser = await User.findById(id)
+    const email = jwt_decode<Email>(token).email
+
+    const existingUser = await User.findOne({ email })
+
     if (!existingUser) {
       return res.status(404).json({ message: 'User not found!' })
-    }
-
-    const email = jwt_decode<Email>(token).email
-    if (existingUser.email !== email) {
-      return res.status(401).json({
-        message: 'Unauthorized access denied!',
-      })
     }
 
     if (!existingUser.password) {
@@ -167,7 +159,7 @@ export const changePassword = async (
       })
     }
 
-    existingUser.password = await bcrypt.hash(newPassword, 12)
+    existingUser.password = await bcrypt.hash(password, 12)
     await existingUser.save()
 
     return res.status(200).json({ message: 'Password changed successfully' })

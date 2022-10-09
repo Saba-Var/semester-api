@@ -13,6 +13,6 @@ dotenv.config()
 connectToMongo()
 server.use(bodyParser.json())
 
-server.use(authRouter)
+server.use('/authentication', authRouter)
 
 server.listen(process.env.SERVER_PORT!, () => console.log('Server started'))
