@@ -89,6 +89,12 @@ export const registerGoogleUser = async (
       const newUser = await User.create({ username, email })
       newUser.verified = true
       await newUser.save()
+    } else {
+      if (existingUser.password) {
+        return res.status(409).json({
+          message: 'User with this email address already exists',
+        })
+      }
     }
 
     return res.status(200).json({

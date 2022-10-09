@@ -1,6 +1,6 @@
 import { connectToMongo } from 'config'
 import bodyParser from 'body-parser'
-import { userRouter } from 'routes'
+import { authRouter } from 'routes'
 import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
@@ -13,8 +13,6 @@ dotenv.config()
 connectToMongo()
 server.use(bodyParser.json())
 
-server.use(userRouter)
+server.use(authRouter)
 
-server.listen(4444, () =>
-  console.log('Server is listening at http://localhost:4444')
-)
+server.listen(process.env.SERVER_PORT!, () => console.log('Server started'))
