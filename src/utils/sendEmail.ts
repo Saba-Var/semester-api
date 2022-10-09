@@ -14,9 +14,12 @@ const sendEmail = async (
     domain: process.env.MAILGUN_DOMAIN!,
   })
 
-  const jwtToken = jwt.sign(jwtData, process.env.JWT_SECRET!)
+  const jwtToken = jwt.sign(jwtData, process.env.JWT_SECRET!, {
+    expiresIn: emailTemplateType === 'activate-account' ? '1h' : '15h',
+  })
 
-  let message = 'Check your gmail to activate your account!'
+  let message =
+    'Activation email sent. Check your gmail to activate your account!'
 
   if (emailTemplateType === 'change-password') {
     message = 'Check yor gmail to change your password!'

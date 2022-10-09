@@ -1,3 +1,4 @@
+import { changePasswordSchema, googleUserSchema, userSchema } from 'schemas'
 import { validateRequestSchema } from 'middlewares'
 import express from 'express'
 import {
@@ -7,12 +8,6 @@ import {
   changePassword,
   registerUser,
 } from 'controllers'
-import {
-  changePasswordReqSchema,
-  googleUserSchema,
-  emailSchema,
-  userSchema,
-} from 'schemas'
 
 const router = express.Router()
 
@@ -22,14 +17,13 @@ router.put('/activate-account', userAccountActivation)
 
 router.get(
   '/change-password',
-  emailSchema,
   validateRequestSchema,
   passwordChangeRequestEmail
 )
 
 router.put(
   '/change-password',
-  changePasswordReqSchema,
+  changePasswordSchema,
   validateRequestSchema,
   changePassword
 )

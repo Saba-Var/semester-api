@@ -5,7 +5,7 @@ const emailSchema = [
     .exists()
     .trim()
     .isEmail()
-    .withMessage('Enter valid email address'),
+    .withMessage('Enter valid email address!'),
 ]
 
 export default emailSchema

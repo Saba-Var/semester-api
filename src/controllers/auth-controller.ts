@@ -1,6 +1,6 @@
 import { RequestBody, Response, RequestQuery, Token } from 'types.d'
+import { sendEmail, validEmail } from 'utils'
 import jwt_decode from 'jwt-decode'
-import { sendEmail } from 'utils'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { User } from 'models'
@@ -43,7 +43,14 @@ export const userAccountActivation = async (
   try {
     const { token } = req.query
 
+    if (!token) {
+      return res.status(422).json({
+        message: 'JWT token is missing',
+      })
+    }
+
     const verified = jwt.verify(token, process.env.JWT_SECRET!)
+
     if (verified) {
       const email = jwt_decode<Email>(token).email
 
@@ -62,7 +69,7 @@ export const userAccountActivation = async (
         message: 'Account activated successfully!',
       })
     } else {
-      return res.status(401).json({
+      return res.status(403).json({
         message:
           'User is not authorized to activate account. Token verification failed!',
       })
@@ -83,7 +90,9 @@ export const registerGoogleUser = async (
 
     const existingUser = await User.findOne({ email })
 
-    const token = jwt.sign({ email }, process.env.JWT_SECRET!)
+    const token = jwt.sign({ email }, process.env.JWT_SECRET!, {
+      expiresIn: '15h',
+    })
 
     if (!existingUser) {
       const newUser = await User.create({ username, email })
@@ -111,6 +120,10 @@ export const passwordChangeRequestEmail = async (
 ) => {
   try {
     const { email } = req.query
+
+    if (!validEmail(email)) {
+      return res.status(422).json({ message: 'Enter valid email address' })
+    }
 
     const existingUser = await User.findOne({ email })
     if (!existingUser) {
