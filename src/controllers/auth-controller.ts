@@ -24,7 +24,8 @@ export const registerUser = async (
         return res.status(409).json({ message: 'User is already registered!' })
       }
     } else {
-      const hashedPassword = await bcrypt.hash(password, 12)
+      const salt = await bcrypt.genSalt()
+      const hashedPassword = await bcrypt.hash(password, salt)
       await User.create({ username, email, password: hashedPassword })
     }
 
@@ -172,7 +173,8 @@ export const changePassword = async (
       })
     }
 
-    existingUser.password = await bcrypt.hash(password, 12)
+    const salt = await bcrypt.genSalt()
+    existingUser.password = await bcrypt.hash(password, salt)
     await existingUser.save()
 
     return res.status(200).json({ message: 'Password changed successfully' })
