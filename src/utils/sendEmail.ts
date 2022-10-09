@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 
 const sendEmail = async (
   subject: string,
-  emailTemplateType: 'account-activation',
+  emailTemplateType: 'activate-account' | 'change-password',
   to: string,
   res: Response,
   jwtData: object
@@ -16,9 +16,15 @@ const sendEmail = async (
 
   const jwtToken = jwt.sign(jwtData, process.env.JWT_SECRET!)
 
+  let message = 'Check your gmail to activate your account!'
+
+  if (emailTemplateType === 'change-password') {
+    message = 'Check yor gmail to change your password!'
+  }
+
   const data = {
     html: `<h1>${process.env
-      .FRONTEND_URI!}/account-activation?token=${jwtToken}<h1>`,
+      .FRONTEND_URI!}/${emailTemplateType}?token=${jwtToken}<h1>`,
     from: process.env.EMAIL_SENDER!,
     subject,
     to,
@@ -30,9 +36,7 @@ const sendEmail = async (
         message: error.message,
       })
     } else {
-      return res.status(201).json({
-        message: 'Check your gmail to activate your account!',
-      })
+      return res.status(200).json({ message })
     }
   })
 }

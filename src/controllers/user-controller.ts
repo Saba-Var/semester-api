@@ -28,15 +28,9 @@ export const registerUser = async (
       await User.create({ username, email, password: hashedPassword })
     }
 
-    return sendEmail(
-      'Activate your account!',
-      'account-activation',
+    return sendEmail('Activate your account!', 'activate-account', email, res, {
       email,
-      res,
-      {
-        email,
-      }
-    )
+    })
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
   }
@@ -89,7 +83,7 @@ export const registerGoogleUser = async (
 
     const existingUser = await User.findOne({ email })
 
-    const token = jwt.sign({ email, username }, process.env.JWT_SECRET!)
+    const token = jwt.sign({ email }, process.env.JWT_SECRET!)
 
     if (!existingUser) {
       const newUser = await User.create({ username, email })
@@ -99,6 +93,31 @@ export const registerGoogleUser = async (
 
     return res.status(200).json({
       token,
+    })
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message })
+  }
+}
+
+export const passwordChangeRequestEmail = async (
+  req: RequestBody<Email>,
+  res: Response
+) => {
+  try {
+    const { email } = req.body
+
+    const existingUser = await User.findOne({ email })
+    if (!existingUser) {
+      return res.status(404).json({ message: 'User not found!' })
+    } else if (!existingUser.password) {
+      return res.status(409).json({
+        message:
+          "User is registered with google account. You can't change password of google user!",
+      })
+    }
+
+    return sendEmail('Change password', 'change-password', email, res, {
+      email,
     })
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
@@ -129,10 +148,9 @@ export const changePassword = async (
     }
 
     const email = jwt_decode<Email>(token).email
-
     if (existingUser.email !== email) {
       return res.status(401).json({
-        message: "You don't have permission to change password",
+        message: 'Unauthorized access denied!',
       })
     }
 
