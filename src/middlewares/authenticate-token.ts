@@ -1,6 +1,6 @@
-import jwt, { JwtPayload } from 'jsonwebtoken'
 import { Response, Next } from 'types'
 import { AuthBody } from './types.d'
+import jwt from 'jsonwebtoken'
 
 const authenticateToken = (req: AuthBody, res: Response, next: Next) => {
   try {
@@ -22,14 +22,16 @@ const authenticateToken = (req: AuthBody, res: Response, next: Next) => {
 
       const accessToken = authorization.trim().split(' ')[1]
 
-      let verified: string | JwtPayload
-      verified = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!)
+      jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!, (error) => {
+        if (error) {
+          return res.status(401).json({
+            message:
+              'Access token is invalid. User is not authorized to continue!',
+          })
+        }
+      })
 
-      if (verified) {
-        return next()
-      }
-
-      return res.status(401).json({ message: 'User is not authorized' })
+      return next()
     }
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
