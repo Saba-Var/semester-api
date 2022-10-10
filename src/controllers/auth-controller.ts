@@ -53,9 +53,19 @@ export const authorization = async (
     const { email, password } = req.body
 
     const currentUser = await User.findOne({ email })
+    if (!currentUser) {
+      return res.status(404).json({ message: 'User not found!' })
+    }
 
     const isMatch = await bcrypt.compare(password, currentUser?.password!)
     if (isMatch) {
+      if (!currentUser.verified) {
+        return res.status(401).json({
+          message:
+            'Account is not verified. Check your email to verify your account.',
+        })
+      }
+
       const jwtPayload = { id: currentUser?.id }
 
       const accessToken = jwt.sign(
@@ -73,8 +83,8 @@ export const authorization = async (
 
       return res.status(200).json({ accessToken, refreshToken })
     } else {
-      return res.status(401).json({
-        message: 'User is not authorized to change password',
+      return res.status(403).json({
+        message: 'Credentials are incorrect',
       })
     }
   } catch (error: any) {
