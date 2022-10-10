@@ -16,7 +16,7 @@ router.post('/sign-up', userSchema, validateRequestSchema, registerUser)
 router.put('/activate-account', userAccountActivation)
 
 router.get(
-  '/change-password',
+  '/change-password-request',
   validateRequestSchema,
   passwordChangeRequestEmail
 )

@@ -1,3 +1,4 @@
+import { authenticateToken } from 'middlewares'
 import { connectToMongo } from 'config'
 import bodyParser from 'body-parser'
 import { authRouter } from 'routes'
@@ -13,6 +14,7 @@ dotenv.config()
 connectToMongo()
 server.use(bodyParser.json())
 
+server.use(authenticateToken)
 server.use('/authentication', authRouter)
 
 server.listen(process.env.SERVER_PORT!, () => console.log('Server started'))

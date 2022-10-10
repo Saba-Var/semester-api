@@ -111,7 +111,7 @@ export const registerGoogleUser = async (
         { id: newUser.id },
         process.env.ACCESS_TOKEN_SECRET!,
         {
-          expiresIn: '15h',
+          expiresIn: '10m',
         }
       )
     } else {
@@ -124,7 +124,7 @@ export const registerGoogleUser = async (
         { id: existingUser.id },
         process.env.ACCESS_TOKEN_SECRET!,
         {
-          expiresIn: '15h',
+          expiresIn: '10m',
         }
       )
     }
