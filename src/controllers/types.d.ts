@@ -22,3 +22,8 @@ export type NewPasswordReq = {
 export type Id = {
   id: string
 }
+
+export type AuthorizationReq = {
+  password: string
+  email: string
+}

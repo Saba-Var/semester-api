@@ -6,6 +6,7 @@ import bcrypt from 'bcryptjs'
 import { User } from 'models'
 import {
   RegisterGoogleMemberReq,
+  AuthorizationReq,
   NewUserReqBody,
   NewPasswordReq,
   Email,
@@ -21,9 +22,7 @@ export const registerUser = async (
 
     const existingUser = await User.findOne({ email })
     if (existingUser) {
-      if (existingUser.verified) {
-        return res.status(409).json({ message: 'User is already registered!' })
-      }
+      return res.status(409).json({ message: 'User is already registered!' })
     } else {
       const hashedPassword = await bcrypt.hash(password, 12)
       const newUser = await User.create({
@@ -31,7 +30,6 @@ export const registerUser = async (
         email,
         password: hashedPassword,
       })
-
       return sendEmail(
         'Activate your account!',
         'activate-account',
@@ -41,6 +39,43 @@ export const registerUser = async (
           id: newUser.id,
         }
       )
+    }
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message })
+  }
+}
+
+export const authorization = async (
+  req: RequestBody<AuthorizationReq>,
+  res: Response
+) => {
+  try {
+    const { email, password } = req.body
+
+    const currentUser = await User.findOne({ email })
+
+    const isMatch = await bcrypt.compare(password, currentUser?.password!)
+    if (isMatch) {
+      const jwtPayload = { id: currentUser?.id }
+
+      const accessToken = jwt.sign(
+        jwtPayload,
+        process.env.ACCESS_TOKEN_SECRET!,
+        {
+          expiresIn: '10m',
+        }
+      )
+
+      const refreshToken = jwt.sign(
+        jwtPayload,
+        process.env.REFRESH_TOKEN_SECRET!
+      )
+
+      return res.status(200).json({ accessToken, refreshToken })
+    } else {
+      return res.status(401).json({
+        message: 'User is not authorized to change password',
+      })
     }
   } catch (error: any) {
     return res.status(500).json({ message: error.message })

@@ -14,8 +14,8 @@ const sendEmail = async (
     domain: process.env.MAILGUN_DOMAIN!,
   })
 
-  const accessToken = jwt.sign(jwtData, process.env.ACCESS_TOKEN_SECRET!, {
-    expiresIn: emailTemplateType === 'activate-account' ? '1h' : '10m',
+  const token = jwt.sign(jwtData, process.env.ACCESS_TOKEN_SECRET!, {
+    expiresIn: '15m',
   })
 
   let message =
@@ -27,7 +27,7 @@ const sendEmail = async (
 
   const data = {
     html: `<h1>${process.env
-      .FRONTEND_URI!}/${emailTemplateType}?accessToken=${accessToken}<h1>`,
+      .FRONTEND_URI!}/${emailTemplateType}?token=${token}<h1>`,
     from: process.env.EMAIL_SENDER!,
     subject,
     to,

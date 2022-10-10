@@ -1,11 +1,8 @@
+import passwordSchema from './passwordSchema'
 import { check } from 'express-validator'
 
 const newPasswordSchema = [
-  check('password')
-    .isLength({
-      min: 6,
-    })
-    .withMessage('Password should include at least 6 characters'),
+  passwordSchema(6),
 
   check('confirmPassword').custom((value, { req }) => {
     if (value !== req.body.password) {
