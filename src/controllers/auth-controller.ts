@@ -52,41 +52,36 @@ export const authorization = async (
   try {
     const { email, password } = req.body
 
+    let isMatch = false
+
     const currentUser = await User.findOne({ email })
-    if (!currentUser) {
-      return res.status(404).json({ message: 'User not found!' })
+
+    if (currentUser) {
+      isMatch = await bcrypt.compare(password, currentUser?.password!)
     }
 
-    const isMatch = await bcrypt.compare(password, currentUser?.password!)
-    if (isMatch) {
-      if (!currentUser.verified) {
-        return res.status(401).json({
-          message:
-            'Account is not verified. Check your email to verify your account.',
-        })
-      }
-
-      const jwtPayload = { id: currentUser?.id }
-
-      const accessToken = jwt.sign(
-        jwtPayload,
-        process.env.ACCESS_TOKEN_SECRET!,
-        {
-          expiresIn: '10m',
-        }
-      )
-
-      const refreshToken = jwt.sign(
-        jwtPayload,
-        process.env.REFRESH_TOKEN_SECRET!
-      )
-
-      return res.status(200).json({ accessToken, refreshToken })
-    } else {
+    if (!currentUser || !isMatch) {
       return res.status(403).json({
         message: 'Credentials are incorrect',
       })
     }
+
+    if (!currentUser.verified) {
+      return res.status(401).json({
+        message:
+          'Account is not verified. Check your email to verify your account.',
+      })
+    }
+
+    const jwtPayload = { id: currentUser?.id }
+
+    const accessToken = jwt.sign(jwtPayload, process.env.ACCESS_TOKEN_SECRET!, {
+      expiresIn: '10m',
+    })
+
+    const refreshToken = jwt.sign(jwtPayload, process.env.REFRESH_TOKEN_SECRET!)
+
+    return res.status(200).json({ accessToken, refreshToken })
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
   }
