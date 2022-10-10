@@ -1,5 +1,5 @@
-import { newPasswordSchema, tokenSchema } from './fieldSchemas'
+import { newPasswordSchema, accessTokenSchema } from './fieldSchemas'
 
-const changePasswordSchema = [...newPasswordSchema, ...tokenSchema]
+const changePasswordSchema = [...newPasswordSchema, ...accessTokenSchema]
 
 export default changePasswordSchema

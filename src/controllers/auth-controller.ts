@@ -1,4 +1,4 @@
-import { RequestBody, Response, RequestQuery, Token } from 'types.d'
+import { RequestBody, Response, RequestQuery, AccessToken } from 'types.d'
 import { sendEmail, validEmail } from 'utils'
 import jwt_decode from 'jwt-decode'
 import jwt from 'jsonwebtoken'
@@ -48,22 +48,22 @@ export const registerUser = async (
 }
 
 export const userAccountActivation = async (
-  req: RequestQuery<Token>,
+  req: RequestQuery<AccessToken>,
   res: Response
 ) => {
   try {
-    const { token } = req.query
+    const { accessToken } = req.query
 
-    if (!token) {
+    if (!accessToken) {
       return res.status(422).json({
         message: 'JWT token is missing',
       })
     }
 
-    const verified = jwt.verify(token, process.env.JWT_SECRET!)
+    const verified = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!)
 
     if (verified) {
-      const userId = jwt_decode<Id>(token).id
+      const userId = jwt_decode<Id>(accessToken).id
 
       const existingUser = await User.findById(userId)
       if (!existingUser) {
@@ -82,7 +82,7 @@ export const userAccountActivation = async (
     } else {
       return res.status(403).json({
         message:
-          'User is not authorized to activate account. Token verification failed!',
+          'User is not authorized to activate account. Access token verification failed!',
       })
     }
   } catch (error: any) {
@@ -101,28 +101,36 @@ export const registerGoogleUser = async (
 
     const existingUser = await User.findOne({ email })
 
-    let token = ''
+    let accessToken = ''
 
     if (!existingUser) {
       const newUser = await User.create({ username, email })
       newUser.verified = true
       await newUser.save()
-      token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET!, {
-        expiresIn: '15h',
-      })
+      accessToken = jwt.sign(
+        { id: newUser.id },
+        process.env.ACCESS_TOKEN_SECRET!,
+        {
+          expiresIn: '15h',
+        }
+      )
     } else {
       if (existingUser.password) {
         return res.status(409).json({
           message: 'User with this email address already exists',
         })
       }
-      token = jwt.sign({ id: existingUser.id }, process.env.JWT_SECRET!, {
-        expiresIn: '15h',
-      })
+      accessToken = jwt.sign(
+        { id: existingUser.id },
+        process.env.ACCESS_TOKEN_SECRET!,
+        {
+          expiresIn: '15h',
+        }
+      )
     }
 
     return res.status(200).json({
-      token,
+      accessToken,
     })
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
@@ -163,16 +171,16 @@ export const changePassword = async (
   res: Response
 ) => {
   try {
-    const { password, token } = req.body
+    const { password, accessToken } = req.body
 
-    const verified = jwt.verify(token, process.env.JWT_SECRET!)
+    const verified = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!)
     if (!verified) {
       return res.status(401).json({
         message: 'JWT is not valid!',
       })
     }
 
-    const userId = jwt_decode<Id>(token).id
+    const userId = jwt_decode<Id>(accessToken).id
 
     const existingUser = await User.findById(userId)
 

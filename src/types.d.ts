@@ -15,6 +15,6 @@ export interface Response extends Express.Response {
   json: JsonType
 }
 
-export type Token = {
-  token: string
+export type AccessToken = {
+  accessToken: string
 }
