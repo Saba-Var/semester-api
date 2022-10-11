@@ -66,22 +66,33 @@ export const authorization = async (
       })
     }
 
-    if (!currentUser.verified) {
+    if (!currentUser.active) {
       return res.status(401).json({
         message:
-          'Account is not verified. Check your email to verify your account.',
+          'Account is not active. Check your email to verify your account.',
       })
     }
+    const devEnvironment = process.env.NODE_ENV === 'production'
 
-    const jwtPayload = { id: currentUser?.id }
+    const jwtPayload = { id: currentUser?.id, email }
 
     const accessToken = jwt.sign(jwtPayload, process.env.ACCESS_TOKEN_SECRET!, {
-      expiresIn: '10m',
+      expiresIn: devEnvironment ? '10s' : '12m',
+    })
+    const refreshToken = jwt.sign(
+      jwtPayload,
+      process.env.REFRESH_TOKEN_SECRET!,
+      { expiresIn: devEnvironment ? '4h' : '10d' }
+    )
+
+    res.cookie('refreshToken', refreshToken, {
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 7 * 8640000,
+      sameSite: 'None',
+      httpOnly: true,
     })
 
-    const refreshToken = jwt.sign(jwtPayload, process.env.REFRESH_TOKEN_SECRET!)
-
-    return res.status(200).json({ accessToken, refreshToken })
+    return res.status(200).json({ accessToken })
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
   }
@@ -108,13 +119,13 @@ export const userAccountActivation = async (
       const existingUser = await User.findById(userId)
       if (!existingUser) {
         return res.status(404).json({ message: 'User is not registered yet!' })
-      } else if (existingUser.verified) {
+      } else if (existingUser.active) {
         return res.status(200).json({
           message: 'Account is already activated',
         })
       }
 
-      await User.updateOne({ id: userId }, { verified: true })
+      await User.updateOne({ id: userId }, { active: true })
 
       return res.status(200).json({
         message: 'Account activated successfully!',
@@ -145,7 +156,7 @@ export const registerGoogleUser = async (
 
     if (!existingUser) {
       const newUser = await User.create({ username, email })
-      newUser.verified = true
+      newUser.active = true
       await newUser.save()
       accessToken = jwt.sign(
         { id: newUser.id },

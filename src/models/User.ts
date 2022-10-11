@@ -17,7 +17,7 @@ const userSchema = new Schema<UserModel>({
     trim: true,
   },
 
-  verified: {
+  active: {
     type: Boolean,
     default: false,
   },

@@ -1,7 +1,7 @@
 export type UserModel = {
-  verified: boolean
   password?: string
   username: string
+  active: boolean
   image?: string
   email: string
 }

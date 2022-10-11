@@ -1,11 +1,11 @@
 import rateLimit from 'express-rate-limit'
 
 const rateLimiter = rateLimit({
-  windowMs: 5 * 6000,
-  max: 15,
+  windowMs: 10 * 6000,
+  max: 10,
   message: {
     message:
-      'Too many requests detected from your IP address. Try again after 5 minutes.',
+      'Too many requests detected from your IP address. Try again later.',
   },
   standardHeaders: true,
   legacyHeaders: false,
