@@ -1,4 +1,5 @@
 import { validateRequestSchema } from 'middlewares'
+import { rateLimiter } from 'middlewares'
 import express from 'express'
 import {
   passwordChangeRequestEmail,
@@ -17,16 +18,29 @@ import {
 
 const router = express.Router()
 
-router.post('/sign-up', userSchema, validateRequestSchema, registerUser)
+router.post(
+  '/sign-up',
+  rateLimiter,
+  userSchema,
+  validateRequestSchema,
+  registerUser
+)
 
-router.put('/activate-account', userAccountActivation)
+router.put('/activate-account', rateLimiter, userAccountActivation)
 
-router.post('/sign-in', signInSchema, validateRequestSchema, authorization)
+router.post(
+  '/sign-in',
+  rateLimiter,
+  signInSchema,
+  validateRequestSchema,
+  authorization
+)
 
 router.get('/change-password-request', passwordChangeRequestEmail)
 
 router.put(
   '/change-password',
+  rateLimiter,
   changePasswordSchema,
   validateRequestSchema,
   changePassword
@@ -34,6 +48,7 @@ router.put(
 
 router.post(
   '/google-sign-up',
+  rateLimiter,
   googleUserSchema,
   validateRequestSchema,
   registerGoogleUser

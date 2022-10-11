@@ -1,4 +1,5 @@
 import { authenticateToken } from 'middlewares'
+import cookieParser from 'cookie-parser'
 import { connectToMongo } from 'config'
 import bodyParser from 'body-parser'
 import { authRouter } from 'routes'
@@ -13,6 +14,7 @@ dotenv.config()
 
 connectToMongo()
 server.use(bodyParser.json())
+server.use(cookieParser())
 
 // server.use(authenticateToken)
 server.use('/authentication', authRouter)
