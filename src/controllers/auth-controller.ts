@@ -117,14 +117,17 @@ export const userAccountActivation = async (
       })
     }
 
-    const verified = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!)
+    const verified = jwt.verify(
+      accessToken,
+      process.env.ACTIVATION_TOKEN_SECRET!
+    )
 
     if (verified) {
       const userId = jwt_decode<Id>(accessToken).id
 
       const existingUser = await User.findById(userId)
       if (!existingUser) {
-        return res.status(404).json({ message: 'User is not found' })
+        return res.status(401).json({ message: 'Unauthorized Access!' })
       } else if (existingUser.active) {
         return res.status(200).json({
           message: 'Account is already activated',
@@ -228,7 +231,10 @@ export const changePassword = async (req: ChangePasswordReq, res: Response) => {
     const { password } = req.body
     const { accessToken } = req.query
 
-    const verified = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!)
+    const verified = jwt.verify(
+      accessToken,
+      process.env.CHANGE_PASSWORD_TOKEN_SECRET!
+    )
     if (!verified) {
       return res.status(401).json({
         message: 'JWT is not valid!',
@@ -240,7 +246,7 @@ export const changePassword = async (req: ChangePasswordReq, res: Response) => {
     const existingUser = await User.findById(userId)
 
     if (!existingUser) {
-      return res.status(404).json({ message: 'User not found!' })
+      return res.status(401).json({ message: 'Unauthorized Access!' })
     }
 
     if (!existingUser.password) {

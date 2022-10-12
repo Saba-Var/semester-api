@@ -14,8 +14,13 @@ const sendEmail = async (
     domain: process.env.MAILGUN_DOMAIN!,
   })
 
-  const token = jwt.sign(jwtData, process.env.ACCESS_TOKEN_SECRET!, {
-    expiresIn: '15m',
+  const jwtSecret =
+    emailTemplateType === 'activate-account'
+      ? process.env.ACTIVATION_TOKEN_SECRET!
+      : process.env.CHANGE_PASSWORD_TOKEN_SECRET!
+
+  const token = jwt.sign(jwtData, jwtSecret, {
+    expiresIn: '30m',
   })
 
   let message =
