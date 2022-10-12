@@ -1,5 +1,5 @@
-import { sendEmail, validEmail } from 'utils'
-import jwt_decode from 'jwt-decode'
+import { RequestQuery, AccessToken, RequestBody, Response } from 'types.d'
+import { sendEmail, validEmail, jwtDecode } from 'utils'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { User } from 'models'
@@ -9,15 +9,7 @@ import {
   AuthorizationReq,
   NewUserReqBody,
   Email,
-  Id,
 } from './types'
-import {
-  RequestQuery,
-  AccessToken,
-  RequestBody,
-  JwtPayload,
-  Response,
-} from 'types.d'
 
 export const registerUser = async (
   req: RequestBody<NewUserReqBody>,
@@ -123,8 +115,7 @@ export const userAccountActivation = async (
     )
 
     if (verified) {
-      const userId = jwt_decode<Id>(accessToken).id
-
+      const userId = jwtDecode(accessToken, 'id')
       const existingUser = await User.findById(userId)
       if (!existingUser) {
         return res.status(401).json({ message: 'Unauthorized Access!' })
@@ -241,7 +232,7 @@ export const changePassword = async (req: ChangePasswordReq, res: Response) => {
       })
     }
 
-    const userId = jwt_decode<Id>(accessToken).id
+    const userId = jwtDecode(accessToken, 'id')
 
     const existingUser = await User.findById(userId)
 
@@ -271,8 +262,8 @@ export const refresh = async (req: RequestBody<{}>, res: Response) => {
 
     const verified = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!)
     if (verified) {
-      const userId = jwt_decode<JwtPayload>(refreshToken).id
-      const email = jwt_decode<JwtPayload>(refreshToken).email
+      const userId = jwtDecode(refreshToken, 'id')
+      const email = jwtDecode(refreshToken, 'email')
       if (!userId || !email)
         return res.status(401).json({ message: 'Unauthorized Access!' })
 

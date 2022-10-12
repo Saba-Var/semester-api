@@ -6,10 +6,7 @@ const authenticateToken = (req: AuthBody, res: Response, next: Next) => {
   try {
     const url = req.url
 
-    if (
-      url.includes('/authentication/sign-up') ||
-      url.includes('/authentication/change-password-request')
-    ) {
+    if (url.includes('sign-up') || url.includes('change-password-request')) {
       return next()
     } else {
       const { authorization } = req.headers
