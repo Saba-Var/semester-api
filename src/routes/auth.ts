@@ -7,8 +7,10 @@ import {
   changePassword,
   authorization,
   registerUser,
+  refresh,
 } from 'controllers'
 import {
+  refreshTokenCookieSchema,
   changePasswordSchema,
   googleUserSchema,
   signInSchema,
@@ -24,6 +26,8 @@ router.put('/activate-account', userAccountActivation)
 router.post('/sign-in', signInSchema, validateRequestSchema, authorization)
 
 router.get('/change-password-request', passwordChangeRequestEmail)
+
+router.get('/refresh', refreshTokenCookieSchema, validateRequestSchema, refresh)
 
 router.put(
   '/change-password',

@@ -3,6 +3,7 @@ type JsonType = Send<{ message: string }, this>
 export type Next = () => void
 
 export interface RequestBody<ReqBody> extends Express.Request {
+  cookies: { refreshToken: '' }
   body: ReqBody
 }
 
@@ -18,4 +19,9 @@ export interface Response extends Express.Response {
 
 export type AccessToken = {
   accessToken: string
+}
+
+export type JwtPayload = {
+  email: string
+  id: string
 }

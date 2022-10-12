@@ -1,4 +1,3 @@
-import { RequestBody, Response, RequestQuery, AccessToken } from 'types.d'
 import { sendEmail, validEmail } from 'utils'
 import jwt_decode from 'jwt-decode'
 import jwt from 'jsonwebtoken'
@@ -12,6 +11,13 @@ import {
   Email,
   Id,
 } from './types'
+import {
+  RequestBody,
+  Response,
+  RequestQuery,
+  AccessToken,
+  JwtPayload,
+} from 'types.d'
 
 export const registerUser = async (
   req: RequestBody<NewUserReqBody>,
@@ -61,7 +67,7 @@ export const authorization = async (
     }
 
     if (!currentUser || !isMatch) {
-      return res.status(403).json({
+      return res.status(401).json({
         message: 'Credentials are incorrect',
       })
     }
@@ -82,11 +88,11 @@ export const authorization = async (
     const refreshToken = jwt.sign(
       jwtPayload,
       process.env.REFRESH_TOKEN_SECRET!,
-      { expiresIn: devEnvironment ? '4h' : '10d' }
+      { expiresIn: devEnvironment ? '4h' : '7d' }
     )
 
     res.cookie('refreshToken', refreshToken, {
-      secure: process.env.NODE_ENV === 'production',
+      secure: devEnvironment,
       maxAge: 7 * 8640000,
       sameSite: 'None',
       httpOnly: true,
@@ -118,7 +124,7 @@ export const userAccountActivation = async (
 
       const existingUser = await User.findById(userId)
       if (!existingUser) {
-        return res.status(404).json({ message: 'User is not registered yet!' })
+        return res.status(404).json({ message: 'User is not found' })
       } else if (existingUser.active) {
         return res.status(200).json({
           message: 'Account is already activated',
@@ -252,5 +258,42 @@ export const changePassword = async (
     return res.status(200).json({ message: 'Password changed successfully' })
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
+  }
+}
+
+export const refresh = async (req: RequestBody<{}>, res: Response) => {
+  try {
+    const refreshToken = req.cookies.refreshToken
+
+    const verified = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!)
+    if (verified) {
+      const userId = jwt_decode<JwtPayload>(refreshToken).id
+      const email = jwt_decode<JwtPayload>(refreshToken).email
+      if (!userId || !email)
+        return res.status(401).json({ message: 'Unauthorized Access!' })
+
+      const existingUser = await User.findById(userId)
+      if (!existingUser || existingUser.email !== email) {
+        return res.status(401).json({ message: 'Unauthorized Access!' })
+      }
+
+      const accessToken = jwt.sign(
+        { id: existingUser.id, email: existingUser.email },
+        process.env.ACCESS_TOKEN_SECRET!,
+        {
+          expiresIn: process.env.NODE_ENV === 'production' ? '10s' : '10m',
+        }
+      )
+
+      return res.status(200).json({ accessToken })
+    } else {
+      return res.status(403).json({
+        message: 'Refresh token is invalid. Unauthorized access!',
+      })
+    }
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    })
   }
 }

@@ -1,6 +1,7 @@
 import { check } from 'express-validator'
 
 const usernameSchema = check('username')
+  .exists()
   .trim()
   .notEmpty()
   .isLength({
