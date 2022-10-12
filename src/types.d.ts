@@ -1,17 +1,17 @@
+import { Request, Response } from 'express'
+
 type JsonType = Send<{ message: string }, this>
 
-export type Next = () => void
-
-export interface RequestBody<ReqBody> extends Express.Request {
+export interface RequestBody<ReqBody> extends Request {
   cookies: { refreshToken: '' }
   body: ReqBody
 }
 
-export interface RequestQuery<ReqQuery> extends Express.Request {
+export interface RequestQuery<ReqQuery> extends Request {
   query: ReqQuery
 }
 
-export interface Response extends Express.Response {
+export interface Response extends Response {
   cookie: (name: string, value: string, options: object) => void
   clearCookie: (name: string, options: object) => void
   status: (number: number) => { json: JsonType }

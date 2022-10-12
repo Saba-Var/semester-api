@@ -1,11 +1,12 @@
 import { validationResult } from 'express-validator'
 import { ValidateResultReq } from './types.d'
-import { Response, Next } from 'types'
+import { NextFunction } from 'express'
+import { Response } from 'types'
 
 const validateRequestSchema = (
   req: ValidateResultReq,
   res: Response,
-  next: Next
+  next: NextFunction
 ) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
