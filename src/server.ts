@@ -1,4 +1,4 @@
-import { authenticateToken } from 'middlewares'
+import { authenticateToken, authLimiter } from 'middlewares'
 import cookieParser from 'cookie-parser'
 import { connectToMongo } from 'config'
 import bodyParser from 'body-parser'
@@ -17,6 +17,6 @@ server.use(bodyParser.json())
 server.use(cookieParser())
 
 // server.use(authenticateToken)
-server.use('/authentication', authRouter)
+server.use('/authentication', authLimiter, authRouter)
 
 server.listen(process.env.SERVER_PORT!, () => console.log('Server started'))
