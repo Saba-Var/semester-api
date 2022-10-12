@@ -297,3 +297,15 @@ export const refresh = async (req: RequestBody<{}>, res: Response) => {
     })
   }
 }
+
+export const logout = async (_: any, res: Response) => {
+  res.clearCookie('refreshToken', {
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'None',
+    httpOnly: true,
+  })
+
+  return res
+    .status(200)
+    .json({ message: 'Cookie cleared. Logged out successfully.' })
+}

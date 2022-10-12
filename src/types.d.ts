@@ -12,7 +12,8 @@ export interface RequestQuery<ReqQuery> extends Express.Request {
 }
 
 export interface Response extends Express.Response {
-  cookie: (name: string, value: string, {}) => void
+  cookie: (name: string, value: string, options: object) => void
+  clearCookie: (name: string, options: object) => void
   status: (number: number) => { json: JsonType }
   json: JsonType
 }
