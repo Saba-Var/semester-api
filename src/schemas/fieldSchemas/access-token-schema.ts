@@ -1,8 +1,8 @@
-import { check } from 'express-validator'
+import { query } from 'express-validator'
 
-const accessTokenSchema = check('accessToken')
-  .trim()
+const accessTokenSchema = query('accessToken')
   .exists()
+  .trim()
   .notEmpty()
   .withMessage('JWT is required')
 

@@ -14,7 +14,7 @@ export type RegisterGoogleMemberReq = {
 }
 
 export type NewPasswordReq = {
-  accessToken: string
+  confirmPassword: string
   password: string
   id: string
 }
@@ -26,4 +26,13 @@ export type Id = {
 export type AuthorizationReq = {
   password: string
   email: string
+}
+
+export type ChangePasswordReq = {
+  body: {
+    password: string
+  }
+  query: {
+    accessToken: string
+  }
 }

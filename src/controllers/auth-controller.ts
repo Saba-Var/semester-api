@@ -5,18 +5,18 @@ import bcrypt from 'bcryptjs'
 import { User } from 'models'
 import {
   RegisterGoogleMemberReq,
+  ChangePasswordReq,
   AuthorizationReq,
   NewUserReqBody,
-  NewPasswordReq,
   Email,
   Id,
 } from './types'
 import {
-  RequestBody,
-  Response,
   RequestQuery,
   AccessToken,
+  RequestBody,
   JwtPayload,
+  Response,
 } from 'types.d'
 
 export const registerUser = async (
@@ -223,12 +223,10 @@ export const passwordChangeRequestEmail = async (
   }
 }
 
-export const changePassword = async (
-  req: RequestBody<NewPasswordReq>,
-  res: Response
-) => {
+export const changePassword = async (req: ChangePasswordReq, res: Response) => {
   try {
-    const { password, accessToken } = req.body
+    const { password } = req.body
+    const { accessToken } = req.query
 
     const verified = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!)
     if (!verified) {
