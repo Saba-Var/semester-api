@@ -143,51 +143,6 @@ export const userAccountActivation = async (
   }
 }
 
-export const registerGoogleUser = async (
-  req: RequestBody<RegisterGoogleMemberReq>,
-  res: Response
-) => {
-  try {
-    const { username, email } = req.body
-
-    const existingUser = await User.findOne({ email })
-
-    let accessToken = ''
-
-    if (!existingUser) {
-      const newUser = await User.create({ username, email })
-      newUser.active = true
-      await newUser.save()
-      accessToken = jwt.sign(
-        { id: newUser.id },
-        process.env.ACCESS_TOKEN_SECRET!,
-        {
-          expiresIn: '10m',
-        }
-      )
-    } else {
-      if (existingUser.password) {
-        return res.status(409).json({
-          message: 'User with this email address already exists',
-        })
-      }
-      accessToken = jwt.sign(
-        { id: existingUser.id },
-        process.env.ACCESS_TOKEN_SECRET!,
-        {
-          expiresIn: '10m',
-        }
-      )
-    }
-
-    return res.status(200).json({
-      accessToken,
-    })
-  } catch (error: any) {
-    return res.status(500).json({ message: error.message })
-  }
-}
-
 export const passwordChangeRequestEmail = async (
   req: RequestQuery<Email>,
   res: Response

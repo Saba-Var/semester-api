@@ -3,7 +3,6 @@ import express from 'express'
 import {
   passwordChangeRequestEmail,
   userAccountActivation,
-  registerGoogleUser,
   changePassword,
   authorization,
   registerUser,
@@ -13,7 +12,6 @@ import {
 import {
   refreshTokenCookieSchema,
   changePasswordSchema,
-  googleUserSchema,
   signInSchema,
   userSchema,
 } from 'schemas'
@@ -37,13 +35,6 @@ router.put(
   changePasswordSchema,
   validateRequestSchema,
   changePassword
-)
-
-router.post(
-  '/google-sign-up',
-  googleUserSchema,
-  validateRequestSchema,
-  registerGoogleUser
 )
 
 export default router
