@@ -157,11 +157,6 @@ export const passwordChangeRequestEmail = async (
     const existingUser = await User.findOne({ email })
     if (!existingUser) {
       return res.status(404).json({ message: 'User not found!' })
-    } else if (!existingUser.password) {
-      return res.status(409).json({
-        message:
-          "User is registered with google account. You can't change password of google user!",
-      })
     }
 
     return sendEmail('Change password', 'change-password', email, res, {
@@ -193,13 +188,6 @@ export const changePassword = async (req: ChangePasswordReq, res: Response) => {
 
     if (!existingUser) {
       return res.status(401).json({ message: 'Unauthorized Access!' })
-    }
-
-    if (!existingUser.password) {
-      return res.status(409).json({
-        message:
-          "User is registered with google account. You can't change password of google user!",
-      })
     }
 
     existingUser.password = await bcrypt.hash(password, 12)
