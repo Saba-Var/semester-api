@@ -18,7 +18,7 @@ const verifyToken = (req: AuthReqBody, res: Response, next: NextFunction) => {
 
     jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!, (error) => {
       if (error) {
-        return res.status(401).json({
+        return res.status(403).json({
           message:
             'Access token is invalid. User is not authorized to continue!',
         })

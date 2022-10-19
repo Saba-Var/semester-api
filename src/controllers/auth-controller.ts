@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { User } from 'models'
 import {
-  RegisterGoogleMemberReq,
   ChangePasswordReq,
   AuthorizationReq,
   NewUserReqBody,
@@ -65,7 +64,7 @@ export const authorization = async (
     }
 
     if (!currentUser.active) {
-      return res.status(401).json({
+      return res.status(403).json({
         message:
           'Account is not active. Check your email to verify your account.',
       })
@@ -75,7 +74,7 @@ export const authorization = async (
     const jwtPayload = { id: currentUser?.id, email }
 
     const accessToken = jwt.sign(jwtPayload, process.env.ACCESS_TOKEN_SECRET!, {
-      expiresIn: devEnvironment ? '10s' : '10m',
+      expiresIn: devEnvironment ? '1d' : '10m',
     })
     const refreshToken = jwt.sign(
       jwtPayload,
@@ -84,9 +83,9 @@ export const authorization = async (
     )
 
     res.cookie('refreshToken', refreshToken, {
-      secure: devEnvironment,
+      secure: true,
       maxAge: 7 * 8640000,
-      sameSite: 'None',
+      sameSite: 'Strict',
       httpOnly: true,
     })
 
