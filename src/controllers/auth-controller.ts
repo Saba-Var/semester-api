@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { User } from 'models'
 import {
-  RegisterGoogleMemberReq,
   ChangePasswordReq,
   AuthorizationReq,
   NewUserReqBody,
@@ -65,7 +64,7 @@ export const authorization = async (
     }
 
     if (!currentUser.active) {
-      return res.status(401).json({
+      return res.status(403).json({
         message:
           'Account is not active. Check your email to verify your account.',
       })
@@ -75,7 +74,7 @@ export const authorization = async (
     const jwtPayload = { id: currentUser?.id, email }
 
     const accessToken = jwt.sign(jwtPayload, process.env.ACCESS_TOKEN_SECRET!, {
-      expiresIn: devEnvironment ? '10s' : '10m',
+      expiresIn: devEnvironment ? '1d' : '10m',
     })
     const refreshToken = jwt.sign(
       jwtPayload,
@@ -84,9 +83,9 @@ export const authorization = async (
     )
 
     res.cookie('refreshToken', refreshToken, {
-      secure: devEnvironment,
+      secure: true,
       maxAge: 7 * 8640000,
-      sameSite: 'None',
+      sameSite: 'Strict',
       httpOnly: true,
     })
 
@@ -143,51 +142,6 @@ export const userAccountActivation = async (
   }
 }
 
-export const registerGoogleUser = async (
-  req: RequestBody<RegisterGoogleMemberReq>,
-  res: Response
-) => {
-  try {
-    const { username, email } = req.body
-
-    const existingUser = await User.findOne({ email })
-
-    let accessToken = ''
-
-    if (!existingUser) {
-      const newUser = await User.create({ username, email })
-      newUser.active = true
-      await newUser.save()
-      accessToken = jwt.sign(
-        { id: newUser.id },
-        process.env.ACCESS_TOKEN_SECRET!,
-        {
-          expiresIn: '10m',
-        }
-      )
-    } else {
-      if (existingUser.password) {
-        return res.status(409).json({
-          message: 'User with this email address already exists',
-        })
-      }
-      accessToken = jwt.sign(
-        { id: existingUser.id },
-        process.env.ACCESS_TOKEN_SECRET!,
-        {
-          expiresIn: '10m',
-        }
-      )
-    }
-
-    return res.status(200).json({
-      accessToken,
-    })
-  } catch (error: any) {
-    return res.status(500).json({ message: error.message })
-  }
-}
-
 export const passwordChangeRequestEmail = async (
   req: RequestQuery<Email>,
   res: Response
@@ -202,11 +156,6 @@ export const passwordChangeRequestEmail = async (
     const existingUser = await User.findOne({ email })
     if (!existingUser) {
       return res.status(404).json({ message: 'User not found!' })
-    } else if (!existingUser.password) {
-      return res.status(409).json({
-        message:
-          "User is registered with google account. You can't change password of google user!",
-      })
     }
 
     return sendEmail('Change password', 'change-password', email, res, {
@@ -238,13 +187,6 @@ export const changePassword = async (req: ChangePasswordReq, res: Response) => {
 
     if (!existingUser) {
       return res.status(401).json({ message: 'Unauthorized Access!' })
-    }
-
-    if (!existingUser.password) {
-      return res.status(409).json({
-        message:
-          "User is registered with google account. You can't change password of google user!",
-      })
     }
 
     existingUser.password = await bcrypt.hash(password, 12)
