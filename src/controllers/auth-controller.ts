@@ -1,5 +1,5 @@
 import { RequestQuery, AccessToken, RequestBody, Response } from 'types.d'
-import { sendEmail, validEmail, jwtDecode } from 'utils'
+import { sendEmail, jwtDecode } from 'utils'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { User } from 'models'
@@ -149,10 +149,6 @@ export const passwordChangeRequestEmail = async (
   try {
     const { email } = req.query
 
-    if (!validEmail(email)) {
-      return res.status(422).json({ message: 'Enter valid email address' })
-    }
-
     const existingUser = await User.findOne({ email })
     if (!existingUser) {
       return res.status(404).json({ message: 'User not found!' })
@@ -168,8 +164,8 @@ export const passwordChangeRequestEmail = async (
 
 export const changePassword = async (req: ChangePasswordReq, res: Response) => {
   try {
-    const { password } = req.body
     const { accessToken } = req.query
+    const { password } = req.body
 
     const verified = jwt.verify(
       accessToken,
