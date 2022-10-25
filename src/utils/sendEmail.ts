@@ -38,15 +38,15 @@ const sendEmail = async (
     to,
   }
 
-  // return mg.messages().send(data, (error) => {
-  //   if (error) {
-  //     return res.status(500).json({
-  //       message: error.message,
-  //     })
-  //   } else {
-  return res.status(200).json({ message })
-  //   }
-  // })
+  return mg.messages().send(data, (error) => {
+    if (error) {
+      return res.status(500).json({
+        message: error.message,
+      })
+    } else {
+      return res.status(200).json({ message })
+    }
+  })
 }
 
 export default sendEmail

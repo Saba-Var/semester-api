@@ -12,6 +12,8 @@ import {
 import {
   refreshTokenCookieSchema,
   changePasswordSchema,
+  accessTokenSchema,
+  queryEmailSchema,
   signInSchema,
   userSchema,
 } from 'schemas'
@@ -20,11 +22,21 @@ const router = express.Router()
 
 router.post('/sign-up', userSchema, validateRequestSchema, registerUser)
 
-router.put('/activate-account', userAccountActivation)
+router.put(
+  '/activate-account',
+  accessTokenSchema,
+  validateRequestSchema,
+  userAccountActivation
+)
 
 router.post('/sign-in', signInSchema, validateRequestSchema, authorization)
 
-router.get('/change-password-request', passwordChangeRequestEmail)
+router.get(
+  '/change-password-request',
+  queryEmailSchema,
+  validateRequestSchema,
+  passwordChangeRequestEmail
+)
 
 router.get('/refresh', refreshTokenCookieSchema, validateRequestSchema, refresh)
 

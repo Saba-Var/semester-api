@@ -1,6 +1,7 @@
 export { default as refreshTokenCookieSchema } from './refresh-cookie-schema'
 export { default as newPasswordSchema } from './new-password-schema'
 export { default as accessTokenSchema } from './access-token-schema'
+export { default as queryEmailSchema } from './queryEmailSchema'
 export { default as usernameSchema } from './username-schema'
 export { default as passwordSchema } from './passwordSchema'
 export { default as emailSchema } from './email-schema'
