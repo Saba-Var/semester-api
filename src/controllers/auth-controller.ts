@@ -1,4 +1,4 @@
-import { RequestQuery, AccessToken, RequestBody, Response } from 'types.d'
+import { RequestQuery, Token, RequestBody, Response } from 'types.d'
 import { sendEmail, jwtDecode } from 'utils'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
@@ -16,6 +16,7 @@ export const registerUser = async (
 ) => {
   try {
     const { username, email, password } = req.body
+    const { language } = req.cookies
 
     const existingUser = await User.findOne({ email })
     if (existingUser) {
@@ -29,12 +30,13 @@ export const registerUser = async (
       })
       return sendEmail(
         'Activate your account!',
-        'activate-account',
+        'account-activation',
         email,
         res,
         {
           id: newUser.id,
-        }
+        },
+        language
       )
     }
   } catch (error: any) {
@@ -96,30 +98,21 @@ export const authorization = async (
 }
 
 export const userAccountActivation = async (
-  req: RequestQuery<AccessToken>,
+  req: RequestQuery<Token>,
   res: Response
 ) => {
   try {
-    const { accessToken } = req.query
+    const { token } = req.query
 
-    if (!accessToken) {
-      return res.status(422).json({
-        message: 'JWT token is missing',
-      })
-    }
-
-    const verified = jwt.verify(
-      accessToken,
-      process.env.ACTIVATION_TOKEN_SECRET!
-    )
+    const verified = jwt.verify(token, process.env.ACTIVATION_TOKEN_SECRET!)
 
     if (verified) {
-      const userId = jwtDecode(accessToken, 'id')
+      const userId = jwtDecode(token, 'id')
       const existingUser = await User.findById(userId)
       if (!existingUser) {
-        return res.status(401).json({ message: 'Unauthorized Access!' })
+        return res.status(404).json({ message: 'Account not found!' })
       } else if (existingUser.active) {
-        return res.status(200).json({
+        return res.status(409).json({
           message: 'Account is already activated',
         })
       }
@@ -148,15 +141,23 @@ export const passwordChangeRequestEmail = async (
 ) => {
   try {
     const { email } = req.query
+    const { language } = req.cookies
 
     const existingUser = await User.findOne({ email })
     if (!existingUser) {
       return res.status(404).json({ message: 'User not found!' })
     }
 
-    return sendEmail('Change password', 'change-password', email, res, {
-      id: existingUser.id,
-    })
+    return sendEmail(
+      'Change password',
+      'change-password',
+      email,
+      res,
+      {
+        id: existingUser.id,
+      },
+      language
+    )
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
   }

@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 type JsonType = Send<{ message: string }, this>
 
 export interface RequestBody<ReqBody> extends Request {
-  cookies: { refreshToken: '' }
+  cookies: { refreshToken: string; language: 'en' | 'ka' }
   body: ReqBody
 }
 
@@ -25,4 +25,8 @@ export type AccessToken = {
 export type JwtPayload = {
   email: string
   id: string
+}
+
+export type Token = {
+  token: string
 }

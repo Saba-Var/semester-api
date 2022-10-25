@@ -12,9 +12,9 @@ import {
 import {
   refreshTokenCookieSchema,
   changePasswordSchema,
-  accessTokenSchema,
   queryEmailSchema,
   signInSchema,
+  tokenSchema,
   userSchema,
 } from 'schemas'
 
@@ -22,9 +22,9 @@ const router = express.Router()
 
 router.post('/sign-up', userSchema, validateRequestSchema, registerUser)
 
-router.put(
+router.post(
   '/activate-account',
-  accessTokenSchema,
+  tokenSchema,
   validateRequestSchema,
   userAccountActivation
 )
