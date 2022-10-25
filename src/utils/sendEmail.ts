@@ -4,10 +4,11 @@ import jwt from 'jsonwebtoken'
 
 const sendEmail = async (
   subject: string,
-  emailTemplateType: 'activate-account' | 'change-password',
+  emailTemplateType: 'account-activation' | 'change-password',
   to: string,
   res: Response,
-  jwtData: object
+  jwtData: object,
+  languageCookie: 'en' | 'ka'
 ) => {
   const mg = mailgun({
     apiKey: process.env.MAILGUN_API_KEY!,
@@ -15,7 +16,7 @@ const sendEmail = async (
   })
 
   const jwtSecret =
-    emailTemplateType === 'activate-account'
+    emailTemplateType === 'account-activation'
       ? process.env.ACTIVATION_TOKEN_SECRET!
       : process.env.CHANGE_PASSWORD_TOKEN_SECRET!
 
@@ -31,8 +32,13 @@ const sendEmail = async (
   }
 
   const data = {
-    html: `<h1>${process.env
-      .FRONTEND_URI!}/${emailTemplateType}?token=${token}<h1>`,
+    html: `<h1>${process.env.FRONTEND_URI!}${
+      languageCookie === 'en' ? '/en' : ''
+    }/${
+      emailTemplateType === 'account-activation'
+        ? 'sign-up/account-activation'
+        : emailTemplateType
+    }?token=${token}<h1>`,
     from: process.env.EMAIL_SENDER!,
     subject,
     to,
