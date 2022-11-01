@@ -203,11 +203,10 @@ export const refresh = async (req: RequestBody<{}>, res: Response) => {
     if (verified) {
       const userId = jwtDecode(refreshToken, 'id')
       const email = jwtDecode(refreshToken, 'email')
-      if (!userId || !email)
-        return res.status(401).json({ message: 'Unauthorized Access!' })
 
       const existingUser = await User.findById(userId)
-      if (!existingUser || existingUser.email !== email) {
+
+      if (!email || !existingUser || existingUser.email !== email) {
         return res.status(401).json({ message: 'Unauthorized Access!' })
       }
 
