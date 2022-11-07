@@ -150,7 +150,7 @@ export const passwordChangeRequestEmail = async (
 
     return sendEmail(
       'Change password',
-      'change-password',
+      'reset-password',
       email,
       res,
       {
