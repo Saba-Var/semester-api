@@ -1,4 +1,4 @@
-import { RequestQuery, Token, RequestBody, Response } from 'types.d'
+import { RequestQuery, Token, Request, Response } from 'types.d'
 import { sendEmail, jwtDecode } from 'utils'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
@@ -11,7 +11,7 @@ import {
 } from './types'
 
 export const registerUser = async (
-  req: RequestBody<NewUserReqBody>,
+  req: Request<NewUserReqBody>,
   res: Response
 ) => {
   try {
@@ -45,7 +45,7 @@ export const registerUser = async (
 }
 
 export const authorization = async (
-  req: RequestBody<AuthorizationReq>,
+  req: Request<AuthorizationReq>,
   res: Response
 ) => {
   try {
@@ -195,7 +195,7 @@ export const changePassword = async (req: ChangePasswordReq, res: Response) => {
   }
 }
 
-export const refresh = async (req: RequestBody<{}>, res: Response) => {
+export const refresh = async (req: Request<{}>, res: Response) => {
   try {
     const refreshToken = req.cookies.refreshToken
 

@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 
 type JsonType = Send<{ message: string }, this>
 
-export interface RequestBody<ReqBody> extends Request {
+export interface Request<ReqBody> extends Request {
   cookies: { refreshToken: string; language: 'en' | 'ka' }
   body: ReqBody
 }
