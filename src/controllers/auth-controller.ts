@@ -76,7 +76,7 @@ export const authorization = async (
     const jwtPayload = { id: currentUser?.id, email }
 
     const accessToken = jwt.sign(jwtPayload, process.env.ACCESS_TOKEN_SECRET!, {
-      expiresIn: devEnvironment ? '1d' : '10m',
+      expiresIn: devEnvironment ? '1d' : '1h',
     })
     const refreshToken = jwt.sign(
       jwtPayload,
