@@ -25,7 +25,7 @@ server.use(cookieParser())
 server.use(authLimiter)
 
 server.use('/authentication', authRouter)
-server.use(verifyToken as RequestHandler)
+server.use(verifyToken as unknown as RequestHandler)
 server.use('/user', userRouter)
 
 server.listen(process.env.SERVER_PORT!, () => {
