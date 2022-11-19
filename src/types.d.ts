@@ -2,13 +2,20 @@ import { Request, Response } from 'express'
 
 type JsonType = Send<{ message: string }, this>
 
-export interface RequestBody<ReqBody> extends Request {
-  cookies: { refreshToken: string; language: 'en' | 'ka' }
+type Cookies = { refreshToken: string; language: 'en' | 'ka' }
+
+type Params = { id: string }
+
+export interface Request<ReqBody> extends Request {
+  cookies: Cookies
+  params: Params
   body: ReqBody
 }
 
 export interface RequestQuery<ReqQuery> extends Request {
+  cookies: Cookies
   query: ReqQuery
+  params: Params
 }
 
 export interface Response extends Response {

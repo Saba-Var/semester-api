@@ -1,10 +1,8 @@
+import { NextFunction, Request, Response } from 'express'
 import { validationResult } from 'express-validator'
-import { ValidateResultReq } from './types.d'
-import { NextFunction } from 'express'
-import { Response } from 'types'
 
 const validateRequestSchema = (
-  req: ValidateResultReq,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {

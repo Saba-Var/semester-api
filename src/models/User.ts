@@ -3,31 +3,36 @@ import mongoose from 'mongoose'
 
 const { Schema } = mongoose
 
-const userSchema = new Schema<UserModel>({
-  username: {
-    type: String,
-    required: true,
-    trim: true,
-  },
+const userSchema = new Schema<UserModel>(
+  {
+    username: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-  },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
 
-  active: {
-    type: Boolean,
-    default: false,
-  },
+    active: {
+      type: Boolean,
+      default: false,
+    },
 
-  password: { type: String },
+    password: { type: String },
 
-  image: {
-    type: String,
+    image: {
+      type: String,
+    },
   },
-})
+  {
+    versionKey: false,
+  }
+)
 
 const User = mongoose.model('user', userSchema)
 

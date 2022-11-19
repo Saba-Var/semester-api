@@ -1,5 +1,6 @@
-import { NextFunction, Response } from 'express'
+import { NextFunction } from 'express'
 import { AuthReqBody } from './types'
+import { Response } from 'types.d'
 import jwt from 'jsonwebtoken'
 
 const verifyToken = (req: AuthReqBody, res: Response, next: NextFunction) => {
@@ -15,12 +16,10 @@ const verifyToken = (req: AuthReqBody, res: Response, next: NextFunction) => {
     }
 
     const accessToken = authHeader.trim().split(' ')[1]
-
     jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!, (error) => {
       if (error) {
         return res.status(403).json({
-          message:
-            'Access token is invalid. User is not authorized to continue!',
+          message: 'User is not authorized to continue!',
         })
       }
     })

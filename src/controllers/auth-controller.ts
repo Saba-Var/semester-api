@@ -1,4 +1,4 @@
-import { RequestQuery, Token, RequestBody, Response } from 'types.d'
+import { RequestQuery, Token, Request, Response } from 'types.d'
 import { sendEmail, jwtDecode } from 'utils'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
@@ -11,7 +11,7 @@ import {
 } from './types'
 
 export const registerUser = async (
-  req: RequestBody<NewUserReqBody>,
+  req: Request<NewUserReqBody>,
   res: Response
 ) => {
   try {
@@ -45,7 +45,7 @@ export const registerUser = async (
 }
 
 export const authorization = async (
-  req: RequestBody<AuthorizationReq>,
+  req: Request<AuthorizationReq>,
   res: Response
 ) => {
   try {
@@ -76,7 +76,7 @@ export const authorization = async (
     const jwtPayload = { id: currentUser?.id, email }
 
     const accessToken = jwt.sign(jwtPayload, process.env.ACCESS_TOKEN_SECRET!, {
-      expiresIn: devEnvironment ? '1d' : '10m',
+      expiresIn: devEnvironment ? '1d' : '1h',
     })
     const refreshToken = jwt.sign(
       jwtPayload,
@@ -91,7 +91,7 @@ export const authorization = async (
       httpOnly: true,
     })
 
-    return res.status(200).json({ accessToken })
+    return res.status(200).json({ accessToken, id: currentUser.id })
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
   }
@@ -195,7 +195,7 @@ export const changePassword = async (req: ChangePasswordReq, res: Response) => {
   }
 }
 
-export const refresh = async (req: RequestBody<{}>, res: Response) => {
+export const refresh = async (req: Request<{}>, res: Response) => {
   try {
     const refreshToken = req.cookies.refreshToken
 
