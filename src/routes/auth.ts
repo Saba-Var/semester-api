@@ -38,7 +38,7 @@ router.get(
   passwordChangeRequestEmail
 )
 
-router.get('/refresh', refreshTokenCookieSchema, validateRequestSchema, refresh)
+router.get('/refresh', validateRequestSchema, refresh)
 
 router.get('/logout', refreshTokenCookieSchema, validateRequestSchema, logout)
 

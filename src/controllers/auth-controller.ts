@@ -197,7 +197,11 @@ export const changePassword = async (req: ChangePasswordReq, res: Response) => {
 
 export const refresh = async (req: Request<{}>, res: Response) => {
   try {
-    const refreshToken = req.cookies.refreshToken
+    const refreshToken = req?.cookies?.refreshToken
+
+    if (!refreshToken) {
+      return res.status(403).json({ message: 'Unauthorized Access!' })
+    }
 
     const verified = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!)
     if (verified) {
@@ -207,7 +211,7 @@ export const refresh = async (req: Request<{}>, res: Response) => {
       const existingUser = await User.findById(userId)
 
       if (!email || !existingUser || existingUser.email !== email) {
-        return res.status(401).json({ message: 'Unauthorized Access!' })
+        return res.status(403).json({ message: 'Unauthorized Access!' })
       }
 
       const accessToken = jwt.sign(
