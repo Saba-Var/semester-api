@@ -10,7 +10,7 @@ const verifyToken = (req: AuthReqBody, res: Response, next: NextFunction) => {
     const authHeader = authorization || Authorization
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({
+      return res.status(403).json({
         message: 'Missing authorization headers. Unauthorized access!',
       })
     }
