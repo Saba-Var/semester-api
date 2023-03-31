@@ -78,6 +78,7 @@ export const authorization = async (
     const accessToken = jwt.sign(jwtPayload, process.env.ACCESS_TOKEN_SECRET!, {
       expiresIn: devEnvironment ? '1d' : '1h',
     })
+
     const refreshToken = jwt.sign(
       jwtPayload,
       process.env.REFRESH_TOKEN_SECRET!,
@@ -237,8 +238,8 @@ export const refresh = async (req: Request<{}>, res: Response) => {
 
 export const logout = async (_: any, res: Response) => {
   res.clearCookie('refreshToken', {
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'None',
+    secure: true,
+    sameSite: 'Strict',
     httpOnly: true,
   })
 
