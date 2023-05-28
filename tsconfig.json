@@ -3,9 +3,9 @@
     "target": "es2016",
     "module": "commonjs",
     "paths": {
-      "*": ["src/*"]
+      "*": ["../*"]
     },
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "outDir": "./build",
     "removeComments": true,
     "esModuleInterop": true,
