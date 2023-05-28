@@ -1,6 +1,8 @@
 import { Response } from 'types.d'
 import mailgun from 'mailgun-js'
 import jwt from 'jsonwebtoken'
+import path from 'path'
+import pug from 'pug'
 
 const sendEmail = async (
   subject: string,
@@ -31,14 +33,21 @@ const sendEmail = async (
     message = 'Check yor gmail to reset your password!'
   }
 
+  const html = pug.renderFile(
+    path.join(__dirname, `../views/emails/templates/sign-up.pug`),
+    {
+      redirectUri: ` ${process.env.FRONTEND_URI!}${
+        languageCookie === 'en' ? '/en' : ''
+      }/${
+        emailTemplateType === 'account-activation'
+          ? 'sign-up/account-activation'
+          : emailTemplateType
+      }?token=${token}`,
+    }
+  )
+
   const data = {
-    html: `<h1>${process.env.FRONTEND_URI!}${
-      languageCookie === 'en' ? '/en' : ''
-    }/${
-      emailTemplateType === 'account-activation'
-        ? 'sign-up/account-activation'
-        : emailTemplateType
-    }?token=${token}<h1>`,
+    html,
     from: process.env.EMAIL_SENDER!,
     subject,
     to,

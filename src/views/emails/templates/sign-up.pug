@@ -1,0 +1,18 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="../styles/sign-up.css")
+        style 
+            include ../styles/sign-up.css
+        title Account activation
+    body 
+        div.template-wrapper 
+            div.email-container
+                h1 Welcome!
+                p Thank you for signing up to our platform. Please click on the button below to activate your account.
+                div.activation-button
+                    a.activation-link(href=redirectUri) Activate account
+                p If that does not works, copy and paste the following link in your browser: 
+                p #{redirectUri}
