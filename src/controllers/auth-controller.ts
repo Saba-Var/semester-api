@@ -1,4 +1,4 @@
-import { RequestQuery, Token, Request, Response } from 'types.d'
+import { RequestQuery, Token, Request, Response } from 'types'
 import { sendEmail, jwtDecode } from 'utils'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
