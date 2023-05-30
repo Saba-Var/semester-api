@@ -33,26 +33,29 @@ const sendEmail = async (
     message = 'Check yor gmail to reset your password!'
   }
 
+  const redirectUri = `${process.env.FRONTEND_URI!}${
+    languageCookie === 'en' ? '/en' : ''
+  }/${
+    emailTemplateType === 'account-activation'
+      ? 'sign-up/account-activation'
+      : emailTemplateType
+  }?token=${token}`
+
   const html = pug.renderFile(
-    path.join(__dirname, `../views/emails/templates/sign-up.pug`),
+    path.join(__dirname, `../views/emails/templates/${emailTemplateType}.pug`),
     {
-      redirectUri: ` ${process.env.FRONTEND_URI!}${
-        languageCookie === 'en' ? '/en' : ''
-      }/${
-        emailTemplateType === 'account-activation'
-          ? 'sign-up/account-activation'
-          : emailTemplateType
-      }?token=${token}`,
+      redirectUri,
     }
   )
 
   const data = {
-    html,
     from: process.env.EMAIL_SENDER!,
     subject,
+    html,
     to,
   }
 
+  // TODO: create user after email is sent
   return mg.messages().send(data, (error) => {
     if (error) {
       return res.status(500).json({
