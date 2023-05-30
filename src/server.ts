@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser'
 import { connectToMongo } from 'config'
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
+import path from 'path'
 import cors from 'cors'
 
 const server = express()
@@ -20,6 +21,8 @@ dotenv.config()
 connectToMongo()
 
 server.use(bodyParser.json())
+server.set('view engine', 'pug')
+server.set('views', path.join(__dirname, 'views'))
 server.use(cookieParser())
 
 server.use(authLimiter)
