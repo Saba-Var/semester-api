@@ -9,14 +9,14 @@ import path from 'path'
 import cors from 'cors'
 
 const server = express()
+dotenv.config()
 
 server.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: process.env.FRONTEND_URI!,
     credentials: true,
   })
 )
-dotenv.config()
 
 connectToMongo()
 
