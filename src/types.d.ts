@@ -1,12 +1,10 @@
-import { Request, Response } from 'express'
-
-type JsonType = Send<{ message: string }, this>
+import { Request as ExpressRequest } from 'express'
 
 type Cookies = { refreshToken: string; language: 'en' | 'ka' }
 
 type Params = { id: string }
 
-export interface Request<ReqBody> extends Request {
+export interface Request<ReqBody> extends ExpressRequest {
   cookies: Cookies
   params: Params
   body: ReqBody
@@ -16,13 +14,6 @@ export interface RequestQuery<ReqQuery> extends Request {
   cookies: Cookies
   query: ReqQuery
   params: Params
-}
-
-export interface Response extends Response {
-  cookie: (name: string, value: string, options: object) => void
-  clearCookie: (name: string, options: object) => void
-  status: (number: number) => { json: JsonType }
-  json: JsonType
 }
 
 export type AccessToken = {

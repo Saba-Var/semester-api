@@ -1,6 +1,5 @@
-import { NextFunction } from 'express'
+import { NextFunction, Response } from 'express'
 import { AuthReqBody } from './types'
-import { Response } from 'types.d'
 import jwt from 'jsonwebtoken'
 
 const verifyToken = (req: AuthReqBody, res: Response, next: NextFunction) => {
@@ -22,6 +21,8 @@ const verifyToken = (req: AuthReqBody, res: Response, next: NextFunction) => {
           message: 'User is not authorized to continue!',
         })
       }
+
+      return next()
     })
 
     return next()
