@@ -1,4 +1,25 @@
 {
+  "name": "semester-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Saba-Var/semester-api.git"
+  },
+  "author": "Saba-Var",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Saba-Var/semester-api/issues"
+  },
+  "homepage": "https://github.com/Saba-Var/semester-api#readme",
+  "description": "",
+  "scripts": {
+    "start": "node build/server.js",
+    "dev": "concurrently \"npm run build:watch\" \"nodemon build/server.js\"",
+    "build:watch": "babel src --out-dir build --extensions .ts --copy-files --watch",
+    "build:prod": "babel src --out-dir build --extensions .ts --copy-files --minified",
+    "lint": "eslint . --ext .ts"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
@@ -14,9 +35,6 @@
     "mongoose": "^6.6.4",
     "pug": "^3.0.2"
   },
-  "name": "semester-api",
-  "version": "1.0.0",
-  "main": "index.js",
   "devDependencies": {
     "@babel/cli": "^7.19.3",
     "@babel/core": "^7.19.3",
@@ -29,31 +47,17 @@
     "@types/jsonwebtoken": "^8.5.9",
     "@types/mailgun-js": "^0.22.12",
     "@types/pug": "^2.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "@typescript-eslint/parser": "^5.59.8",
     "babel-plugin-module-resolver": "^5.0.0",
     "concurrently": "^7.4.0",
-    "eslint": "^8.24.0",
+    "eslint": "^8.41.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^4.2.1",
     "nodemon": "^2.0.20",
     "prettier": "2.7.1",
     "typescript": "^4.8.4"
-  },
-  "scripts": {
-    "start": "node build/server.js",
-    "dev": "concurrently \"npm run build:watch\" \"nodemon build/server.js\"",
-    "build:watch": "babel src --out-dir build --extensions .ts --copy-files --watch",
-    "build:prod": "babel src --out-dir build --extensions .ts --copy-files --minified"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Saba-Var/semester-api.git"
-  },
-  "author": "Saba-Var",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Saba-Var/semester-api/issues"
-  },
-  "homepage": "https://github.com/Saba-Var/semester-api#readme",
-  "description": ""
+  }
 }

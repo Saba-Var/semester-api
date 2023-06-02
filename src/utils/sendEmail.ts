@@ -1,4 +1,4 @@
-import { Response } from 'types.d'
+import { Response } from 'express'
 import mailgun from 'mailgun-js'
 import jwt from 'jsonwebtoken'
 import path from 'path'
@@ -61,9 +61,9 @@ const sendEmail = async (
       return res.status(500).json({
         message: error.message,
       })
-    } else {
-      return res.status(200).json({ message })
     }
+
+    return res.status(200).json({ message })
   })
 }
 

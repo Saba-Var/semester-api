@@ -1,5 +1,4 @@
-import { Response } from 'types.d'
-import { Request } from 'express'
+import { Request, Response } from 'express'
 import { User } from 'models'
 
 export const getUserDetails = async (req: Request, res: Response) => {

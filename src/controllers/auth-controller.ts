@@ -1,5 +1,6 @@
-import { RequestQuery, Token, Request, Response } from 'types'
+import { RequestQuery, Token, Request } from 'types'
 import { sendEmail, jwtDecode } from 'utils'
+import { Response } from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { User } from 'models'
@@ -21,24 +22,25 @@ export const registerUser = async (
     const existingUser = await User.findOne({ email })
     if (existingUser) {
       return res.status(409).json({ message: 'User is already registered!' })
-    } else {
-      const hashedPassword = await bcrypt.hash(password, 12)
-      const newUser = await User.create({
-        username,
-        email,
-        password: hashedPassword,
-      })
-      return sendEmail(
-        'Activate your account!',
-        'account-activation',
-        email,
-        res,
-        {
-          id: newUser.id,
-        },
-        language
-      )
     }
+
+    const hashedPassword = await bcrypt.hash(password, 12)
+    const newUser = await User.create({
+      username,
+      email,
+      password: hashedPassword,
+    })
+
+    return sendEmail(
+      'Activate your account!',
+      'account-activation',
+      email,
+      res,
+      {
+        id: newUser.id,
+      },
+      language
+    )
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
   }
@@ -88,7 +90,7 @@ export const authorization = async (
     res.cookie('refreshToken', refreshToken, {
       secure: true,
       maxAge: 7 * 8640000,
-      sameSite: 'Strict',
+      sameSite: 'strict',
       httpOnly: true,
     })
 
@@ -112,7 +114,9 @@ export const userAccountActivation = async (
       const existingUser = await User.findById(userId)
       if (!existingUser) {
         return res.status(404).json({ message: 'Account not found!' })
-      } else if (existingUser.active) {
+      }
+
+      if (existingUser.active) {
         return res.status(409).json({
           message: 'Account is already activated',
         })
@@ -123,12 +127,12 @@ export const userAccountActivation = async (
       return res.status(200).json({
         message: 'Account activated successfully!',
       })
-    } else {
-      return res.status(403).json({
-        message:
-          'User is not authorized to activate account. Access token verification failed!',
-      })
     }
+
+    return res.status(403).json({
+      message:
+        'User is not authorized to activate account. Access token verification failed!',
+    })
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,
@@ -224,11 +228,11 @@ export const refresh = async (req: Request<{}>, res: Response) => {
       )
 
       return res.status(200).json({ accessToken })
-    } else {
-      return res.status(403).json({
-        message: 'Refresh token is invalid. Unauthorized access!',
-      })
     }
+
+    return res.status(403).json({
+      message: 'Refresh token is invalid. Unauthorized access!',
+    })
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,
@@ -239,7 +243,7 @@ export const refresh = async (req: Request<{}>, res: Response) => {
 export const logout = async (_: any, res: Response) => {
   res.clearCookie('refreshToken', {
     secure: true,
-    sameSite: 'Strict',
+    sameSite: 'strict',
     httpOnly: true,
   })
 
