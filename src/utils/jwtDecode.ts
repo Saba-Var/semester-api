@@ -1,8 +1,8 @@
+import { AccessTokenPayload } from 'types'
 import jwtDecoder from 'jwt-decode'
-import { JwtPayload } from 'types'
 
 const jwtDecode = (jwt: string, key: 'email' | 'id') => {
-  const decoded = jwtDecoder<JwtPayload>(jwt)[key]
+  const decoded = jwtDecoder<AccessTokenPayload>(jwt)[key]
 
   return decoded
 }

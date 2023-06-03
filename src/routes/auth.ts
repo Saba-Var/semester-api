@@ -1,5 +1,5 @@
+import express, { type RequestHandler } from 'express'
 import { validateRequestSchema } from 'middlewares'
-import express from 'express'
 import {
   passwordChangeRequestEmail,
   userAccountActivation,
@@ -46,7 +46,7 @@ router.put(
   '/change-password',
   changePasswordSchema,
   validateRequestSchema,
-  changePassword
+  changePassword as unknown as RequestHandler
 )
 
 export default router

@@ -1,38 +1,25 @@
-export type NewUserReqBody = {
-  username: string
-  password: string
-  email: string
-}
-
 export type Email = {
   email: string
 }
 
-export type RegisterGoogleMemberReq = {
-  username: string
-  email: string
+export type Password = {
+  password: string
 }
 
-export type NewPasswordReq = {
-  confirmPassword: string
-  password: string
-  id: string
+export type Username = {
+  username: string
 }
 
 export type Id = {
   id: string
 }
 
-export type AuthorizationReq = {
-  password: string
-  email: string
+export interface NewUserReqBody extends Email, Password, Username {}
+
+export interface RegisterGoogleMemberReq extends Username, Email {}
+
+export interface NewPasswordReq extends Password, Id {
+  confirmPassword: string
 }
 
-export type ChangePasswordReq = {
-  body: {
-    password: string
-  }
-  query: {
-    accessToken: string
-  }
-}
+export interface AuthorizationReq extends Password, Email {}

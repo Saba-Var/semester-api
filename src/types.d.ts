@@ -1,30 +1,46 @@
-import { Request as ExpressRequest } from 'express'
+import { JwtPayload } from 'jsonwebtoken'
+import type { Request } from 'express'
 
-type Cookies = { refreshToken: string; language: 'en' | 'ka' }
+export interface ExtendedAuthRequest extends Request {
+  url: string
+  cookies: {
+    refreshToken: string
+    language: 'en' | 'ka'
+  }
+  body: {
+    currentUserId: string
+    currentUserEmail: string
+  }
+}
 
-type Params = { id: string }
+export interface AuthRequest<ReqBody = {}, ReqParams = {}, ReqQuery = {}>
+  extends ExtendedAuthRequest {
+  body: ReqBody
+  ReqParams: ReqParams
+  query: ReqQuery
+}
 
-export interface Request<ReqBody> extends ExpressRequest {
-  cookies: Cookies
-  params: Params
+export interface RequestParams<ReqParams> extends ExtendedAuthRequest {
+  params: ReqParams
+}
+
+export interface RequestBody<ReqBody> extends ExtendedAuthRequest {
   body: ReqBody
 }
 
-export interface RequestQuery<ReqQuery> extends Request {
-  cookies: Cookies
+export interface RequestQuery<ReqQuery> extends ExtendedAuthRequest {
   query: ReqQuery
-  params: Params
 }
 
 export type AccessToken = {
   accessToken: string
 }
 
-export type JwtPayload = {
-  email: string
-  id: string
-}
-
 export type Token = {
   token: string
+}
+
+export interface AccessTokenPayload extends JwtPayload {
+  email: string
+  id: string
 }

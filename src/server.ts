@@ -1,5 +1,5 @@
 import { verifyToken, authLimiter } from 'middlewares'
-import express, { RequestHandler } from 'express'
+import express, { type RequestHandler } from 'express'
 import { authRouter, userRouter } from 'routes'
 import cookieParser from 'cookie-parser'
 import { connectToMongo } from 'config'
