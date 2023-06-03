@@ -1,5 +1,6 @@
 import { JwtPayload } from 'jsonwebtoken'
 import type { Request } from 'express'
+import type { Types } from 'mongoose'
 
 export interface ExtendedAuthRequest extends Request {
   url: string
@@ -7,16 +8,14 @@ export interface ExtendedAuthRequest extends Request {
     refreshToken: string
     language: 'en' | 'ka'
   }
-  body: {
-    currentUserId: string
-    currentUserEmail: string
-  }
+  currentUserId: string
+  currentUserEmail: string
 }
 
 export interface AuthRequest<ReqBody = {}, ReqParams = {}, ReqQuery = {}>
   extends ExtendedAuthRequest {
   body: ReqBody
-  ReqParams: ReqParams
+  params: ReqParams
   query: ReqQuery
 }
 
@@ -43,4 +42,33 @@ export type Token = {
 export interface AccessTokenPayload extends JwtPayload {
   email: string
   id: string
+}
+
+export enum Weekday {
+  MONDAY = 'Monday',
+  TUESDAY = 'Tuesday',
+  WEDNESDAY = 'Wednesday',
+  THURSDAY = 'Thursday',
+  FRIDAY = 'Friday',
+  SATURDAY = 'Saturday',
+  SUNDAY = 'Sunday',
+}
+
+export enum ActivityType {
+  PRACTICE = 'Practice',
+  LECTURE = 'Lecture',
+  SEMINAR = 'Seminar',
+  OTHER = 'Other',
+  LAB = 'Lab',
+}
+
+export interface LearningActivity {
+  activity_type: ActivityType
+  starting_time: string
+  subject_name: string
+  user: Types.ObjectId
+  teacher_name: string
+  _id: Types.ObjectId
+  ending_time: string
+  weekday: Weekday
 }

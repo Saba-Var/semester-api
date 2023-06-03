@@ -16,6 +16,9 @@
     "import/extensions": "off",
     "sort-imports": "off",
     "import/no-unresolved": "off",
-    "import/order": "off"
+    "import/order": "off",
+    "no-shadow": "off",
+    "no-unused-vars": "off",
+    "camelcase": "off"
   }
 }
