@@ -15,7 +15,7 @@ export interface ExtendedAuthRequest extends Request {
 export interface AuthRequest<ReqBody = {}, ReqParams = {}, ReqQuery = {}>
   extends ExtendedAuthRequest {
   body: ReqBody
-  ReqParams: ReqParams
+  params: ReqParams
   query: ReqQuery
 }
 
