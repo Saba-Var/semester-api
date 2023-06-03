@@ -26,3 +26,6 @@ jobs:
 
       - name: Lint code
         run: npm run lint
+
+      - name: Build code
+        run: npx tsc

@@ -15,17 +15,20 @@ const verifyToken = (req: AuthReqBody, res: Response, next: NextFunction) => {
     }
 
     const accessToken = authHeader.trim().split(' ')[1]
-    jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!, (error) => {
-      if (error) {
-        return res.status(403).json({
-          message: 'User is not authorized to continue!',
-        })
+
+    return jwt.verify(
+      accessToken,
+      process.env.ACCESS_TOKEN_SECRET!,
+      (error) => {
+        if (error) {
+          return res.status(403).json({
+            message: 'User is not authorized to continue!',
+          })
+        }
+
+        return next()
       }
-
-      return next()
-    })
-
-    return next()
+    )
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
   }

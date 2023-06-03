@@ -1,5 +1,5 @@
 export { default as refreshTokenCookieSchema } from './fieldSchemas/refresh-cookie-schema'
-export { default as changePasswordSchema } from './change-password-schema'
-export { default as signInSchema } from './sign-in-schema'
-export { default as userSchema } from './user-schema'
+export { default as changePasswordSchema } from './changePasswordSchema'
+export { default as signInSchema } from './signInSchema'
+export { default as userSchema } from './userSchema'
 export * from './fieldSchemas'
