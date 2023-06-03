@@ -48,3 +48,28 @@ export const createLearningActivity = async (
     })
   }
 }
+
+export const getUserLearningActivities = async (
+  req: ExtendedAuthRequest,
+  res: Response
+) => {
+  try {
+    const { currentUserId } = req
+
+    const user = await User.findById(currentUserId).populate(
+      'learning_activities'
+    )
+
+    if (!user) {
+      return res.status(404).json({
+        message: 'User not found',
+      })
+    }
+
+    return res.status(200).json(user.learning_activities)
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    })
+  }
+}
