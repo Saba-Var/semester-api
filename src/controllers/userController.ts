@@ -35,6 +35,14 @@ export const createLearningActivity = async (
   try {
     const { currentUserId } = req
 
+    const user = await User.findById(currentUserId)
+
+    if (!user) {
+      return res.status(404).json({
+        message: 'User not found',
+      })
+    }
+
     await User.findByIdAndUpdate(currentUserId, {
       $push: {
         learning_activities: {
@@ -86,6 +94,14 @@ export const deleteLearningActivity = async (
   try {
     const { currentUserId } = req
     const { id } = req.params
+
+    const user = await User.findById(currentUserId)
+
+    if (!user) {
+      return res.status(404).json({
+        message: 'User not found',
+      })
+    }
 
     await User.findByIdAndUpdate(currentUserId, {
       $pull: { learning_activities: { _id: id } },
