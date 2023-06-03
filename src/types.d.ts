@@ -68,6 +68,7 @@ export interface LearningActivity {
   subject_name: string
   user: Types.ObjectId
   teacher_name: string
+  _id: Types.ObjectId
   ending_time: string
   weekday: Weekday
 }

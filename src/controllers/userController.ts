@@ -1,4 +1,9 @@
-import type { RequestBody, ExtendedAuthRequest, LearningActivity } from 'types'
+import type {
+  RequestBody,
+  ExtendedAuthRequest,
+  LearningActivity,
+  RequestParams,
+} from 'types'
 import { Response } from 'express'
 import { User } from 'models'
 
@@ -30,13 +35,13 @@ export const createLearningActivity = async (
   try {
     const { currentUserId } = req
 
-    const learningActivity = {
-      ...req.body,
-      user: currentUserId,
-    }
-
     await User.findByIdAndUpdate(currentUserId, {
-      $push: { learning_activities: learningActivity },
+      $push: {
+        learning_activities: {
+          ...req.body,
+          user: currentUserId,
+        },
+      },
     })
 
     return res.status(201).json({
@@ -67,6 +72,28 @@ export const getUserLearningActivities = async (
     }
 
     return res.status(200).json(user.learning_activities)
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    })
+  }
+}
+
+export const deleteLearningActivity = async (
+  req: RequestParams<{ id: string }>,
+  res: Response
+) => {
+  try {
+    const { currentUserId } = req
+    const { id } = req.params
+
+    await User.findByIdAndUpdate(currentUserId, {
+      $pull: { learning_activities: { _id: id } },
+    })
+
+    return res.status(200).json({
+      message: 'Learning activity deleted successfully',
+    })
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,
