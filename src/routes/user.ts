@@ -1,10 +1,10 @@
-import { validateRequestSchema } from 'middlewares'
-import { getUserDetails } from 'controllers'
-import { optionalParamId } from 'schemas'
+import { getUserDetails, createLearningActivity } from 'controllers'
 import express from 'express'
 
 const router = express.Router()
 
-router.get('/:id?', optionalParamId, validateRequestSchema, getUserDetails)
+router.get('/', getUserDetails as any)
+
+router.post('/learning-activity', createLearningActivity as any)
 
 export default router

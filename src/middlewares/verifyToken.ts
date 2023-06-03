@@ -33,8 +33,8 @@ const verifyToken = (
 
           const { email, id } = JwtPayload as AccessTokenPayload
 
-          req.body.currentUserId = id
-          req.body.currentUserEmail = email
+          req.currentUserId = id
+          req.currentUserEmail = email
 
           return next()
         }

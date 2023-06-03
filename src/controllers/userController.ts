@@ -1,13 +1,13 @@
-import type { RequestParams } from 'types'
-import type { Response } from 'express'
+import type { RequestBody, ExtendedAuthRequest, LearningActivity } from 'types'
+import { Response } from 'express'
 import { User } from 'models'
 
 export const getUserDetails = async (
-  req: RequestParams<{ id?: string }>,
+  req: ExtendedAuthRequest,
   res: Response
 ) => {
   try {
-    const user = await User.findById(req.body.currentUserId).select(
+    const user = await User.findById(req.currentUserId).select(
       '-password -verified -active'
     )
 
@@ -16,6 +16,32 @@ export const getUserDetails = async (
     }
 
     return res.status(200).json(user)
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    })
+  }
+}
+
+export const createLearningActivity = async (
+  req: RequestBody<LearningActivity>,
+  res: Response
+) => {
+  try {
+    const { currentUserId } = req
+
+    const learningActivity = {
+      ...req.body,
+      user: currentUserId,
+    }
+
+    await User.findByIdAndUpdate(currentUserId, {
+      $push: { learning_activities: learningActivity },
+    })
+
+    return res.status(201).json({
+      message: 'New learning activity created successfully!',
+    })
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,

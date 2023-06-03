@@ -1,9 +1,49 @@
-import { UserModel } from './types.d'
-import mongoose from 'mongoose'
+import { Weekday, ActivityType, LearningActivity } from 'types.d'
+import mongoose, { Schema } from 'mongoose'
+import { UserModel } from './types'
 
-const { Schema } = mongoose
+const learningActivitySchema: Schema<LearningActivity> = new Schema(
+  {
+    subject_name: {
+      type: String,
+      required: true,
+    },
+    teacher_name: {
+      type: String,
+      required: true,
+    },
+    weekday: {
+      type: String,
+      enum: Object.values(Weekday),
+      required: true,
+    },
+    activity_type: {
+      type: String,
+      enum: Object.values(ActivityType),
+      required: true,
+    },
+    starting_time: {
+      type: String,
+      required: true,
+    },
+    ending_time: {
+      type: String,
+      required: true,
+    },
+    user: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'User',
+    },
+  },
+  {
+    _id: false,
+    versionKey: false,
+    timestamps: true,
+  }
+)
 
-const userSchema = new Schema<UserModel>(
+const userSchema: Schema<UserModel> = new Schema(
   {
     username: {
       type: String,
@@ -28,9 +68,16 @@ const userSchema = new Schema<UserModel>(
     image: {
       type: String,
     },
+
+    learning_activities: {
+      type: [learningActivitySchema],
+      default: [],
+    },
   },
+
   {
     versionKey: false,
+    timestamps: true,
   }
 )
 

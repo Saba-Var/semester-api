@@ -6,8 +6,8 @@ const usernameSchema = check('username')
   .notEmpty()
   .isLength({
     min: 3,
-    max: 20,
+    max: 30,
   })
-  .withMessage('Name should include at least 3 & max.20 characters')
+  .withMessage('Name should include at least 3 & max.30 characters')
 
 export default usernameSchema

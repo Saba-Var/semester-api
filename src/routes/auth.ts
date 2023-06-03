@@ -1,5 +1,5 @@
-import express, { type RequestHandler } from 'express'
 import { validateRequestSchema } from 'middlewares'
+import express from 'express'
 import {
   passwordChangeRequestEmail,
   userAccountActivation,
@@ -20,25 +20,30 @@ import {
 
 const router = express.Router()
 
-router.post('/sign-up', userSchema, validateRequestSchema, registerUser)
+router.post('/sign-up', userSchema, validateRequestSchema, registerUser as any)
 
 router.post(
   '/activate-account',
   tokenSchema,
   validateRequestSchema,
-  userAccountActivation
+  userAccountActivation as any
 )
 
-router.post('/sign-in', signInSchema, validateRequestSchema, authorization)
+router.post(
+  '/sign-in',
+  signInSchema,
+  validateRequestSchema,
+  authorization as any
+)
 
 router.get(
   '/change-password-request',
   queryEmailSchema,
   validateRequestSchema,
-  passwordChangeRequestEmail
+  passwordChangeRequestEmail as any
 )
 
-router.get('/refresh', validateRequestSchema, refresh)
+router.get('/refresh', validateRequestSchema, refresh as any)
 
 router.get('/logout', refreshTokenCookieSchema, validateRequestSchema, logout)
 
@@ -46,7 +51,7 @@ router.put(
   '/change-password',
   changePasswordSchema,
   validateRequestSchema,
-  changePassword as unknown as RequestHandler
+  changePassword as any
 )
 
 export default router
