@@ -1,11 +1,15 @@
-import { Request, Response } from 'express'
+import type { RequestParams } from 'types'
+import type { Response } from 'express'
 import { User } from 'models'
 
-export const getUserDetails = async (req: Request, res: Response) => {
+export const getUserDetails = async (
+  req: RequestParams<{ id?: string }>,
+  res: Response
+) => {
   try {
-    const { id } = req.params
-
-    const user = await User.findById(id).select('-password -verified -active')
+    const user = await User.findById(req.body.currentUserId).select(
+      '-password -verified -active'
+    )
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' })

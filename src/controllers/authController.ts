@@ -1,18 +1,13 @@
-import { RequestQuery, Token, Request } from 'types'
+import type { RequestQuery, Token, RequestBody, AuthRequest } from 'types'
+import { AuthorizationReq, NewUserReqBody, Email } from './types'
 import { sendEmail, jwtDecode } from 'utils'
-import { Response } from 'express'
+import type { Response } from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { User } from 'models'
-import {
-  ChangePasswordReq,
-  AuthorizationReq,
-  NewUserReqBody,
-  Email,
-} from './types'
 
 export const registerUser = async (
-  req: Request<NewUserReqBody>,
+  req: RequestBody<NewUserReqBody>,
   res: Response
 ) => {
   try {
@@ -47,7 +42,7 @@ export const registerUser = async (
 }
 
 export const authorization = async (
-  req: Request<AuthorizationReq>,
+  req: RequestBody<AuthorizationReq>,
   res: Response
 ) => {
   try {
@@ -168,7 +163,16 @@ export const passwordChangeRequestEmail = async (
   }
 }
 
-export const changePassword = async (req: ChangePasswordReq, res: Response) => {
+export const changePassword = async (
+  req: AuthRequest<
+    { password: string },
+    {},
+    {
+      accessToken: string
+    }
+  >,
+  res: Response
+) => {
   try {
     const { accessToken } = req.query
     const { password } = req.body
@@ -200,7 +204,7 @@ export const changePassword = async (req: ChangePasswordReq, res: Response) => {
   }
 }
 
-export const refresh = async (req: Request<{}>, res: Response) => {
+export const refresh = async (req: RequestBody<{}>, res: Response) => {
   try {
     const refreshToken = req?.cookies?.refreshToken
 

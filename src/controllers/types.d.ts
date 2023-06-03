@@ -8,6 +8,10 @@ export type Email = {
   email: string
 }
 
+export type Password = {
+  password: string
+}
+
 export type RegisterGoogleMemberReq = {
   username: string
   email: string
@@ -26,13 +30,4 @@ export type Id = {
 export type AuthorizationReq = {
   password: string
   email: string
-}
-
-export type ChangePasswordReq = {
-  body: {
-    password: string
-  }
-  query: {
-    accessToken: string
-  }
 }
