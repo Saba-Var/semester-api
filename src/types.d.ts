@@ -59,10 +59,11 @@ export enum ActivityType {
   LECTURE = 'Lecture',
   SEMINAR = 'Seminar',
   OTHER = 'Other',
+  Exam = 'Exam',
   LAB = 'Lab',
 }
 
-export interface LearningActivity {
+export interface LearningActivityModel {
   activityType: ActivityType
   startingTime: string
   subjectName: string
@@ -71,4 +72,8 @@ export interface LearningActivity {
   _id: Types.ObjectId
   endingTime: string
   weekday: Weekday
+}
+
+export interface TransformedErrors {
+  [key: string]: string[]
 }

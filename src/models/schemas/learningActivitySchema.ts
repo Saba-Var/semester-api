@@ -1,12 +1,8 @@
-import { Weekday, ActivityType, LearningActivity } from 'types.d'
+import { Weekday, ActivityType, LearningActivityModel } from 'types.d'
 import { Schema } from 'mongoose'
 
-const learningActivitySchema: Schema<LearningActivity> = new Schema(
+const learningActivitySchema: Schema<LearningActivityModel> = new Schema(
   {
-    _id: {
-      type: Schema.Types.ObjectId,
-      auto: true,
-    },
     subjectName: {
       type: String,
       required: true,
@@ -37,10 +33,10 @@ const learningActivitySchema: Schema<LearningActivity> = new Schema(
       type: Schema.Types.ObjectId,
       required: true,
       ref: 'User',
+      immutable: true,
     },
   },
   {
-    _id: false,
     versionKey: false,
     timestamps: true,
   }

@@ -1,8 +1,9 @@
 import { query } from 'express-validator'
 
 const queryEmailSchema = query('email')
-  .exists()
   .trim()
+  .notEmpty()
+  .withMessage('Email is required!')
   .isEmail()
   .withMessage('Enter valid email address!')
 

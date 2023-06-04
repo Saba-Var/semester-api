@@ -1,10 +1,16 @@
-import type { RequestQuery, Token, RequestBody, AuthRequest } from 'types'
 import { AuthorizationReq, NewUserReqBody, Email } from './types'
 import { sendEmail, jwtDecode } from 'utils'
 import type { Response } from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { User } from 'models'
+import type {
+  ExtendedAuthRequest,
+  RequestQuery,
+  AuthRequest,
+  RequestBody,
+  Token,
+} from 'types'
 
 export const registerUser = async (
   req: RequestBody<NewUserReqBody>,
@@ -244,7 +250,7 @@ export const refresh = async (req: RequestBody<{}>, res: Response) => {
   }
 }
 
-export const logout = async (_: any, res: Response) => {
+export const logout = async (_req: ExtendedAuthRequest, res: Response) => {
   res.clearCookie('refreshToken', {
     secure: true,
     sameSite: 'strict',

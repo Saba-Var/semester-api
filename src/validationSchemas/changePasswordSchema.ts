@@ -1,4 +1,4 @@
-import { newPasswordSchema, accessTokenSchema } from './fieldSchemas'
+import { newPasswordSchema, accessTokenSchema } from './common'
 
 const changePasswordSchema = [...newPasswordSchema, accessTokenSchema]
 
