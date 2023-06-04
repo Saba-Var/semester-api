@@ -72,3 +72,7 @@ export interface LearningActivity {
   endingTime: string
   weekday: Weekday
 }
+
+export interface TransformedErrors {
+  [key: string]: string[]
+}
