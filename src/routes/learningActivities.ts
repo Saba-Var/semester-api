@@ -5,12 +5,15 @@ import {
   createLearningActivity,
   deleteLearningActivity,
   updateLearningActivity,
+  getLearningActivity,
 } from 'controllers'
 import express from 'express'
 
 const router = express.Router()
 
 router.get('/', getUserLearningActivities)
+
+router.get('/:id', getLearningActivity)
 
 router.post(
   '/',

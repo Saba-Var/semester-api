@@ -13,14 +13,13 @@ export const createLearningActivity = async (
   res: Response
 ) => {
   try {
-    const newLearningActivity = await LearningActivity.create({
+    await LearningActivity.create({
       ...req.body,
       user: req.currentUser?.id,
     })
 
     return res.status(201).json({
       message: 'New learning activity created successfully!',
-      newLearningActivity,
     })
   } catch (error: any) {
     return res.status(500).json({
@@ -46,6 +45,24 @@ export const getUserLearningActivities = async (
   }
 }
 
+export const getLearningActivity = async (
+  req: RequestParams<{ id: string }>,
+  res: Response
+) => {
+  try {
+    const learningActivity = await LearningActivity.findOne({
+      user: req.currentUser?.id,
+      _id: req.params.id,
+    })
+
+    return res.status(200).json(learningActivity)
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    })
+  }
+}
+
 export const deleteLearningActivity = async (
   req: RequestParams<{ id: string }>,
   res: Response
@@ -64,7 +81,6 @@ export const deleteLearningActivity = async (
 
     return res.status(200).json({
       message: 'Learning activity deleted successfully',
-      deletedLearningActivity,
     })
   } catch (error: any) {
     return res.status(500).json({
@@ -91,7 +107,6 @@ export const updateLearningActivity = async (
 
     return res.status(200).json({
       message: 'Learning activity updated successfully',
-      updatedLearningActivity,
     })
   } catch (error: any) {
     return res.status(500).json({
