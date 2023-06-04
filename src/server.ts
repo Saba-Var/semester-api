@@ -1,6 +1,6 @@
+import { authRouter, userRouter, learningActivitiesRouter } from 'routes'
 import { verifyToken, authLimiter } from 'middlewares'
 import express, { type RequestHandler } from 'express'
-import { authRouter, userRouter } from 'routes'
 import cookieParser from 'cookie-parser'
 import { connectToMongo } from 'config'
 import bodyParser from 'body-parser'
@@ -30,6 +30,7 @@ server.use(authLimiter)
 server.use('/authentication', authRouter)
 server.use(verifyToken as unknown as RequestHandler)
 server.use('/user', userRouter)
+server.use('/learning-activities', learningActivitiesRouter)
 
 server.listen(process.env.SERVER_PORT!, () => {
   // eslint-disable-next-line no-console

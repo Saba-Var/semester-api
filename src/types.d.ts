@@ -63,7 +63,7 @@ export enum ActivityType {
   LAB = 'Lab',
 }
 
-export interface LearningActivity {
+export interface LearningActivityModel {
   activityType: ActivityType
   startingTime: string
   subjectName: string

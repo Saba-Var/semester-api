@@ -1,7 +1,7 @@
 import { check, ValidationChain } from 'express-validator'
 import { Weekday, ActivityType } from 'types.d'
 
-const newLearningActivitySchema: ValidationChain[] = [
+const learningActivitySchema: ValidationChain[] = [
   check('subjectName')
     .trim()
     .notEmpty()
@@ -124,4 +124,4 @@ const newLearningActivitySchema: ValidationChain[] = [
     }),
 ]
 
-export default newLearningActivitySchema
+export default learningActivitySchema

@@ -1,8 +1,8 @@
 import type { Document, Types } from 'mongoose'
-import { LearningActivity } from 'types'
+import { LearningActivityModel } from 'types'
 
 export interface UserModel extends Document {
-  learningActivities: LearningActivity[]
+  learningActivities: LearningActivityModel[]
   password?: string
   username: string
   active: boolean
