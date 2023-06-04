@@ -1,4 +1,4 @@
-import { emailSchema, passwordSchema } from './fieldSchemas'
+import { emailSchema, passwordSchema } from './common'
 
 const signInSchema = [emailSchema, passwordSchema()]
 

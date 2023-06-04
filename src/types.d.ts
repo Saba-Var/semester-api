@@ -59,6 +59,7 @@ export enum ActivityType {
   LECTURE = 'Lecture',
   SEMINAR = 'Seminar',
   OTHER = 'Other',
+  Exam = 'Exam',
   LAB = 'Lab',
 }
 

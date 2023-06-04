@@ -1,12 +1,12 @@
+import { Response } from 'express'
+import { User } from 'models'
 import type {
-  RequestBody,
   ExtendedAuthRequest,
   LearningActivity,
   RequestParams,
+  RequestBody,
   AuthRequest,
 } from 'types'
-import { Response } from 'express'
-import { User } from 'models'
 
 export const getUserDetails = async (
   req: ExtendedAuthRequest,
