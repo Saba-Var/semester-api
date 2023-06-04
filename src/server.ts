@@ -32,5 +32,6 @@ server.use(verifyToken as unknown as RequestHandler)
 server.use('/user', userRouter)
 
 server.listen(process.env.SERVER_PORT!, () => {
+  // eslint-disable-next-line no-console
   console.log('Server started')
 })

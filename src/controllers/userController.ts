@@ -46,7 +46,7 @@ export const createLearningActivity = async (
 
     await User.findByIdAndUpdate(currentUserId, {
       $push: {
-        learning_activities: {
+        learningActivities: {
           ...req.body,
           user: currentUserId,
         },
@@ -70,7 +70,7 @@ export const getUserLearningActivities = async (
   try {
     const id = req.currentUser?.id
 
-    const user = await User.findById(id).populate('learning_activities')
+    const user = await User.findById(id).populate('learningActivities')
 
     if (!user) {
       return res.status(404).json({
@@ -78,7 +78,7 @@ export const getUserLearningActivities = async (
       })
     }
 
-    return res.status(200).json(user.learning_activities)
+    return res.status(200).json(user.learningActivities)
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,
@@ -102,7 +102,7 @@ export const deleteLearningActivity = async (
       })
     }
 
-    const learningActivity = user.learning_activities.find(
+    const learningActivity = user.learningActivities.find(
       (activity) => activity._id.toString() === id
     )
 
@@ -113,7 +113,7 @@ export const deleteLearningActivity = async (
     }
 
     await User.findByIdAndUpdate(currentUserId, {
-      $pull: { learning_activities: { _id: id } },
+      $pull: { learningActivities: { _id: id } },
     })
 
     return res.status(200).json({
@@ -134,11 +134,11 @@ export const updateLearningActivity = async (
     const currentUserId = req.currentUser?.id
     const { id } = req.params
     const {
-      activity_type,
-      ending_time,
-      starting_time,
-      subject_name,
-      teacher_name,
+      activityType,
+      endingTime,
+      startingTime,
+      subjectName,
+      teacherName,
       weekday,
     } = req.body
 
@@ -150,13 +150,13 @@ export const updateLearningActivity = async (
       })
     }
 
-    if (currentUser.learning_activities?.length === 0) {
+    if (currentUser.learningActivities?.length === 0) {
       return res.status(404).json({
         message: 'Learning activity not found',
       })
     }
 
-    const learningActivity = currentUser.learning_activities?.find(
+    const learningActivity = currentUser.learningActivities?.find(
       (activity) => activity._id.toString() === id
     )
 
@@ -170,12 +170,12 @@ export const updateLearningActivity = async (
       currentUser._id,
       {
         $set: {
-          'learning_activities.$[elem].activity_type': activity_type,
-          'learning_activities.$[elem].ending_time': ending_time,
-          'learning_activities.$[elem].starting_time': starting_time,
-          'learning_activities.$[elem].subject_name': subject_name,
-          'learning_activities.$[elem].teacher_name': teacher_name,
-          'learning_activities.$[elem].weekday': weekday,
+          'learningActivities.$[elem].activityType': activityType,
+          'learningActivities.$[elem].endingTime': endingTime,
+          'learningActivities.$[elem].startingTime': startingTime,
+          'learningActivities.$[elem].subjectName': subjectName,
+          'learningActivities.$[elem].teacherName': teacherName,
+          'learningActivities.$[elem].weekday': weekday,
         },
       },
       {

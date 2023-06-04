@@ -1,13 +1,17 @@
 import { Weekday, ActivityType, LearningActivity } from 'types.d'
 import { Schema } from 'mongoose'
 
-export const learningActivitySchema: Schema<LearningActivity> = new Schema(
+const learningActivitySchema: Schema<LearningActivity> = new Schema(
   {
-    subject_name: {
+    _id: {
+      type: Schema.Types.ObjectId,
+      auto: true,
+    },
+    subjectName: {
       type: String,
       required: true,
     },
-    teacher_name: {
+    teacherName: {
       type: String,
       required: true,
     },
@@ -16,16 +20,16 @@ export const learningActivitySchema: Schema<LearningActivity> = new Schema(
       enum: Object.values(Weekday),
       required: true,
     },
-    activity_type: {
+    activityType: {
       type: String,
       enum: Object.values(ActivityType),
       required: true,
     },
-    starting_time: {
+    startingTime: {
       type: String,
       required: true,
     },
-    ending_time: {
+    endingTime: {
       type: String,
       required: true,
     },
@@ -36,7 +40,10 @@ export const learningActivitySchema: Schema<LearningActivity> = new Schema(
     },
   },
   {
+    _id: false,
     versionKey: false,
     timestamps: true,
   }
 )
+
+export default learningActivitySchema
