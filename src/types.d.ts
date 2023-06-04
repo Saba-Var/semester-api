@@ -1,4 +1,5 @@
 import { JwtPayload } from 'jsonwebtoken'
+import type { UserModel } from 'models'
 import type { Request } from 'express'
 import type { Types } from 'mongoose'
 
@@ -8,8 +9,7 @@ export interface ExtendedAuthRequest extends Request {
     refreshToken: string
     language: 'en' | 'ka'
   }
-  currentUserId: string
-  currentUserEmail: string
+  currentUser?: UserModel
 }
 
 export interface AuthRequest<ReqBody = {}, ReqParams = {}, ReqQuery = {}>

@@ -20,30 +20,25 @@ import {
 
 const router = express.Router()
 
-router.post('/sign-up', userSchema, validateRequestSchema, registerUser as any)
+router.post('/sign-up', userSchema, validateRequestSchema, registerUser)
 
 router.post(
   '/activate-account',
   tokenSchema,
   validateRequestSchema,
-  userAccountActivation as any
+  userAccountActivation
 )
 
-router.post(
-  '/sign-in',
-  signInSchema,
-  validateRequestSchema,
-  authorization as any
-)
+router.post('/sign-in', signInSchema, validateRequestSchema, authorization)
 
 router.get(
   '/change-password-request',
   queryEmailSchema,
   validateRequestSchema,
-  passwordChangeRequestEmail as any
+  passwordChangeRequestEmail
 )
 
-router.get('/refresh', validateRequestSchema, refresh as any)
+router.get('/refresh', validateRequestSchema, refresh)
 
 router.get('/logout', refreshTokenCookieSchema, validateRequestSchema, logout)
 
@@ -51,7 +46,7 @@ router.put(
   '/change-password',
   changePasswordSchema,
   validateRequestSchema,
-  changePassword as any
+  changePassword
 )
 
 export default router
