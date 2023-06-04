@@ -63,12 +63,12 @@ export enum ActivityType {
 }
 
 export interface LearningActivity {
-  activity_type: ActivityType
-  starting_time: string
-  subject_name: string
+  activityType: ActivityType
+  startingTime: string
+  subjectName: string
   user: Types.ObjectId
-  teacher_name: string
+  teacherName: string
   _id: Types.ObjectId
-  ending_time: string
+  endingTime: string
   weekday: Weekday
 }
