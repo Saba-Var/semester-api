@@ -1,6 +1,8 @@
 import { ExtendedAuthRequest, AccessTokenPayload } from 'types'
 import { NextFunction, Response } from 'express'
+import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
+import { User } from 'models'
 
 const verifyToken = (
   req: ExtendedAuthRequest,
@@ -24,7 +26,7 @@ const verifyToken = (
       return jwt.verify(
         accessToken,
         process.env.ACCESS_TOKEN_SECRET!,
-        (error, JwtPayload) => {
+        async (error, JwtPayload) => {
           if (error) {
             return res.status(401).json({
               message: 'User is not authorized to continue!',
@@ -33,8 +35,22 @@ const verifyToken = (
 
           const { email, id } = JwtPayload as AccessTokenPayload
 
-          req.currentUserId = id
-          req.currentUserEmail = email
+          const isValidId = mongoose.Types.ObjectId.isValid(id)
+
+          if (!isValidId)
+            return res.status(401).json({
+              message: 'User is not authorized to continue!',
+            })
+
+          const user = await User.findById(id)
+
+          if (!user || user.email !== email || user.id !== id) {
+            return res.status(401).json({
+              message: 'User not found',
+            })
+          }
+
+          req.currentUser = user
 
           return next()
         }

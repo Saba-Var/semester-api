@@ -13,7 +13,7 @@ export const getUserDetails = async (
   res: Response
 ) => {
   try {
-    const user = await User.findById(req.currentUserId).select(
+    const user = await User.findById(req.currentUser?.id).select(
       '-password -verified -active'
     )
 
@@ -34,7 +34,7 @@ export const createLearningActivity = async (
   res: Response
 ) => {
   try {
-    const { currentUserId } = req
+    const currentUserId = req.currentUser?.id
 
     const user = await User.findById(currentUserId)
 
@@ -68,11 +68,9 @@ export const getUserLearningActivities = async (
   res: Response
 ) => {
   try {
-    const { currentUserId } = req
+    const id = req.currentUser?.id
 
-    const user = await User.findById(currentUserId).populate(
-      'learning_activities'
-    )
+    const user = await User.findById(id).populate('learning_activities')
 
     if (!user) {
       return res.status(404).json({
@@ -93,7 +91,7 @@ export const deleteLearningActivity = async (
   res: Response
 ) => {
   try {
-    const { currentUserId } = req
+    const currentUserId = req.currentUser?.id
     const { id } = req.params
 
     const user = await User.findById(currentUserId)
@@ -133,7 +131,7 @@ export const updateLearningActivity = async (
   res: Response
 ) => {
   try {
-    const { currentUserId } = req
+    const currentUserId = req.currentUser?.id
     const { id } = req.params
     const {
       activity_type,

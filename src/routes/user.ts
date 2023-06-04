@@ -9,14 +9,14 @@ import express from 'express'
 
 const router = express.Router()
 
-router.get('/', getUserDetails as any)
+router.get('/', getUserDetails)
 
-router.get('/learning-activities', getUserLearningActivities as any)
+router.get('/learning-activities', getUserLearningActivities)
 
-router.post('/learning-activities', createLearningActivity as any)
+router.post('/learning-activities', createLearningActivity)
 
-router.put('/learning-activities/:id', updateLearningActivity as any)
+router.put('/learning-activities/:id', updateLearningActivity)
 
-router.delete('/learning-activities/:id', deleteLearningActivity as any)
+router.delete('/learning-activities/:id', deleteLearningActivity)
 
 export default router
