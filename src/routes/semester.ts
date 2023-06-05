@@ -1,9 +1,11 @@
 import { semesterValidationSchema } from 'validationSchemas'
+import { createSemester, getSemesters } from 'controllers'
 import { validateRequestSchema } from 'middlewares'
-import { createSemester } from 'controllers'
 import express from 'express'
 
 const router = express.Router()
+
+router.get('/', getSemesters)
 
 router.post(
   '/',

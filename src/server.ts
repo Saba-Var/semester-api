@@ -36,7 +36,7 @@ server.use('/authentication', authRouter)
 server.use(verifyToken as unknown as RequestHandler)
 server.use('/user', userRouter)
 server.use('/learning-activities', learningActivitiesRouter)
-server.use('/semester', semesterRouter)
+server.use('/semesters', semesterRouter)
 
 server.listen(process.env.SERVER_PORT!, () => {
   // eslint-disable-next-line no-console

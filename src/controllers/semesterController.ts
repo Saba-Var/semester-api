@@ -1,4 +1,4 @@
-import type { RequestBody } from 'types'
+import type { RequestBody, ExtendedAuthRequest } from 'types'
 import type { Response } from 'express'
 import { Semester, User } from 'models'
 
@@ -30,6 +30,18 @@ export const createSemester = async (
     })
 
     return res.status(201).json({ message: 'Semester created' })
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message })
+  }
+}
+
+export const getSemesters = async (req: ExtendedAuthRequest, res: Response) => {
+  try {
+    const semesters = await Semester.find({
+      user: req?.currentUser?.id,
+    }).select('_id name')
+
+    return res.status(200).json(semesters)
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
   }
