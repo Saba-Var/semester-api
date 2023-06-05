@@ -65,11 +65,11 @@ export enum ActivityType {
 
 export interface LearningActivityModel {
   activityType: ActivityType
+  semester: Types.ObjectId
   startingTime: string
-  subjectName: string
   user: Types.ObjectId
+  subjectName: string
   teacherName: string
-  _id: Types.ObjectId
   endingTime: string
   weekday: Weekday
 }

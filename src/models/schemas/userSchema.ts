@@ -1,4 +1,3 @@
-import learningActivitySchema from './learningActivitySchema'
 import type { UserModel } from 'models'
 import { Schema } from 'mongoose'
 
@@ -23,10 +22,12 @@ const userSchema: Schema<UserModel> = new Schema(
     image: {
       type: String,
     },
-    learningActivities: {
-      type: [learningActivitySchema],
-      default: [],
-    },
+    semesters: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Semester',
+      },
+    ],
   },
   {
     versionKey: false,
