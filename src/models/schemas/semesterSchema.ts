@@ -28,4 +28,6 @@ const semesterSchema: Schema<SemesterModel> = new Schema(
   }
 )
 
+semesterSchema.index({ name: 1, user: 1 }, { unique: true })
+
 export default semesterSchema

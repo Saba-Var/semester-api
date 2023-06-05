@@ -9,7 +9,7 @@ export interface ExtendedAuthRequest extends Request {
     refreshToken: string
     language: 'en' | 'ka'
   }
-  currentUser?: UserModel
+  currentUser?: { email: string; id: string }
 }
 
 export interface AuthRequest<ReqBody = {}, ReqParams = {}, ReqQuery = {}>

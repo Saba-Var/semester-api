@@ -1,4 +1,3 @@
-import { authRouter, userRouter, learningActivitiesRouter } from 'routes'
 import { verifyToken, authLimiter } from 'middlewares'
 import express, { type RequestHandler } from 'express'
 import cookieParser from 'cookie-parser'
@@ -7,6 +6,12 @@ import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 import path from 'path'
 import cors from 'cors'
+import {
+  learningActivitiesRouter,
+  semesterRouter,
+  authRouter,
+  userRouter,
+} from 'routes'
 
 const server = express()
 dotenv.config()
@@ -31,6 +36,7 @@ server.use('/authentication', authRouter)
 server.use(verifyToken as unknown as RequestHandler)
 server.use('/user', userRouter)
 server.use('/learning-activities', learningActivitiesRouter)
+server.use('/semester', semesterRouter)
 
 server.listen(process.env.SERVER_PORT!, () => {
   // eslint-disable-next-line no-console

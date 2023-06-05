@@ -11,7 +11,7 @@ export interface UserModel extends Document {
 }
 
 export interface SemesterModel extends Document {
-  name: string
-  user: Types.ObjectId
   learningActivities: Types.ObjectId[]
+  user: Types.ObjectId
+  name: string
 }
