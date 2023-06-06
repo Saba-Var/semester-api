@@ -1,4 +1,4 @@
-import { LearningActivity } from 'models'
+import { LearningActivity, Semester } from 'models'
 import { Response } from 'express'
 import type {
   LearningActivityModel,
@@ -13,9 +13,26 @@ export const createLearningActivity = async (
   res: Response
 ) => {
   try {
-    await LearningActivity.create({
+    const semester = await Semester.findOne({
+      _id: req.body.semester,
+      user: req.currentUser?.id,
+    })
+
+    if (!semester) {
+      return res.status(404).json({
+        message: 'Semester not found',
+      })
+    }
+
+    const newLearningActivity = await LearningActivity.create({
       ...req.body,
       user: req.currentUser?.id,
+    })
+
+    await semester.updateOne({
+      $push: {
+        learningActivities: newLearningActivity._id,
+      },
     })
 
     return res.status(201).json({
@@ -28,19 +45,26 @@ export const createLearningActivity = async (
   }
 }
 
-export const getUserLearningActivities = async (
-  req: ExtendedAuthRequest,
+export const getUserLearningActivitiesBySemester = async (
+  req: RequestParams<{ id: string }>,
   res: Response
 ) => {
   try {
     const userLearningActivities = await LearningActivity.find({
+      semester: req.params.id,
       user: req.currentUser?.id,
-    })
+    }).select('-user -updatedAt')
+
+    if (!userLearningActivities) {
+      return res.status(404).json({
+        message: 'Learning activities not found',
+      })
+    }
 
     return res.status(200).json(userLearningActivities)
   } catch (error: any) {
     return res.status(500).json({
-      message: error.message,
+      message: error?.message,
     })
   }
 }
@@ -78,6 +102,15 @@ export const deleteLearningActivity = async (
         message: 'Learning activity not found',
       })
     }
+
+    await Semester.findOneAndUpdate(
+      { _id: deletedLearningActivity.semester },
+      {
+        $pull: {
+          learningActivities: deletedLearningActivity._id,
+        },
+      }
+    )
 
     return res.status(200).json({
       message: 'Learning activity deleted successfully',

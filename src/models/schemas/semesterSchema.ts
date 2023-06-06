@@ -11,13 +11,13 @@ const semesterSchema: Schema<SemesterModel> = new Schema(
     user: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: 'User',
+      ref: 'user',
     },
 
     learningActivities: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'LearningActivity',
+        ref: 'learningActivity',
         default: [],
       },
     ],

@@ -33,13 +33,13 @@ const learningActivitySchema: Schema<LearningActivityModel> = new Schema(
       type: Schema.Types.ObjectId,
       immutable: true,
       required: true,
-      ref: 'User',
+      ref: 'user',
     },
     semester: {
       type: Schema.Types.ObjectId,
       immutable: true,
       required: true,
-      ref: 'Semester',
+      ref: 'semester',
     },
   },
   {

@@ -1,7 +1,7 @@
 import { learningActivitySchema, idParamSchema } from 'validationSchemas'
 import { validateRequestSchema } from 'middlewares'
 import {
-  getUserLearningActivities,
+  getUserLearningActivitiesBySemester,
   createLearningActivity,
   deleteLearningActivity,
   updateLearningActivity,
@@ -11,7 +11,12 @@ import express from 'express'
 
 const router = express.Router()
 
-router.get('/', getUserLearningActivities)
+router.get(
+  '/semesters/:id',
+  idParamSchema,
+  validateRequestSchema,
+  getUserLearningActivitiesBySemester
+)
 
 router.get('/:id', idParamSchema, validateRequestSchema, getLearningActivity)
 
@@ -33,7 +38,7 @@ router.put(
 router.delete(
   '/:id',
   idParamSchema,
-  learningActivitySchema,
+  validateRequestSchema,
   deleteLearningActivity
 )
 

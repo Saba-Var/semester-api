@@ -25,7 +25,7 @@ const userSchema: Schema<UserModel> = new Schema(
     semesters: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Semester',
+        ref: 'semester',
       },
     ],
   },
