@@ -9,7 +9,7 @@ export interface ExtendedAuthRequest extends Request {
     refreshToken: string
     language: 'en' | 'ka'
   }
-  currentUser?: UserModel
+  currentUser?: { email: string; id: string }
 }
 
 export interface AuthRequest<ReqBody = {}, ReqParams = {}, ReqQuery = {}>
@@ -65,11 +65,11 @@ export enum ActivityType {
 
 export interface LearningActivityModel {
   activityType: ActivityType
+  semester: Types.ObjectId
   startingTime: string
-  subjectName: string
   user: Types.ObjectId
+  subjectName: string
   teacherName: string
-  _id: Types.ObjectId
   endingTime: string
   weekday: Weekday
 }

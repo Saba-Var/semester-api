@@ -2,7 +2,6 @@ import { ExtendedAuthRequest, AccessTokenPayload } from 'types'
 import { NextFunction, Response } from 'express'
 import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
-import { User } from 'models'
 
 const verifyToken = (
   req: ExtendedAuthRequest,
@@ -37,20 +36,13 @@ const verifyToken = (
 
           const isValidId = mongoose.Types.ObjectId.isValid(id)
 
-          if (!isValidId)
+          if (!isValidId || !email || !id) {
             return res.status(401).json({
               message: 'User is not authorized to continue!',
             })
-
-          const user = await User.findById(id)
-
-          if (!user || user.email !== email || user.id !== id) {
-            return res.status(401).json({
-              message: 'User not found',
-            })
           }
 
-          req.currentUser = user
+          req.currentUser = { email, id }
 
           return next()
         }

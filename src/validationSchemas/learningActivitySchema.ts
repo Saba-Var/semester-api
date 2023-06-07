@@ -1,5 +1,6 @@
 import { check, ValidationChain } from 'express-validator'
 import { Weekday, ActivityType } from 'types.d'
+import { mongo } from 'mongoose'
 
 const learningActivitySchema: ValidationChain[] = [
   check('subjectName')
@@ -39,6 +40,14 @@ const learningActivitySchema: ValidationChain[] = [
     .withMessage(
       'Activity type should be one of the following: Lecture, Seminar, Laboratory, Project, Exam, Other'
     ),
+
+  check('semester').custom((value) => {
+    if (!mongo.ObjectId.isValid(value)) {
+      throw new Error('Invalid semester. Provide a valid mongoDB id.')
+    } else {
+      return true
+    }
+  }),
 
   check('startingTime')
     .trim()

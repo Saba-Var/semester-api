@@ -1,8 +1,7 @@
-import { LearningActivity } from 'models'
+import { LearningActivity, Semester } from 'models'
 import { Response } from 'express'
 import type {
   LearningActivityModel,
-  ExtendedAuthRequest,
   RequestParams,
   RequestBody,
   AuthRequest,
@@ -13,31 +12,31 @@ export const createLearningActivity = async (
   res: Response
 ) => {
   try {
-    await LearningActivity.create({
+    const semester = await Semester.findOne({
+      _id: req.body.semester,
+      user: req.currentUser?.id,
+    })
+
+    if (!semester) {
+      return res.status(404).json({
+        message: 'Semester not found',
+      })
+    }
+
+    const newLearningActivity = await LearningActivity.create({
       ...req.body,
       user: req.currentUser?.id,
+    })
+
+    await semester.updateOne({
+      $push: {
+        learningActivities: newLearningActivity._id,
+      },
     })
 
     return res.status(201).json({
       message: 'New learning activity created successfully!',
     })
-  } catch (error: any) {
-    return res.status(500).json({
-      message: error.message,
-    })
-  }
-}
-
-export const getUserLearningActivities = async (
-  req: ExtendedAuthRequest,
-  res: Response
-) => {
-  try {
-    const userLearningActivities = await LearningActivity.find({
-      user: req.currentUser?.id,
-    })
-
-    return res.status(200).json(userLearningActivities)
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,
@@ -78,6 +77,15 @@ export const deleteLearningActivity = async (
         message: 'Learning activity not found',
       })
     }
+
+    await Semester.findOneAndUpdate(
+      { _id: deletedLearningActivity.semester },
+      {
+        $pull: {
+          learningActivities: deletedLearningActivity._id,
+        },
+      }
+    )
 
     return res.status(200).json({
       message: 'Learning activity deleted successfully',
