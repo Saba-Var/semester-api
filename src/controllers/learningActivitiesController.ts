@@ -2,7 +2,6 @@ import { LearningActivity, Semester } from 'models'
 import { Response } from 'express'
 import type {
   LearningActivityModel,
-  ExtendedAuthRequest,
   RequestParams,
   RequestBody,
   AuthRequest,
