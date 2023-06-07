@@ -45,30 +45,6 @@ export const createLearningActivity = async (
   }
 }
 
-export const getUserLearningActivitiesBySemester = async (
-  req: RequestParams<{ id: string }>,
-  res: Response
-) => {
-  try {
-    const userLearningActivities = await LearningActivity.find({
-      semester: req.params.id,
-      user: req.currentUser?.id,
-    }).select('-user -updatedAt')
-
-    if (!userLearningActivities) {
-      return res.status(404).json({
-        message: 'Learning activities not found',
-      })
-    }
-
-    return res.status(200).json(userLearningActivities)
-  } catch (error: any) {
-    return res.status(500).json({
-      message: error?.message,
-    })
-  }
-}
-
 export const getLearningActivity = async (
   req: RequestParams<{ id: string }>,
   res: Response
