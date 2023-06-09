@@ -11,7 +11,6 @@ const semesterValidationSchema = [
     .withMessage("'startDate' should be a date"),
 
   check('isCurrentSemester')
-    .optional()
     .isBoolean()
     .withMessage("'isCurrentSemester' should be a boolean"),
 ]

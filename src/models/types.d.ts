@@ -12,6 +12,8 @@ export interface UserModel extends Document {
 
 export interface SemesterModel extends Document {
   learningActivities: Types.ObjectId[]
+  isCurrentSemester: boolean
   user: Types.ObjectId
+  startDate: Date
   name: string
 }

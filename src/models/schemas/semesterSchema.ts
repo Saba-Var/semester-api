@@ -14,6 +14,16 @@ const semesterSchema: Schema<SemesterModel> = new Schema(
       ref: 'user',
     },
 
+    startDate: {
+      type: Date,
+      required: true,
+    },
+
+    isCurrentSemester: {
+      type: Boolean,
+      required: true,
+    },
+
     learningActivities: [
       {
         type: Schema.Types.ObjectId,

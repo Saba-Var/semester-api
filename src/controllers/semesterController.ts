@@ -1,13 +1,13 @@
 import type { RequestBody, ExtendedAuthRequest, RequestParams } from 'types'
+import { Semester, User, SemesterModel } from 'models'
 import type { Response } from 'express'
-import { Semester, User } from 'models'
 
 export const createSemester = async (
-  req: RequestBody<{ name: string }>,
+  req: RequestBody<SemesterModel>,
   res: Response
 ) => {
   try {
-    const { name } = req.body
+    const { name, isCurrentSemester, startDate } = req.body
 
     const semesterExists = await Semester.findOne({
       user: req?.currentUser?.id,
@@ -20,8 +20,17 @@ export const createSemester = async (
         .json({ message: `Semester with name '${name}' already exists` })
     }
 
+    if (isCurrentSemester) {
+      await Semester.updateMany(
+        { user: req?.currentUser?.id },
+        { isCurrentSemester: false }
+      )
+    }
+
     const newSemester = await Semester.create({
       user: req?.currentUser?.id,
+      isCurrentSemester,
+      startDate,
       name,
     })
 
