@@ -48,7 +48,7 @@ export const getSemesters = async (req: ExtendedAuthRequest, res: Response) => {
   try {
     const semesters = await Semester.find({
       user: req?.currentUser?.id,
-    }).select('_id name')
+    }).select('-user')
 
     return res.status(200).json(semesters)
   } catch (error: any) {
