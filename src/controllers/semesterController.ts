@@ -1,13 +1,13 @@
 import type { RequestBody, ExtendedAuthRequest, RequestParams } from 'types'
+import { Semester, User, SemesterModel } from 'models'
 import type { Response } from 'express'
-import { Semester, User } from 'models'
 
 export const createSemester = async (
-  req: RequestBody<{ name: string }>,
+  req: RequestBody<SemesterModel>,
   res: Response
 ) => {
   try {
-    const { name } = req.body
+    const { name, isCurrentSemester, startDate } = req.body
 
     const semesterExists = await Semester.findOne({
       user: req?.currentUser?.id,
@@ -20,8 +20,17 @@ export const createSemester = async (
         .json({ message: `Semester with name '${name}' already exists` })
     }
 
+    if (isCurrentSemester) {
+      await Semester.updateMany(
+        { user: req?.currentUser?.id },
+        { isCurrentSemester: false }
+      )
+    }
+
     const newSemester = await Semester.create({
       user: req?.currentUser?.id,
+      isCurrentSemester,
+      startDate,
       name,
     })
 
@@ -66,6 +75,68 @@ export const getSemesterData = async (
     }
 
     return res.status(200).json(semester)
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error?.message,
+    })
+  }
+}
+
+export const deleteSemester = async (
+  req: RequestParams<{ id: string }>,
+  res: Response
+) => {
+  try {
+    const deletedSemester = await Semester.findOneAndDelete({
+      _id: req.params.id,
+      user: req.currentUser?.id,
+    })
+
+    if (!deletedSemester) {
+      return res.status(404).json({
+        message: 'Semester not found',
+      })
+    }
+
+    await User.findByIdAndUpdate(req.currentUser?.id, {
+      $pull: { semesters: deletedSemester._id },
+    })
+
+    return res.status(200).json({
+      message: 'Semester deleted successfully',
+    })
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error?.message,
+    })
+  }
+}
+
+export const markSemesterAsCurrent = async (
+  req: RequestParams<{ id: string }>,
+  res: Response
+) => {
+  try {
+    await Semester.updateMany(
+      { user: req.currentUser?.id },
+      { isCurrentSemester: false }
+    )
+
+    const updatedSemester = await Semester.findByIdAndUpdate(
+      req.params.id,
+      { isCurrentSemester: true },
+      { new: true }
+    )
+
+    if (!updatedSemester) {
+      return res.status(404).json({
+        message: 'Semester not found',
+      })
+    }
+
+    return res.status(200).json({
+      message: 'Semester updated successfully',
+    })
   } catch (error: any) {
     return res.status(500).json({
       message: error?.message,
