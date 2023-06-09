@@ -81,3 +81,33 @@ export const getSemesterData = async (
     })
   }
 }
+
+export const deleteSemester = async (
+  req: RequestBody<{ id: string }>,
+  res: Response
+) => {
+  try {
+    const deletedSemester = await Semester.findOneAndDelete({
+      _id: req.body.id,
+      user: req.currentUser?.id,
+    })
+
+    if (!deletedSemester) {
+      return res.status(404).json({
+        message: 'Semester not found',
+      })
+    }
+
+    await User.findByIdAndUpdate(req.currentUser?.id, {
+      $pull: { semesters: deletedSemester._id },
+    })
+
+    return res.status(200).json({
+      message: 'Semester deleted successfully',
+    })
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error?.message,
+    })
+  }
+}
