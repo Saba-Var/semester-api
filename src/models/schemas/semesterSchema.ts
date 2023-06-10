@@ -19,9 +19,15 @@ const semesterSchema: Schema<SemesterModel> = new Schema(
       required: true,
     },
 
+    endDate: {
+      type: Date,
+      required: false,
+      default: null,
+    },
+
     isCurrentSemester: {
       type: Boolean,
-      required: true,
+      required: false,
     },
 
     learningActivities: [
