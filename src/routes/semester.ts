@@ -1,12 +1,16 @@
-import { semesterValidationSchema, idParamSchema } from 'validationSchemas'
 import { validateRequestSchema } from 'middlewares'
 import express from 'express'
 import {
-  markSemesterAsCurrent,
+  semesterValidationSchema,
+  idParamSchema,
+  endDateSchema,
+} from 'validationSchemas'
+import {
   getSemesterData,
   createSemester,
   deleteSemester,
   getSemesters,
+  endSemester,
 } from 'controllers'
 
 const router = express.Router()
@@ -25,10 +29,11 @@ router.post(
 router.delete('/:id', idParamSchema, validateRequestSchema, deleteSemester)
 
 router.put(
-  '/:id/mark-as-current',
+  '/:id/end',
   idParamSchema,
+  endDateSchema,
   validateRequestSchema,
-  markSemesterAsCurrent
+  endSemester
 )
 
 export default router

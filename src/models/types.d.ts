@@ -2,6 +2,7 @@ import type { Document, Types } from 'mongoose'
 import { LearningActivityModel } from 'types'
 
 export interface UserModel extends Document {
+  activeSemester: Types.ObjectId
   semesters: Types.ObjectId[]
   password?: string
   username: string
@@ -15,5 +16,6 @@ export interface SemesterModel extends Document {
   isCurrentSemester: boolean
   user: Types.ObjectId
   startDate: Date
+  endDate: Date
   name: string
 }

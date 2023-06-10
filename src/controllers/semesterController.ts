@@ -1,13 +1,18 @@
-import type { RequestBody, ExtendedAuthRequest, RequestParams } from 'types'
 import { Semester, User, SemesterModel } from 'models'
 import type { Response } from 'express'
+import type {
+  ExtendedAuthRequest,
+  RequestParams,
+  RequestBody,
+  AuthRequest,
+} from 'types'
 
 export const createSemester = async (
   req: RequestBody<SemesterModel>,
   res: Response
 ) => {
   try {
-    const { name, isCurrentSemester, startDate } = req.body
+    const { name, startDate } = req.body
 
     const semesterExists = await Semester.findOne({
       user: req?.currentUser?.id,
@@ -20,22 +25,30 @@ export const createSemester = async (
         .json({ message: `Semester with name '${name}' already exists` })
     }
 
-    if (isCurrentSemester) {
-      await Semester.updateMany(
-        { user: req?.currentUser?.id },
-        { isCurrentSemester: false }
-      )
+    const currentUser = await User.findById(req?.currentUser?.id)
+
+    if (currentUser?.activeSemester) {
+      return res.status(409).json({
+        message:
+          'You already have an active semester! End it and create a new one.',
+      })
     }
+
+    await Semester.updateMany(
+      { user: req?.currentUser?.id },
+      { isCurrentSemester: false }
+    )
 
     const newSemester = await Semester.create({
       user: req?.currentUser?.id,
-      isCurrentSemester,
+      isCurrentSemester: true,
       startDate,
       name,
     })
 
     await User.findByIdAndUpdate(req?.currentUser?.id, {
       $push: { semesters: newSemester._id },
+      $set: { activeSemester: newSemester._id },
     })
 
     return res.status(201).json({ message: 'Semester created' })
@@ -98,8 +111,17 @@ export const deleteSemester = async (
       })
     }
 
+    const currentUser = await User.findById(req.currentUser?.id)
+
     await User.findByIdAndUpdate(req.currentUser?.id, {
       $pull: { semesters: deletedSemester._id },
+      $set: {
+        activeSemester:
+          currentUser?.activeSemester.toString() ===
+          deletedSemester._id.toString()
+            ? null
+            : currentUser?.activeSemester,
+      },
     })
 
     return res.status(200).json({
@@ -112,30 +134,50 @@ export const deleteSemester = async (
   }
 }
 
-export const markSemesterAsCurrent = async (
-  req: RequestParams<{ id: string }>,
+export const endSemester = async (
+  req: AuthRequest<{ endDate: Date }, { id: string }>,
   res: Response
 ) => {
   try {
-    await Semester.updateMany(
-      { user: req.currentUser?.id },
-      { isCurrentSemester: false }
-    )
+    const { endDate } = req.body
+    const { currentUser } = req
 
-    const updatedSemester = await Semester.findByIdAndUpdate(
-      req.params.id,
-      { isCurrentSemester: true },
-      { new: true }
-    )
+    const semester = await Semester.findById(req.params.id)
 
-    if (!updatedSemester) {
+    if (!semester) {
       return res.status(404).json({
         message: 'Semester not found',
       })
     }
 
+    if (semester.endDate) {
+      return res.status(400).json({
+        message: 'Semester already ended',
+      })
+    }
+
+    if (semester.startDate > endDate) {
+      return res.status(400).json({
+        message: 'End date cannot be before start date',
+      })
+    }
+
+    semester.endDate = endDate
+    semester.isCurrentSemester = false
+    await semester.save()
+
+    await User.findOneAndUpdate(
+      {
+        _id: currentUser?.id,
+        activeSemester: req.params.id,
+      },
+      {
+        $set: { activeSemester: null },
+      }
+    )
+
     return res.status(200).json({
-      message: 'Semester updated successfully',
+      message: 'Semester ended successfully',
     })
   } catch (error: any) {
     return res.status(500).json({

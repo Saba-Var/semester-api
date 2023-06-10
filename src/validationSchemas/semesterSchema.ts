@@ -9,9 +9,5 @@ const semesterValidationSchema = [
     .withMessage("'startDate' is required")
     .isDate()
     .withMessage("'startDate' should be a date"),
-
-  check('isCurrentSemester')
-    .isBoolean()
-    .withMessage("'isCurrentSemester' should be a boolean"),
 ]
 export default semesterValidationSchema
