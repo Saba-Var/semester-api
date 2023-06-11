@@ -117,7 +117,7 @@ export const deleteSemester = async (
       $pull: { semesters: deletedSemester._id },
       $set: {
         activeSemester:
-          currentUser?.activeSemester.toString() ===
+          currentUser?.activeSemester?.toString() ===
           deletedSemester._id.toString()
             ? null
             : currentUser?.activeSemester,
