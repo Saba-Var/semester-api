@@ -1,17 +1,18 @@
 import { validateRequestSchema } from 'middlewares'
 import express from 'express'
 import {
+  getSemesterData,
+  createSemester,
+  deleteSemester,
+  updateSemester,
+  getSemesters,
+  endSemester,
+} from 'controllers'
+import {
   semesterValidationSchema,
   idParamSchema,
   endDateSchema,
 } from 'validationSchemas'
-import {
-  getSemesterData,
-  createSemester,
-  deleteSemester,
-  getSemesters,
-  endSemester,
-} from 'controllers'
 
 const router = express.Router()
 
@@ -27,6 +28,14 @@ router.post(
 )
 
 router.delete('/:id', idParamSchema, validateRequestSchema, deleteSemester)
+
+router.put(
+  '/:id',
+  idParamSchema,
+  semesterValidationSchema,
+  validateRequestSchema,
+  updateSemester
+)
 
 router.put(
   '/:id/end',

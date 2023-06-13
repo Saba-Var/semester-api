@@ -185,3 +185,49 @@ export const endSemester = async (
     })
   }
 }
+
+export const updateSemester = async (
+  req: AuthRequest<{ name: string; startDate: Date }, { id: string }>,
+  res: Response
+) => {
+  try {
+    const { name, startDate } = req.body
+
+    const semester = await Semester.findById(req.params.id)
+
+    if (!semester) {
+      return res.status(404).json({
+        message: 'Semester not found',
+      })
+    }
+
+    const semesterExists = await Semester.findOne({
+      user: req?.currentUser?.id,
+      name,
+    })
+
+    if (semesterExists) {
+      return res.status(409).json({
+        message: `Semester with name '${name}' already exists`,
+      })
+    }
+
+    if (!semester.isCurrentSemester) {
+      return res.status(400).json({
+        message: "Semester is not active. You can't edit semester!",
+      })
+    }
+
+    semester.name = name
+    semester.startDate = startDate
+    await semester.save()
+
+    return res.status(200).json({
+      message: 'Semester updated successfully',
+    })
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error?.message,
+    })
+  }
+}
