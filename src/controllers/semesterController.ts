@@ -204,6 +204,7 @@ export const updateSemester = async (
     const semesterExists = await Semester.findOne({
       user: req?.currentUser?.id,
       name,
+      _id: { $ne: req.params.id },
     })
 
     if (semesterExists) {
