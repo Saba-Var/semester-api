@@ -62,6 +62,24 @@ export const getLearningActivity = async (
   }
 }
 
+export const getAllLearningActivityOfSemester = async (
+  req: RequestParams<{ id: string }>,
+  res: Response
+) => {
+  try {
+    const learningActivities = await LearningActivity.find({
+      user: req.currentUser?.id,
+      semester: req.params.id,
+    })
+
+    return res.status(200).json(learningActivities)
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    })
+  }
+}
+
 export const deleteLearningActivity = async (
   req: RequestParams<{ id: string }>,
   res: Response
