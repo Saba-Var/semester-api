@@ -74,7 +74,7 @@ export const getSemesterData = async (
   res: Response
 ) => {
   try {
-    const semester = await Semester.find({
+    const semester = await Semester.findOne({
       _id: req.params.id,
       user: req.currentUser?.id,
     })
