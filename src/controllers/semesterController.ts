@@ -1,4 +1,5 @@
 import { Semester, User, SemesterModel } from 'models'
+import { generateFieldError } from 'utils'
 import type { Response } from 'express'
 import type {
   ExtendedAuthRequest,
@@ -6,7 +7,6 @@ import type {
   RequestBody,
   AuthRequest,
 } from 'types'
-import { generateFieldError } from 'utils'
 
 export const createSemester = async (
   req: RequestBody<SemesterModel>,

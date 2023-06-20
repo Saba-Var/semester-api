@@ -3,6 +3,6 @@ import { query } from 'express-validator'
 const accessTokenSchema = query('accessToken')
   .trim()
   .notEmpty()
-  .withMessage('JWT is required')
+  .withMessage('jwt_is_required')
 
 export default accessTokenSchema

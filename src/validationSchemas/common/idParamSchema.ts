@@ -4,7 +4,7 @@ import { mongo } from 'mongoose'
 const idParamSchema = [
   param('id').custom((value) => {
     if (!mongo.ObjectId.isValid(value)) {
-      throw new Error('Invalid id param. Provide a valid mongoDB id.')
+      throw new Error('invalid_id_param')
     } else {
       return true
     }

@@ -7,8 +7,8 @@ const passwordSchema = (minLength = 1) =>
     })
     .withMessage(
       minLength !== 1
-        ? 'Password should include at least 6 characters'
-        : 'Password is Required'
+        ? 'password_should_include_at_least_6_characters'
+        : 'password_is_required'
     )
 
 export default passwordSchema
