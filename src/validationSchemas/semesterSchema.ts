@@ -1,7 +1,7 @@
 import { check } from 'express-validator'
 
 const semesterValidationSchema = [
-  check('name').trim().notEmpty().withMessage('Semester name is required'),
+  check('name').trim().notEmpty().withMessage('semester_name_is_required'),
 
   check('startDate')
     .trim()

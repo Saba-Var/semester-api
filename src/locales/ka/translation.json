@@ -15,6 +15,7 @@
   "learning_activity_not_found": "სასწავლო აქტივობა ვერ მოიძებნა!",
   "learning_activity_updated_successfully": "სასწავლო აქტივობა წარმატებით განახლდა!",
   "semester_not_found": "სემესტრი ვერ მოიძებნა!",
+  "semester_name_is_required": "სემესტრის სახელი ვერ მოიძებნა!",
   "learning_activity_created_successfully": "სასწავლო აქტივობა წარმატებით შეიქმნა!",
   "learning_activity_deleted_successfully": "სასწავლო აქტივობა წარმატებით წაიშალა!",
   "semester_with_name_already_exists": "სემესტრი ამ სახელით '{{name}}' უკვე არსებობს!",
