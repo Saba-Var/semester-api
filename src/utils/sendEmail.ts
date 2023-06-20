@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 import path from 'path'
 import pug from 'pug'
 
-const sendEmail = async (
+export const sendEmail = async (
   subject: string,
   emailTemplateType: 'account-activation' | 'reset-password',
   to: string,
@@ -66,5 +66,3 @@ const sendEmail = async (
     return res.status(200).json({ message })
   })
 }
-
-export default sendEmail

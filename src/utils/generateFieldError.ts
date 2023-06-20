@@ -1,4 +1,4 @@
-const generateFieldError = (fieldName: string, message: string) => {
+export const generateFieldError = (fieldName: string, message: string) => {
   let errorsObject = {}
 
   errorsObject = {
@@ -9,5 +9,3 @@ const generateFieldError = (fieldName: string, message: string) => {
 
   return errorsObject
 }
-
-export default generateFieldError

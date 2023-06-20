@@ -1,6 +1,0 @@
-/users:
-  get:
-    summary: Get all users
-    responses:
-      '200':
-        description: OK
