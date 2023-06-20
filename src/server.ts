@@ -1,6 +1,7 @@
-import { verifyToken, authLimiter } from 'middlewares'
+import { verifyToken, authLimiter, swaggerDocSetup } from 'middlewares'
 import express, { type RequestHandler } from 'express'
 import middleware from 'i18next-http-middleware'
+import SwaggerUI from 'swagger-ui-express'
 import Backend from 'i18next-fs-backend'
 import cookieParser from 'cookie-parser'
 import { connectToMongo } from 'config'
@@ -43,6 +44,7 @@ server.use(
 connectToMongo()
 
 server.use(bodyParser.json())
+server.use('/api-docs', SwaggerUI.serve, swaggerDocSetup())
 server.set('view engine', 'pug')
 server.set('views', path.join(__dirname, 'views'))
 server.use(cookieParser())

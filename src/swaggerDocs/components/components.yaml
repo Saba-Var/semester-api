@@ -1,0 +1,39 @@
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          example: John Doe
+        email:
+          type: string
+          example: example@gmail.com
+        active:
+          type: boolean
+          example: true
+        activeSemester:
+          oneOf:
+            - type: string
+            - type: null
+          example: null
+        password:
+          type: string
+          example: password123
+        image:
+          oneOf:
+            - type: string
+            - type: null
+          example: null
+        semesters:
+          type: array
+          items:
+            type: string
+          example:
+            - '648492fe62b4a82f97cd0cdf'
+            - '6484986862b4a82f97cd0d05'
