@@ -1,4 +1,5 @@
 import { Semester, User, SemesterModel } from 'models'
+import { generateFieldError } from 'utils'
 import type { Response } from 'express'
 import type {
   ExtendedAuthRequest,
@@ -22,15 +23,19 @@ export const createSemester = async (
     if (semesterExists) {
       return res
         .status(409)
-        .json({ message: `Semester with name '${name}' already exists` })
+        .json(
+          generateFieldError(
+            'name',
+            req.t('semester_with_name_already_exists', { name })
+          )
+        )
     }
 
     const currentUser = await User.findById(req?.currentUser?.id)
 
     if (currentUser?.activeSemester) {
       return res.status(409).json({
-        message:
-          'You already have an active semester! End it and create a new one.',
+        message: req.t('you_already_have_active_semester_warning'),
       })
     }
 
@@ -51,7 +56,9 @@ export const createSemester = async (
       $set: { activeSemester: newSemester._id },
     })
 
-    return res.status(201).json({ message: 'Semester created' })
+    return res
+      .status(201)
+      .json({ message: req.t('semester_created_successfully') })
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
   }
@@ -83,7 +90,7 @@ export const getSemesterData = async (
 
     if (!semester) {
       return res.status(404).json({
-        message: 'Semester not found',
+        message: req.t('semester_not_found'),
       })
     }
 
@@ -107,7 +114,7 @@ export const deleteSemester = async (
 
     if (!deletedSemester) {
       return res.status(404).json({
-        message: 'Semester not found',
+        message: req.t('semester_not_found'),
       })
     }
 
@@ -125,7 +132,7 @@ export const deleteSemester = async (
     })
 
     return res.status(200).json({
-      message: 'Semester deleted successfully',
+      message: req.t('semester_deleted_successfully'),
     })
   } catch (error: any) {
     return res.status(500).json({
@@ -146,20 +153,25 @@ export const endSemester = async (
 
     if (!semester) {
       return res.status(404).json({
-        message: 'Semester not found',
+        message: req.t('semester_not_found'),
       })
     }
 
     if (semester.endDate) {
       return res.status(400).json({
-        message: 'Semester already ended',
+        message: req.t('semester_already_ended'),
       })
     }
 
     if (semester.startDate > endDate) {
-      return res.status(400).json({
-        message: 'End date cannot be before start date',
-      })
+      return res
+        .status(422)
+        .json(
+          generateFieldError(
+            'endDate',
+            req.t('end_date_cannot_be_before_start_date')
+          )
+        )
     }
 
     semester.endDate = endDate
@@ -177,7 +189,7 @@ export const endSemester = async (
     )
 
     return res.status(200).json({
-      message: 'Semester ended successfully',
+      message: req.t('semester_ended_successfully'),
     })
   } catch (error: any) {
     return res.status(500).json({
@@ -197,7 +209,7 @@ export const updateSemester = async (
 
     if (!semester) {
       return res.status(404).json({
-        message: 'Semester not found',
+        message: req.t('semester_not_found'),
       })
     }
 
@@ -208,14 +220,19 @@ export const updateSemester = async (
     })
 
     if (semesterExists) {
-      return res.status(409).json({
-        message: `Semester with name '${name}' already exists`,
-      })
+      return res
+        .status(409)
+        .json(
+          generateFieldError(
+            'name',
+            req.t('semester_with_name_already_exists', { name })
+          )
+        )
     }
 
     if (!semester.isCurrentSemester) {
       return res.status(400).json({
-        message: "Semester is not active. You can't edit semester!",
+        message: req.t('semester_is_not_active_to_edit'),
       })
     }
 
@@ -224,7 +241,7 @@ export const updateSemester = async (
     await semester.save()
 
     return res.status(200).json({
-      message: 'Semester updated successfully',
+      message: req.t('semester_updated_successfully'),
     })
   } catch (error: any) {
     return res.status(500).json({

@@ -1,5 +1,5 @@
 import { AuthorizationReq, NewUserReqBody, Email } from './types'
-import { sendEmail, jwtDecode } from 'utils'
+import { sendEmail, jwtDecode, generateFieldError } from 'utils'
 import type { Response } from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
@@ -22,7 +22,9 @@ export const registerUser = async (
 
     const existingUser = await User.findOne({ email })
     if (existingUser) {
-      return res.status(409).json({ message: 'User is already registered!' })
+      return res
+        .status(409)
+        .json(generateFieldError('email', req.t('user_is_already_registered')))
     }
 
     const hashedPassword = await bcrypt.hash(password, 12)
@@ -64,14 +66,13 @@ export const authorization = async (
 
     if (!currentUser || !isMatch) {
       return res.status(401).json({
-        message: 'Credentials are incorrect',
+        message: req.t('credentials_are_incorrect'),
       })
     }
 
     if (!currentUser.active) {
       return res.status(403).json({
-        message:
-          'Account is not active. Check your email to verify your account.',
+        message: req.t('account_is_not_active'),
       })
     }
     const devEnvironment = process.env.NODE_ENV === 'production'
@@ -114,25 +115,24 @@ export const userAccountActivation = async (
       const userId = jwtDecode(token, 'id')
       const existingUser = await User.findById(userId)
       if (!existingUser) {
-        return res.status(404).json({ message: 'Account not found!' })
+        return res.status(404).json({ message: req.t('account_not_found') })
       }
 
       if (existingUser.active) {
         return res.status(409).json({
-          message: 'Account is already activated',
+          message: req.t('account_is_already_active'),
         })
       }
 
       await User.updateOne({ id: userId }, { active: true })
 
       return res.status(200).json({
-        message: 'Account activated successfully!',
+        message: req.t('account_activated_successfully'),
       })
     }
 
     return res.status(403).json({
-      message:
-        'User is not authorized to activate account. Access token verification failed!',
+      message: req.t('user_is_not_authorized_to_activate_account'),
     })
   } catch (error: any) {
     return res.status(500).json({
@@ -151,7 +151,7 @@ export const passwordChangeRequestEmail = async (
 
     const existingUser = await User.findOne({ email })
     if (!existingUser) {
-      return res.status(404).json({ message: 'User not found!' })
+      return res.status(404).json({ message: req.t('user_not_found') })
     }
 
     return sendEmail(
@@ -189,7 +189,7 @@ export const changePassword = async (
     )
     if (!verified) {
       return res.status(401).json({
-        message: 'JWT is not valid!',
+        message: req.t('jwt_is_not_valid'),
       })
     }
 
@@ -198,13 +198,15 @@ export const changePassword = async (
     const existingUser = await User.findById(userId)
 
     if (!existingUser) {
-      return res.status(401).json({ message: 'Unauthorized Access!' })
+      return res.status(401).json({ message: req.t('unauthorized_access') })
     }
 
     existingUser.password = await bcrypt.hash(password, 12)
     await existingUser.save()
 
-    return res.status(200).json({ message: 'Password changed successfully' })
+    return res
+      .status(200)
+      .json({ message: req.t('password_changed_successfully') })
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
   }
@@ -215,7 +217,7 @@ export const refresh = async (req: RequestBody<{}>, res: Response) => {
     const refreshToken = req?.cookies?.refreshToken
 
     if (!refreshToken) {
-      return res.status(403).json({ message: 'Unauthorized Access!' })
+      return res.status(403).json({ message: req.t('unauthorized_access') })
     }
 
     const verified = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!)
@@ -226,7 +228,7 @@ export const refresh = async (req: RequestBody<{}>, res: Response) => {
       const existingUser = await User.findById(userId)
 
       if (!email || !existingUser || existingUser.email !== email) {
-        return res.status(403).json({ message: 'Unauthorized Access!' })
+        return res.status(403).json({ message: req.t('unauthorized_access') })
       }
 
       const accessToken = jwt.sign(
@@ -241,7 +243,7 @@ export const refresh = async (req: RequestBody<{}>, res: Response) => {
     }
 
     return res.status(403).json({
-      message: 'Refresh token is invalid. Unauthorized access!',
+      message: req.t('refresh_token_is_invalid'),
     })
   } catch (error: any) {
     return res.status(500).json({
@@ -250,14 +252,12 @@ export const refresh = async (req: RequestBody<{}>, res: Response) => {
   }
 }
 
-export const logout = async (_req: ExtendedAuthRequest, res: Response) => {
+export const logout = async (req: ExtendedAuthRequest, res: Response) => {
   res.clearCookie('refreshToken', {
     secure: true,
     sameSite: 'strict',
     httpOnly: true,
   })
 
-  return res
-    .status(200)
-    .json({ message: 'Cookie cleared. Logged out successfully.' })
+  return res.status(200).json({ message: req.t('log_out_success') })
 }

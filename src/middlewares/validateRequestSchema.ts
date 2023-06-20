@@ -16,7 +16,7 @@ const validateRequestSchema = (
     if (!transformedErrors[param]) {
       transformedErrors[param] = []
     }
-    transformedErrors[param].push(msg)
+    transformedErrors[param].push(req.t(msg))
   })
 
   if (!errors.isEmpty()) {

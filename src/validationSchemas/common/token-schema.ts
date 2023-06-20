@@ -3,6 +3,6 @@ import { query } from 'express-validator'
 const tokenSchema = query('token')
   .trim()
   .notEmpty()
-  .withMessage('JWT is required')
+  .withMessage('jwt_is_required')
 
 export default tokenSchema

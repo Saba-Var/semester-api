@@ -6,8 +6,8 @@ const semesterValidationSchema = [
   check('startDate')
     .trim()
     .notEmpty()
-    .withMessage("'startDate' is required")
+    .withMessage('start_date_is_required')
     .isDate()
-    .withMessage("'startDate' should be a date"),
+    .withMessage('start_date_should_be_date'),
 ]
 export default semesterValidationSchema

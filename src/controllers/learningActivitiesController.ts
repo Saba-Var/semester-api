@@ -19,7 +19,7 @@ export const createLearningActivity = async (
 
     if (!semester) {
       return res.status(404).json({
-        message: 'Semester not found',
+        message: req.t('semester_not_found'),
       })
     }
 
@@ -35,7 +35,7 @@ export const createLearningActivity = async (
     })
 
     return res.status(201).json({
-      message: 'New learning activity created successfully!',
+      message: req.t('learning_activity_created_successfully'),
     })
   } catch (error: any) {
     return res.status(500).json({
@@ -92,7 +92,7 @@ export const deleteLearningActivity = async (
 
     if (!deletedLearningActivity) {
       return res.status(404).json({
-        message: 'Learning activity not found',
+        message: req.t('learning_activity_not_found'),
       })
     }
 
@@ -106,7 +106,7 @@ export const deleteLearningActivity = async (
     )
 
     return res.status(200).json({
-      message: 'Learning activity deleted successfully',
+      message: req.t('learning_activity_deleted_successfully'),
     })
   } catch (error: any) {
     return res.status(500).json({
@@ -127,12 +127,12 @@ export const updateLearningActivity = async (
 
     if (!updatedLearningActivity) {
       return res.status(404).json({
-        message: 'Learning activity not found',
+        message: req.t('learning_activity_not_found'),
       })
     }
 
     return res.status(200).json({
-      message: 'Learning activity updated successfully',
+      message: req.t('learning_activity_updated_successfully'),
     })
   } catch (error: any) {
     return res.status(500).json({

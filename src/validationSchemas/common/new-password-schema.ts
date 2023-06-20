@@ -6,7 +6,7 @@ const newPasswordSchema = [
 
   check('confirmPassword').custom((value, { req }) => {
     if (value !== req.body.password) {
-      throw new Error("'confirmPassword' doesn't match to new password")
+      throw new Error('confirm_password_does_not_match')
     } else {
       return true
     }

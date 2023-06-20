@@ -6,46 +6,40 @@ const learningActivitySchema: ValidationChain[] = [
   check('subjectName')
     .trim()
     .notEmpty()
-    .withMessage("'subjectName' is required")
+    .withMessage('subject_name_is_required')
     .isLength({
       min: 3,
       max: 100,
     })
-    .withMessage(
-      "'subjectName' should include at least 3 & max.100 characters"
-    ),
+    .withMessage('subject_name_length'),
 
   check('teacherName')
     .trim()
     .notEmpty()
-    .withMessage("'teacherName' is required")
+    .withMessage('teacher_name_is_required')
     .isLength({
       min: 3,
       max: 30,
     })
-    .withMessage("'teacherName' should include at least 3 & max.30 characters"),
+    .withMessage('teacher_name_length'),
 
   check('weekday')
     .trim()
     .notEmpty()
-    .withMessage("'weekday' is required")
+    .withMessage('week_day_is_required')
     .isIn(Object.values(Weekday))
-    .withMessage(
-      "'weekday' should be one of the following: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday"
-    ),
+    .withMessage('allowed_week_days'),
 
   check('activityType')
     .trim()
     .notEmpty()
-    .withMessage("'activityType' type is required")
+    .withMessage('activity_type_is_required')
     .isIn(Object.values(ActivityType))
-    .withMessage(
-      "'activityType' should be one of the following: Lecture, Seminar, Laboratory, Project, Exam, Other"
-    ),
+    .withMessage('allowed_activity_type'),
 
   check('semester').custom((value) => {
     if (!mongo.ObjectId.isValid(value)) {
-      throw new Error('Provide a valid mongoDB id.')
+      throw new Error('provide_valid_mongoDB_id')
     } else {
       return true
     }
@@ -54,14 +48,14 @@ const learningActivitySchema: ValidationChain[] = [
   check('startingTime')
     .trim()
     .notEmpty()
-    .withMessage("'startingTime' is required")
+    .withMessage('starting_time_is_required')
     .isLength({
       min: 5,
       max: 5,
     })
-    .withMessage("'startingTime' should include 5 characters")
+    .withMessage('starting_time_length')
     .matches(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/)
-    .withMessage("'startingTime' should be in this format: 09:00")
+    .withMessage('starting_time_format')
     .custom((value, { req }) => {
       const startingValues = value.split(':')
       const startingHour = Number(startingValues[0])
@@ -72,22 +66,22 @@ const learningActivitySchema: ValidationChain[] = [
       const endingMinutes = Number(endingValues[1])
 
       if (startingHour < 9 || startingHour > 23) {
-        throw new Error("'startingTime' should be between 09:00 and 23:00")
+        throw new Error('starting_time_range')
       }
 
       if (startingMinutes !== 0 && startingMinutes !== 30) {
-        throw new Error("'startingTime' minutes should be either 00 or 30")
+        throw new Error('starting_time_minutes')
       }
 
       if (startingHour === 23 && startingMinutes !== 0) {
-        throw new Error("'startingTime' minutes should be 00 if hours is 23")
+        throw new Error('starting_time_minute_when_hour_is_23')
       }
 
       if (
         startingHour > endingHour ||
         (startingHour === endingHour && startingMinutes >= endingMinutes)
       ) {
-        throw new Error("'startingTime' should be before ending time")
+        throw new Error('starting_time_should_be_before_ending_time')
       }
 
       return true
@@ -96,16 +90,14 @@ const learningActivitySchema: ValidationChain[] = [
   check('endingTime')
     .trim()
     .notEmpty()
-    .withMessage("'endingTime' is required")
+    .withMessage('ending_time_is_required')
     .isLength({
       min: 5,
       max: 5,
     })
-    .withMessage("'endingTime' should include 5 characters")
+    .withMessage('ending_time_length')
     .matches(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/)
-    .withMessage(
-      "'endingTime' should be in this format: 09:00.  Minutes should be either 00 or 30. Minimum hour is 09:00 and maximum hour is 23:30"
-    )
+    .withMessage('ending_time_format')
     .custom((value, { req }) => {
       const [endingHour, endingMinute] = value.split(':').map(Number)
       const [startingHour, startingMinute] = req.body.startingTime
@@ -115,20 +107,21 @@ const learningActivitySchema: ValidationChain[] = [
       if (
         endingHour < 9 ||
         endingHour > 23 ||
-        (endingHour === 23 && endingMinute > 30)
+        (endingHour === 23 && endingMinute > 30) ||
+        (endingHour === 9 && endingMinute < 30)
       ) {
-        throw new Error("'endingTime' should be between 09:00 and 23:30")
+        throw new Error('ending_time_range')
       }
 
       if (endingMinute % 30 !== 0) {
-        throw new Error("'endingTime' minutes should be either 00 or 30")
+        throw new Error('ending_time_minutes')
       }
 
       if (
         endingHour < startingHour ||
         (endingHour === startingHour && endingMinute <= startingMinute)
       ) {
-        throw new Error("'endingTime' should be after starting time")
+        throw new Error('ending_time_should_be_after_starting_time')
       }
 
       return true

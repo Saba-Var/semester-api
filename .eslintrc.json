@@ -17,6 +17,7 @@
     "import/no-unresolved": "off",
     "import/order": "off",
     "no-shadow": "off",
-    "no-unused-vars": "off"
+    "no-unused-vars": "off",
+    "import/no-extraneous-dependencies": "off"
   }
 }
