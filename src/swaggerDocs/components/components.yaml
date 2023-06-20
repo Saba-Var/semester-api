@@ -26,8 +26,10 @@ components:
           type: string
           example: password123
         image:
-          type: string
-          example: https://example.com/avatar.png
+          oneOf:
+            - type: string
+            - type: null
+          example: null
         semesters:
           type: array
           items:

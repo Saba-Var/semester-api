@@ -30,7 +30,8 @@ const userSchema: Schema<UserModel> = new Schema(
     password: { type: String },
 
     image: {
-      type: String,
+      type: String || null,
+      default: null,
     },
 
     semesters: [

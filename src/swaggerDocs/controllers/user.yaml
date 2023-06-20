@@ -27,6 +27,10 @@
                   type: array
                   items:
                     type: string
+                image:
+                  oneOf:
+                    - type: null
+                    - type: string
                 createdAt:
                   type: string
                   format: date-time
@@ -38,6 +42,7 @@
               username: 'John Doe'
               email: 'example@gmail.com'
               activeSemester: null
+              image: null
               semesters:
                 - '648492fe62b4a82f97cd0cdf'
                 - '6484986862b4a82f97cd0d05'

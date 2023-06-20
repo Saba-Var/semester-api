@@ -4,10 +4,10 @@ import { LearningActivityModel } from 'types'
 export interface UserModel extends Document {
   activeSemester: Types.ObjectId
   semesters: Types.ObjectId[]
+  image?: string | null
   password?: string
   username: string
   active: boolean
-  image?: string
   email: string
 }
 
