@@ -1,5 +1,5 @@
+import { loadYamlFile, appendYamlFiles } from 'utils'
 import SwaggerUI from 'swagger-ui-express'
-import { loadYamlContent } from 'utils'
 
 const swaggerDocSetup = () => {
   const options = {
@@ -9,21 +9,22 @@ const swaggerDocSetup = () => {
 
   const swaggerDocument = {
     openapi: '3.0.0',
-    info: loadYamlContent('info.yaml', 'info'),
-    servers: loadYamlContent('servers.yaml', 'servers'),
+    info: loadYamlFile('info.yaml'),
+    servers: loadYamlFile('servers.yaml'),
     components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
-        },
-      },
+      securitySchemes: loadYamlFile('securitySchemes.yaml'),
+      responses: loadYamlFile('responses.yaml'),
       schemas: {},
-      responses: loadYamlContent('responses.yaml'),
     },
     paths: {},
   }
+
+  const schemaYamlFiles = ['User', 'Semester']
+  appendYamlFiles(
+    swaggerDocument.components.schemas,
+    'schemas',
+    schemaYamlFiles
+  )
 
   const controllerYamlFiles = [
     'authentication',
@@ -31,25 +32,14 @@ const swaggerDocSetup = () => {
     'semesters',
     'learningActivities',
   ]
-
-  controllerYamlFiles.forEach((file) => {
-    const section = loadYamlContent(`controllers/${file}.yaml`)
-    Object.assign(swaggerDocument.paths, section)
-  })
-
-  const schemaYamlFiles = ['User', 'Semester']
-
-  schemaYamlFiles.forEach((file) => {
-    const section = loadYamlContent(`schemas/${file}.yaml`)
-    Object.assign(swaggerDocument.components.schemas, section)
-  })
+  appendYamlFiles(swaggerDocument.paths, 'controllers', controllerYamlFiles)
 
   const partialYamlFiles = ['SemesterPartial']
-
-  partialYamlFiles.forEach((file) => {
-    const section = loadYamlContent(`schemas/partials/${file}.yaml`)
-    Object.assign(swaggerDocument.components.schemas, section)
-  })
+  appendYamlFiles(
+    swaggerDocument.components.schemas,
+    'schemas/partials',
+    partialYamlFiles
+  )
 
   return SwaggerUI.setup(swaggerDocument, options)
 }

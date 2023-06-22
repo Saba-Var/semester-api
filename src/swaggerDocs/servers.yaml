@@ -1,3 +1,2 @@
-servers:
-  - url: http://localhost:4000
-    description: local server
+- url: http://localhost:4000
+  description: local server

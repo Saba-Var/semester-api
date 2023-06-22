@@ -1,4 +1,3 @@
-info:
-  title: Semester API
-  description: API documentation of the Semester API
-  version: 0.1.0
+title: Semester API
+description: API documentation of the Semester API
+version: 0.1.0
