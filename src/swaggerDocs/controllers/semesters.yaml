@@ -1,0 +1,40 @@
+/semesters:
+  post:
+    summary: Create a new semester
+    tags:
+      - Semester
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SemesterPartial'
+    responses:
+      '201':
+        description: Semester created successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Semester created successfully
+      '401':
+        $ref: '#/components/responses/UnauthorizedAccess'
+      '409':
+        description: Conflict - Semester already exists or user has an active semester
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Semester with the given name already exists
+      '422':
+        $ref: '#/components/responses/UnprocessableEntity'
+      '500':
+        $ref: '#/components/responses/InternalServerError'

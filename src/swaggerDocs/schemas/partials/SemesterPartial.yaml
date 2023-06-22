@@ -1,0 +1,17 @@
+SemesterPartial:
+  type: object
+  properties:
+    name:
+      type: string
+      required: true
+      description: The name of the semester.
+      example: Fall Semester
+    startDate:
+      type: string
+      format: date
+      required: true
+      description: The start date of the semester.
+      example: '2022-09-01'
+  example:
+    name: Fall Semester
+    startDate: '2022-09-01'

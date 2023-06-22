@@ -20,6 +20,7 @@ const swaggerDocSetup = () => {
         },
       },
       schemas: {},
+      responses: loadYamlContent('responses.yaml'),
     },
     paths: {},
   }
@@ -40,6 +41,13 @@ const swaggerDocSetup = () => {
 
   schemaYamlFiles.forEach((file) => {
     const section = loadYamlContent(`schemas/${file}.yaml`)
+    Object.assign(swaggerDocument.components.schemas, section)
+  })
+
+  const partialYamlFiles = ['SemesterPartial']
+
+  partialYamlFiles.forEach((file) => {
+    const section = loadYamlContent(`schemas/partials/${file}.yaml`)
     Object.assign(swaggerDocument.components.schemas, section)
   })
 
