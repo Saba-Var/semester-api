@@ -190,6 +190,7 @@ export const endSemester = async (
 
     return res.status(200).json({
       message: req.t('semester_ended_successfully'),
+      _id: semester._id,
     })
   } catch (error: any) {
     return res.status(500).json({
