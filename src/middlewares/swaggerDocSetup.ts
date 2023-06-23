@@ -19,7 +19,7 @@ const swaggerDocSetup = () => {
     paths: {},
   }
 
-  const schemaYamlFiles = ['User', 'Semester']
+  const schemaYamlFiles = ['User', 'Semester', 'LearningActivity']
   appendYamlFiles(
     swaggerDocument.components.schemas,
     'schemas',

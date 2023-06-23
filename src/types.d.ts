@@ -9,7 +9,7 @@ export interface ExtendedAuthRequest extends Request {
     refreshToken: string
     language: 'en' | 'ka'
   }
-  currentUser?: { email: string; id: string }
+  currentUser?: { email: string; _id: string }
 }
 
 export interface AuthRequest<ReqBody = {}, ReqParams = {}, ReqQuery = {}>
@@ -41,7 +41,7 @@ export type Token = {
 
 export interface AccessTokenPayload extends JwtPayload {
   email: string
-  id: string
+  _id: string
 }
 
 export enum Weekday {

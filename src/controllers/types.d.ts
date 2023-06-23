@@ -11,7 +11,7 @@ export type Username = {
 }
 
 export type Id = {
-  id: string
+  _id: string
 }
 
 export interface NewUserReqBody extends Email, Password, Username {}

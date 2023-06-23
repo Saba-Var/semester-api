@@ -14,7 +14,7 @@ export const createLearningActivity = async (
   try {
     const semester = await Semester.findOne({
       _id: req.body.semester,
-      user: req.currentUser?.id,
+      user: req.currentUser?._id,
     })
 
     if (!semester) {
@@ -25,7 +25,7 @@ export const createLearningActivity = async (
 
     const newLearningActivity = await LearningActivity.create({
       ...req.body,
-      user: req.currentUser?.id,
+      user: req.currentUser?._id,
     })
 
     await semester.updateOne({
@@ -50,7 +50,7 @@ export const getLearningActivity = async (
 ) => {
   try {
     const learningActivity = await LearningActivity.findOne({
-      user: req.currentUser?.id,
+      user: req.currentUser?._id,
       _id: req.params.id,
     })
 
@@ -68,7 +68,7 @@ export const getAllLearningActivityOfSemester = async (
 ) => {
   try {
     const learningActivities = await LearningActivity.find({
-      user: req.currentUser?.id,
+      user: req.currentUser?._id,
       semester: req.params.id,
     })
 
@@ -86,7 +86,7 @@ export const deleteLearningActivity = async (
 ) => {
   try {
     const deletedLearningActivity = await LearningActivity.findOneAndDelete({
-      user: req.currentUser?.id,
+      user: req.currentUser?._id,
       _id: req.params.id,
     })
 
@@ -121,7 +121,7 @@ export const updateLearningActivity = async (
 ) => {
   try {
     const updatedLearningActivity = await LearningActivity.findOneAndUpdate(
-      { _id: req.params.id, user: req.currentUser?.id },
+      { _id: req.params.id, user: req.currentUser?._id },
       req.body
     )
 

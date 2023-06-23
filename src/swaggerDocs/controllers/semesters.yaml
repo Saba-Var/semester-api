@@ -1,4 +1,85 @@
 /semesters:
+  get:
+    summary: Retrieve the list of semesters for the current user.
+    tags:
+      - Semester
+    security:
+      - bearerAuth: []
+    responses:
+      '200':
+        description: Successful response containing the list of semesters.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                allOf:
+                  - $ref: '#/components/schemas/Semester'
+                  - type: object
+                    properties:
+                      learningActivities:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/LearningActivity'
+                        description: The learning activities associated with the semester, referenced by their ObjectIds.
+                        example:
+                          - subjectName: 'Math'
+                            teacherName: 'John Doe'
+                            weekday: 'Monday'
+                            activityType: 'Lecture'
+                            startingTime: '09:00'
+                            endingTime: '10:30'
+                            user: '609f1f0db1e9aa001f20a5d3'
+                            semester: '609f1f0db1e9aa001f20a5d6'
+                            createdAt: '2022-06-01T10:00:00Z'
+                            updatedAt: '2022-06-01T10:00:00Z'
+                          - subjectName: 'English'
+                            teacherName: 'Jane Smith'
+                            weekday: 'Tuesday'
+                            activityType: 'Practice'
+                            startingTime: '13:30'
+                            endingTime: '15:00'
+                            user: '609f1f0db1e9aa001f20a5d3'
+                            semester: '609f1f0db1e9aa001f20a5d6'
+                            createdAt: '2022-06-02T09:15:00Z'
+                            updatedAt: '2022-06-02T09:15:00Z'
+                example:
+                  _id: '609f1f0db1e9aa001f20a5d6'
+                  name: Fall Semester
+                  user: '609f1f0db1e9aa001f20a5d3'
+                  startDate: '2022-09-01'
+                  endDate: null
+                  isCurrentSemester: true
+                  learningActivities:
+                    - subjectName: 'Math'
+                      teacherName: 'John Doe'
+                      weekday: 'Monday'
+                      activityType: 'Lecture'
+                      startingTime: '09:00'
+                      endingTime: '10:30'
+                      user: '609f1f0db1e9aa001f20a5d3'
+                      semester: '609f1f0db1e9aa001f20a5d6'
+                      createdAt: '2022-06-01T10:00:00Z'
+                      updatedAt: '2022-06-01T10:00:00Z'
+                    - subjectName: 'English'
+                      teacherName: 'Jane Smith'
+                      weekday: 'Tuesday'
+                      activityType: 'Practice'
+                      startingTime: '13:30'
+                      endingTime: '15:00'
+                      user: '609f1f0db1e9aa001f20a5d3'
+                      semester: '609f1f0db1e9aa001f20a5d6'
+                      createdAt: '2022-06-02T09:15:00Z'
+                      updatedAt: '2022-06-02T09:15:00Z'
+                  createdAt: '2022-06-01T10:00:00Z'
+                  updatedAt: '2022-06-10T15:30:00Z'
+      '401':
+        $ref: '#/components/responses/UnauthorizedAccess'
+      '500':
+        $ref: '#/components/responses/InternalServerError'
+    produces:
+      - application/json
+
   post:
     summary: Create a new semester
     tags:
@@ -22,6 +103,10 @@
                 message:
                   type: string
                   example: Semester created successfully
+                _id:
+                  type: string
+                  example: 5f9b3b3b1c9d440000f3e9a0
+                  format: objectid
       '401':
         $ref: '#/components/responses/UnauthorizedAccess'
       '409':
@@ -33,8 +118,42 @@
               properties:
                 message:
                   type: string
-                  example: Semester with the given name already exists
+                  example: Semester with the given name already exists or user has an active semester
       '422':
         $ref: '#/components/responses/UnprocessableEntity'
+      '500':
+        $ref: '#/components/responses/InternalServerError'
+
+/semesters/{id}:
+  get:
+    summary: Retrieve semester data by ID.
+    tags:
+      - Semester
+    parameters:
+      - in: path
+        name: id
+        description: id of the semester to retrieve.
+        required: true
+        schema:
+          type: string
+    security:
+      - bearerAuth: []
+    responses:
+      '200':
+        description: Successful response containing the semester data.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Semester'
+      '404':
+        description: Semester not found.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Semester not found.
       '500':
         $ref: '#/components/responses/InternalServerError'

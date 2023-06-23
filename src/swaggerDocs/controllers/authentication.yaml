@@ -1,0 +1,60 @@
+/authentication/sign-in:
+  post:
+    summary: Authenticate user and generate access tokens.
+    tags:
+      - Authentication
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                example: example@gmail.com
+              password:
+                type: string
+                example: '123456'
+    responses:
+      '200':
+        description: Successful authentication. Access tokens generated.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                  example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+                _id:
+                  type: string
+                  example: '648491ce62b4a82f97cd0cd4'
+        links:
+          GetAuthenticatedUserId:
+            description: Get the authenticated users's _id
+            operationId: GetAuthenticatedUserId
+            parameters:
+              authenticatedUserId: '$response.body#/_id'
+      '401':
+        description: Unauthorized - Invalid credentials.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: 'Credentials are incorrect'
+      '403':
+        description: Forbidden - User account is not active.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: 'Account is not active'
+      '500':
+        $ref: '#/components/responses/InternalServerError'

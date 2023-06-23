@@ -32,17 +32,17 @@ const verifyToken = (
             })
           }
 
-          const { email, id } = JwtPayload as AccessTokenPayload
+          const { email, _id } = JwtPayload as AccessTokenPayload
 
-          const isValidId = mongoose.Types.ObjectId.isValid(id)
+          const isValidId = mongoose.Types.ObjectId.isValid(_id)
 
-          if (!isValidId || !email || !id) {
+          if (!isValidId || !email || !_id) {
             return res.status(401).json({
               message: 'User is not authorized to continue!',
             })
           }
 
-          req.currentUser = { email, id }
+          req.currentUser = { email, _id }
 
           return next()
         }
