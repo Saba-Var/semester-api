@@ -15,6 +15,7 @@ const swaggerDocSetup = () => {
       securitySchemes: loadYamlFile('securitySchemes.yaml'),
       responses: loadYamlFile('responses.yaml'),
       schemas: {},
+      examples: {},
     },
     paths: {},
   }
@@ -39,6 +40,13 @@ const swaggerDocSetup = () => {
     swaggerDocument.components.schemas,
     'schemas/partials',
     partialYamlFiles
+  )
+
+  const examplesYamlFiles = ['LearningActivitiesExample']
+  appendYamlFiles(
+    swaggerDocument.components.examples,
+    'examples',
+    examplesYamlFiles
   )
 
   return SwaggerUI.setup(swaggerDocument, options)

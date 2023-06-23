@@ -37,3 +37,16 @@ UnprocessableEntity:
                   type: string
                 example:
                   - Error message
+
+NotFound:
+  description: Not Found
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+            example: Resource not found
+        example:
+          message: Resource not found

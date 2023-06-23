@@ -23,26 +23,7 @@
                           $ref: '#/components/schemas/LearningActivity'
                         description: The learning activities associated with the semester, referenced by their ObjectIds.
                         example:
-                          - subjectName: 'Math'
-                            teacherName: 'John Doe'
-                            weekday: 'Monday'
-                            activityType: 'Lecture'
-                            startingTime: '09:00'
-                            endingTime: '10:30'
-                            user: '609f1f0db1e9aa001f20a5d3'
-                            semester: '609f1f0db1e9aa001f20a5d6'
-                            createdAt: '2022-06-01T10:00:00Z'
-                            updatedAt: '2022-06-01T10:00:00Z'
-                          - subjectName: 'English'
-                            teacherName: 'Jane Smith'
-                            weekday: 'Tuesday'
-                            activityType: 'Practice'
-                            startingTime: '13:30'
-                            endingTime: '15:00'
-                            user: '609f1f0db1e9aa001f20a5d3'
-                            semester: '609f1f0db1e9aa001f20a5d6'
-                            createdAt: '2022-06-02T09:15:00Z'
-                            updatedAt: '2022-06-02T09:15:00Z'
+                          $ref: '#/components/examples/LearningActivitiesExample'
                 example:
                   _id: '609f1f0db1e9aa001f20a5d6'
                   name: Fall Semester
@@ -51,7 +32,8 @@
                   endDate: null
                   isCurrentSemester: true
                   learningActivities:
-                    - subjectName: 'Math'
+                    - _id: '609f1f0db1e9aa001f20a5d4'
+                      subjectName: 'Math'
                       teacherName: 'John Doe'
                       weekday: 'Monday'
                       activityType: 'Lecture'
@@ -61,7 +43,8 @@
                       semester: '609f1f0db1e9aa001f20a5d6'
                       createdAt: '2022-06-01T10:00:00Z'
                       updatedAt: '2022-06-01T10:00:00Z'
-                    - subjectName: 'English'
+                    - _id: '609f1f0db1e9aa001f20a5d5'
+                      subjectName: 'English'
                       teacherName: 'Jane Smith'
                       weekday: 'Tuesday'
                       activityType: 'Practice'
@@ -71,8 +54,6 @@
                       semester: '609f1f0db1e9aa001f20a5d6'
                       createdAt: '2022-06-02T09:15:00Z'
                       updatedAt: '2022-06-02T09:15:00Z'
-                  createdAt: '2022-06-01T10:00:00Z'
-                  updatedAt: '2022-06-10T15:30:00Z'
       '401':
         $ref: '#/components/responses/UnauthorizedAccess'
       '500':
@@ -144,16 +125,50 @@
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Semester'
+              allOf:
+                - $ref: '#/components/schemas/Semester'
+                - type: object
+                  properties:
+                    learningActivities:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/LearningActivity'
+                      description: The learning activities associated with the semester, referenced by their ObjectIds.
+                      example:
+                        $ref: '#/components/examples/LearningActivitiesExample'
+              example:
+                _id: '609f1f0db1e9aa001f20a5d6'
+                name: Fall Semester
+                user: '609f1f0db1e9aa001f20a5d3'
+                startDate: '2022-09-01'
+                endDate: null
+                isCurrentSemester: true
+                learningActivities:
+                  - _id: '609f1f0db1e9aa001f20a5d4'
+                    subjectName: 'Math'
+                    teacherName: 'John Doe'
+                    weekday: 'Monday'
+                    activityType: 'Lecture'
+                    startingTime: '09:00'
+                    endingTime: '10:30'
+                    user: '609f1f0db1e9aa001f20a5d3'
+                    semester: '609f1f0db1e9aa001f20a5d6'
+                    createdAt: '2022-06-01T10:00:00Z'
+                    updatedAt: '2022-06-01T10:00:00Z'
+                  - _id: '609f1f0db1e9aa001f20a5d5'
+                    subjectName: 'English'
+                    teacherName: 'Jane Smith'
+                    weekday: 'Tuesday'
+                    activityType: 'Practice'
+                    startingTime: '13:30'
+                    endingTime: '15:00'
+                    user: '609f1f0db1e9aa001f20a5d3'
+                    semester: '609f1f0db1e9aa001f20a5d6'
+                    createdAt: '2022-06-02T09:15:00Z'
+                    updatedAt: '2022-06-02T09:15:00Z'
+                createdAt: '2022-06-01T10:00:00Z'
+                updatedAt: '2022-06-01T10:00:00Z'
       '404':
-        description: Semester not found.
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  example: Semester not found.
+        $ref: '#/components/responses/NotFound'
       '500':
         $ref: '#/components/responses/InternalServerError'
