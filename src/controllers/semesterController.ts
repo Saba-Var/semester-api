@@ -132,6 +132,7 @@ export const deleteSemester = async (
 
     return res.status(200).json({
       message: req.t('semester_deleted_successfully'),
+      _id: deletedSemester._id,
     })
   } catch (error: any) {
     return res.status(500).json({
