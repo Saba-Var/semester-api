@@ -30,12 +30,6 @@
                 _id:
                   type: string
                   example: '648491ce62b4a82f97cd0cd4'
-        links:
-          GetAuthenticatedUserId:
-            description: Get the authenticated users's _id
-            operationId: GetAuthenticatedUserId
-            parameters:
-              authenticatedUserId: '$response.body#/_id'
       '401':
         description: Unauthorized - Invalid credentials.
         content:
@@ -56,5 +50,231 @@
                 message:
                   type: string
                   example: 'Account is not active'
+      '500':
+        $ref: '#/components/responses/InternalServerError'
+
+/authentication/sign-up:
+  post:
+    summary: Create a new user account.
+    tags:
+      - Authentication
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                example: example@gmail.com
+              username:
+                type: string
+                example: John Doe
+              password:
+                type: string
+                example: '123456'
+              confirmPassword:
+                type: string
+                example: '123456'
+    responses:
+      '201':
+        description: User account created successfully. Activation email sent. Check your gmail to activate your account!
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: 'Activation email sent. Check your gmail to activate your account!'
+      '422':
+        $ref: '#/components/responses/UnprocessableEntity'
+      '409':
+        description: Conflict. User with the provided email is already registered.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: User is already registered.
+                  description: Error message indicating the conflict.
+      '500':
+        $ref: '#/components/responses/InternalServerError'
+
+/authentication/activate-account:
+  post:
+    summary: Activate user account.
+    tags:
+      - Authentication
+    parameters:
+      - in: query
+        name: token
+        description: Activation token received by the user.
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Successful response indicating the user account activation is successful.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: User account activated successfully.
+      '403':
+        description: Forbidden. User is not authorized to activate the account or the token is invalid.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: User is not authorized to activate the account or the token is invalid.
+                  description: Error message indicating the forbidden access.
+      '404':
+        $ref: '#/components/responses/NotFound'
+      '409':
+        description: Conflict. User account is already activated.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Account is already activated!
+      '500':
+        $ref: '#/components/responses/InternalServerError'
+
+/authentication/change-password:
+  get:
+    summary: Send password change request email.
+    tags:
+      - Authentication
+    parameters:
+      - in: query
+        name: email
+        description: User's email address.
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Successful response indicating the password change request email is sent.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Check yor gmail to reset your password!
+      '404':
+        $ref: '#/components/responses/NotFound'
+      '500':
+        $ref: '#/components/responses/InternalServerError'
+  put:
+    summary: Change user password.
+    tags:
+      - Authentication
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              password:
+                type: string
+                description: New password.
+    parameters:
+      - in: query
+        name: accessToken
+        schema:
+          type: string
+        required: true
+        description: Access token received by the user in the password change request email.
+    responses:
+      '200':
+        description: Successful response indicating the password has been changed.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Password changed successfully.
+      '401':
+        description: Unauthorized. Invalid access token or unauthorized access.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: JWT is not valid.
+                  description: Error message indicating the invalid access token.
+      '500':
+        $ref: '#/components/responses/InternalServerError'
+
+/authentication/refresh:
+  get:
+    summary: Refresh access token.
+    tags:
+      - Authentication
+    responses:
+      '200':
+        description: Successful response with refreshed access token.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                  example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+                  description: Refreshed access token.
+      '401':
+        description: Unauthorized access or invalid refresh token.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Unauthorized access.
+                  description: Error message indicating unauthorized access or invalid refresh token.
+      '500':
+        $ref: '#/components/responses/InternalServerError'
+
+/authentication/logout:
+  get:
+    summary: Logout and clear refresh token.
+    tags:
+      - Authentication
+    responses:
+      '200':
+        description: Successful response indicating successful logout.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Cookie cleared. Logged out successfully.
+                  description: Message indicating successful logout.
       '500':
         $ref: '#/components/responses/InternalServerError'

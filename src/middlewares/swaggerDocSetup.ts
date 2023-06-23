@@ -9,6 +9,7 @@ const swaggerDocSetup = () => {
 
   const swaggerDocument = {
     openapi: '3.0.0',
+    produces: ['application/json'],
     info: loadYamlFile('info.yaml'),
     servers: loadYamlFile('servers.yaml'),
     components: {

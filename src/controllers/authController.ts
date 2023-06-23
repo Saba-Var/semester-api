@@ -42,7 +42,8 @@ export const registerUser = async (
       {
         _id: newUser._id,
       },
-      language
+      language,
+      201
     )
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
@@ -217,7 +218,7 @@ export const refresh = async (req: RequestBody<{}>, res: Response) => {
     const refreshToken = req?.cookies?.refreshToken
 
     if (!refreshToken) {
-      return res.status(403).json({ message: req.t('unauthorized_access') })
+      return res.status(401).json({ message: req.t('unauthorized_access') })
     }
 
     const verified = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!)
@@ -228,21 +229,21 @@ export const refresh = async (req: RequestBody<{}>, res: Response) => {
       const existingUser = await User.findById(userId)
 
       if (!email || !existingUser || existingUser.email !== email) {
-        return res.status(403).json({ message: req.t('unauthorized_access') })
+        return res.status(401).json({ message: req.t('unauthorized_access') })
       }
 
       const accessToken = jwt.sign(
         { _id: existingUser._id, email: existingUser.email },
         process.env.ACCESS_TOKEN_SECRET!,
         {
-          expiresIn: process.env.NODE_ENV === 'production' ? '10s' : '10m',
+          expiresIn: process.env.NODE_ENV === 'production' ? '1h' : '10m',
         }
       )
 
       return res.status(200).json({ accessToken })
     }
 
-    return res.status(403).json({
+    return res.status(401).json({
       message: req.t('refresh_token_is_invalid'),
     })
   } catch (error: any) {

@@ -27,5 +27,3 @@
               message: User not found.
       '500':
         $ref: '#/components/responses/InternalServerError'
-    produces:
-      - application/json

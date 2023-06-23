@@ -58,8 +58,6 @@
         $ref: '#/components/responses/UnauthorizedAccess'
       '500':
         $ref: '#/components/responses/InternalServerError'
-    produces:
-      - application/json
 
   post:
     summary: Create a new semester
