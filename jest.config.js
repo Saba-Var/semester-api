@@ -13,5 +13,10 @@ module.exports = {
     '^utils$': '<rootDir>/src/utils',
     '^controllers$': '<rootDir>/src/controllers',
     '^middlewares$': '<rootDir>/src/middlewares',
+    '^models$': '<rootDir>/src/models',
+    '^services$': '<rootDir>/src/services',
+    '^routes$': '<rootDir>/src/routes',
+    '^types.d$': '<rootDir>/src/types.d.ts',
+    '^validationSchemas$': '<rootDir>/src/validationSchemas',
   },
 }
