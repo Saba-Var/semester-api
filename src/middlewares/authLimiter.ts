@@ -1,6 +1,6 @@
 import rateLimit from 'express-rate-limit'
 
-const authLimiter = rateLimit({
+export const authLimiter = rateLimit({
   windowMs: 10 * 6000,
   max: 20,
   message: {
@@ -10,5 +10,3 @@ const authLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 })
-
-export default authLimiter

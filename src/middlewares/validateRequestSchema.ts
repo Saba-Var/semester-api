@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from 'express'
 import { validationResult } from 'express-validator'
 import type { TransformedErrors } from 'types'
 
-const validateRequestSchema = (
+export const validateRequestSchema = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -25,4 +25,3 @@ const validateRequestSchema = (
 
   return next()
 }
-export default validateRequestSchema

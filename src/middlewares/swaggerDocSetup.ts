@@ -1,7 +1,7 @@
 import { loadYamlFile, appendYamlFiles } from 'utils'
 import SwaggerUI from 'swagger-ui-express'
 
-const swaggerDocSetup = () => {
+export const swaggerDocSetup = () => {
   const options = {
     customCss: '.swagger-ui .topbar { display: none }',
     customSiteTitle: 'Semester API Specs',
@@ -52,5 +52,3 @@ const swaggerDocSetup = () => {
 
   return SwaggerUI.setup(swaggerDocument, options)
 }
-
-export default swaggerDocSetup

@@ -1,10 +1,11 @@
+import type { Response, NextFunction } from 'express'
 import type { ExtendedAuthRequest } from 'types'
-import { Response } from 'express'
 import { User } from 'models'
 
 export const getUserDetails = async (
   req: ExtendedAuthRequest,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const user = await User.findById(req.currentUser?._id).select(
@@ -16,9 +17,7 @@ export const getUserDetails = async (
     }
 
     return res.status(200).json(user)
-  } catch (error: any) {
-    return res.status(500).json({
-      message: error.message,
-    })
+  } catch (error) {
+    return next(error)
   }
 }
