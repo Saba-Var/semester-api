@@ -51,11 +51,11 @@ server.use(cookieParser())
 
 server.use(authLimiter)
 
-server.use('/authentication', authRouter)
+server.use('api/authentication', authRouter)
 server.use(verifyToken as unknown as RequestHandler)
-server.use('/user', userRouter)
-server.use('/learning-activities', learningActivitiesRouter)
-server.use('/semesters', semesterRouter)
+server.use('api/user', userRouter)
+server.use('api/learning-activities', learningActivitiesRouter)
+server.use('api/semesters', semesterRouter)
 
 server.listen(process.env.SERVER_PORT!, () => {
   // eslint-disable-next-line no-console

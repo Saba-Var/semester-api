@@ -14,7 +14,7 @@ const router = express.Router()
 router.get('/:id', idParamSchema, validateRequestSchema, getLearningActivity)
 
 router.get(
-  '/semester/:id',
+  '/semesters/:id',
   idParamSchema,
   validateRequestSchema,
   getAllLearningActivityOfSemester

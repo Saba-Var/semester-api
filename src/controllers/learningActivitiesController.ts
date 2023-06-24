@@ -36,6 +36,7 @@ export const createLearningActivity = async (
 
     return res.status(201).json({
       message: req.t('learning_activity_created_successfully'),
+      _id: newLearningActivity._id,
     })
   } catch (error: any) {
     return res.status(500).json({
@@ -53,6 +54,12 @@ export const getLearningActivity = async (
       user: req.currentUser?._id,
       _id: req.params.id,
     })
+
+    if (!learningActivity) {
+      return res.status(404).json({
+        message: req.t('learning_activity_not_found'),
+      })
+    }
 
     return res.status(200).json(learningActivity)
   } catch (error: any) {
@@ -107,6 +114,7 @@ export const deleteLearningActivity = async (
 
     return res.status(200).json({
       message: req.t('learning_activity_deleted_successfully'),
+      _id: deletedLearningActivity._id,
     })
   } catch (error: any) {
     return res.status(500).json({

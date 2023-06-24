@@ -36,7 +36,7 @@ const swaggerDocSetup = () => {
   ]
   appendYamlFiles(swaggerDocument.paths, 'controllers', controllerYamlFiles)
 
-  const partialYamlFiles = ['SemesterPartial']
+  const partialYamlFiles = ['SemesterPartial', 'LearningActivityPartial']
   appendYamlFiles(
     swaggerDocument.components.schemas,
     'schemas/partials',

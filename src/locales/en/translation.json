@@ -13,6 +13,7 @@
   "refresh_token_is_invalid": "Refresh token is invalid!",
   "log_out_success": "Cookie cleared. Logged out successfully.",
   "learning_activity_not_found": "Learning activity not found!",
+  "learning_activities_not_found": "Learning activities not found!",
   "learning_activity_updated_successfully": "Learning activity updated successfully!",
   "semester_not_found": "Semester not found!",
   "semester_name_is_required": "Semester name is required!",

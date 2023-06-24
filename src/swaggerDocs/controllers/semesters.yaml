@@ -6,7 +6,7 @@
     security:
       - bearerAuth: []
     responses:
-      '200':
+      200:
         description: Successful response containing the list of semesters.
         content:
           application/json:
@@ -54,9 +54,9 @@
                       semester: '609f1f0db1e9aa001f20a5d6'
                       createdAt: '2022-06-02T09:15:00Z'
                       updatedAt: '2022-06-02T09:15:00Z'
-      '401':
+      401:
         $ref: '#/components/responses/UnauthorizedAccess'
-      '500':
+      500:
         $ref: '#/components/responses/InternalServerError'
 
   post:
@@ -72,7 +72,7 @@
           schema:
             $ref: '#/components/schemas/SemesterPartial'
     responses:
-      '201':
+      201:
         description: Semester created successfully
         content:
           application/json:
@@ -86,9 +86,9 @@
                   type: string
                   example: 5f9b3b3b1c9d440000f3e9a0
                   format: objectid
-      '401':
+      401:
         $ref: '#/components/responses/UnauthorizedAccess'
-      '409':
+      409:
         description: Conflict - Semester already exists or user has an active semester
         content:
           application/json:
@@ -98,9 +98,9 @@
                 message:
                   type: string
                   example: Semester with the given name already exists or user has an active semester
-      '422':
+      422:
         $ref: '#/components/responses/UnprocessableEntity'
-      '500':
+      500:
         $ref: '#/components/responses/InternalServerError'
 
 /semesters/{id}:
@@ -119,7 +119,7 @@
     security:
       - bearerAuth: []
     responses:
-      '200':
+      200:
         description: Successful response containing the semester data.
         content:
           application/json:
@@ -167,9 +167,9 @@
                     updatedAt: '2022-06-02T09:15:00Z'
                 createdAt: '2022-06-01T10:00:00Z'
                 updatedAt: '2022-06-01T10:00:00Z'
-      '404':
+      404:
         $ref: '#/components/responses/NotFound'
-      '500':
+      500:
         $ref: '#/components/responses/InternalServerError'
 
   put:
@@ -193,7 +193,7 @@
           schema:
             $ref: '#/components/schemas/SemesterPartial'
     responses:
-      '200':
+      200:
         description: Semester updated successfully
         content:
           application/json:
@@ -207,11 +207,11 @@
                   type: string
                   example: 5f9b3b3b1c9d440000f3e9a0
                   format: objectid
-      '401':
+      401:
         $ref: '#/components/responses/UnauthorizedAccess'
-      '404':
+      404:
         $ref: '#/components/responses/NotFound'
-      '409':
+      409:
         description: Conflict - Semester with the given name already exists
         content:
           application/json:
@@ -221,9 +221,9 @@
                 message:
                   type: string
                   example: Semester with the given name already exists
-      '422':
+      422:
         $ref: '#/components/responses/UnprocessableEntity'
-      '500':
+      500:
         $ref: '#/components/responses/InternalServerError'
 
   delete:
@@ -241,7 +241,7 @@
     security:
       - bearerAuth: []
     responses:
-      '200':
+      200:
         description: Semester deleted successfully
         content:
           application/json:
@@ -255,11 +255,11 @@
                   type: string
                   example: 5f9b3b3b1c9d440000f3e9a0
                   format: objectid
-      '401':
+      401:
         $ref: '#/components/responses/UnauthorizedAccess'
-      '404':
+      404:
         $ref: '#/components/responses/NotFound'
-      '500':
+      500:
         $ref: '#/components/responses/InternalServerError'
 
 /semesters/{id}/end:
@@ -289,7 +289,7 @@
     security:
       - bearerAuth: []
     responses:
-      '200':
+      200:
         description: Semester ended successfully
         content:
           application/json:
@@ -303,11 +303,11 @@
                   type: string
                   example: 5f9b3b3b1c9d440000f3e9a0
                   format: objectid
-      '401':
+      401:
         $ref: '#/components/responses/UnauthorizedAccess'
-      '404':
+      404:
         $ref: '#/components/responses/NotFound'
-      '422':
+      422:
         $ref: '#/components/responses/UnprocessableEntity'
-      '500':
+      500:
         $ref: '#/components/responses/InternalServerError'

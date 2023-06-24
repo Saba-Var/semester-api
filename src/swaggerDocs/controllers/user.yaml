@@ -6,24 +6,16 @@
       - User
     description: Retrieve details of the currently authenticated user.
     responses:
-      '200':
+      200:
         description: User details successfully retrieved.
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/User'
-      '401':
+
+      401:
         $ref: '#/components/responses/UnauthorizedAccess'
-      '404':
-        description: User not found.
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-            example:
-              message: User not found.
-      '500':
+      404:
+        $ref: '#/components/responses/NotFound'
+      500:
         $ref: '#/components/responses/InternalServerError'

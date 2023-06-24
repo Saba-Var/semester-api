@@ -13,6 +13,7 @@
   "refresh_token_is_invalid": "Refresh token არ არის ვალიდური!",
   "log_out_success": "Cookie გასუფთავდა. გამოსვლა წარმატებით დასრულდა!",
   "learning_activity_not_found": "სასწავლო აქტივობა ვერ მოიძებნა!",
+  "learning_activities_not_found": "სასწავლო აქტივობები ვერ მოიძებნა!",
   "learning_activity_updated_successfully": "სასწავლო აქტივობა წარმატებით განახლდა!",
   "semester_not_found": "სემესტრი ვერ მოიძებნა!",
   "semester_name_is_required": "სემესტრის სახელი სავალდებულოა!",
