@@ -1,0 +1,72 @@
+LearningActivity:
+  type: object
+  properties:
+    _id:
+      type: string
+      format: objectid
+      description: The unique identifier of the learning activity.
+      example: '609f1f0db1e9aa001f20a5d6'
+    subjectName:
+      type: string
+      required: true
+      example: 'Mathematics'
+    teacherName:
+      type: string
+      required: true
+      example: 'John Doe'
+    weekday:
+      type: string
+      enum:
+        - 'Monday'
+        - 'Tuesday'
+        - 'Wednesday'
+        - 'Thursday'
+        - 'Friday'
+        - 'Saturday'
+        - 'Sunday'
+      required: true
+      example: 'Monday'
+    activityType:
+      type: string
+      enum:
+        - 'Practice'
+        - 'Lecture'
+        - 'Seminar'
+        - 'Other'
+        - 'Exam'
+        - 'Lab'
+      required: true
+      example: 'Practice'
+    startingTime:
+      type: string
+      required: true
+      example: '10:00'
+      description: The starting time of the learning activity in "HH:MM" format. Minute should be 00 or 30.
+    endingTime:
+      type: string
+      required: true
+      example: '11:30'
+      description: The ending time of the learning activity in "HH:MM" format. Minute should be 00 or 30.
+    user:
+      type: string
+      format: objectid
+      immutable: true
+      required: true
+      description: ID of the user associated with the learning activity.
+    semester:
+      type: string
+      format: objectid
+      immutable: true
+      required: true
+      example: '609f1f0db1e9aa001f20a5d6'
+      description: id of the semester associated with the learning activity.
+    createdAt:
+      type: string
+      format: date-time
+      description: The timestamp when the semester was created.
+      example: '2022-06-01T10:00:00Z'
+    updatedAt:
+      type: string
+      format: date-time
+      description: The timestamp when the semester was last updated.
+      example: '2022-06-10T15:30:00Z'

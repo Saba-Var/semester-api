@@ -14,7 +14,7 @@ export const createLearningActivity = async (
   try {
     const semester = await Semester.findOne({
       _id: req.body.semester,
-      user: req.currentUser?.id,
+      user: req.currentUser?._id,
     })
 
     if (!semester) {
@@ -25,7 +25,7 @@ export const createLearningActivity = async (
 
     const newLearningActivity = await LearningActivity.create({
       ...req.body,
-      user: req.currentUser?.id,
+      user: req.currentUser?._id,
     })
 
     await semester.updateOne({
@@ -36,6 +36,7 @@ export const createLearningActivity = async (
 
     return res.status(201).json({
       message: req.t('learning_activity_created_successfully'),
+      _id: newLearningActivity._id,
     })
   } catch (error: any) {
     return res.status(500).json({
@@ -50,9 +51,15 @@ export const getLearningActivity = async (
 ) => {
   try {
     const learningActivity = await LearningActivity.findOne({
-      user: req.currentUser?.id,
+      user: req.currentUser?._id,
       _id: req.params.id,
     })
+
+    if (!learningActivity) {
+      return res.status(404).json({
+        message: req.t('learning_activity_not_found'),
+      })
+    }
 
     return res.status(200).json(learningActivity)
   } catch (error: any) {
@@ -68,7 +75,7 @@ export const getAllLearningActivityOfSemester = async (
 ) => {
   try {
     const learningActivities = await LearningActivity.find({
-      user: req.currentUser?.id,
+      user: req.currentUser?._id,
       semester: req.params.id,
     })
 
@@ -86,7 +93,7 @@ export const deleteLearningActivity = async (
 ) => {
   try {
     const deletedLearningActivity = await LearningActivity.findOneAndDelete({
-      user: req.currentUser?.id,
+      user: req.currentUser?._id,
       _id: req.params.id,
     })
 
@@ -107,6 +114,7 @@ export const deleteLearningActivity = async (
 
     return res.status(200).json({
       message: req.t('learning_activity_deleted_successfully'),
+      _id: deletedLearningActivity._id,
     })
   } catch (error: any) {
     return res.status(500).json({
@@ -121,7 +129,7 @@ export const updateLearningActivity = async (
 ) => {
   try {
     const updatedLearningActivity = await LearningActivity.findOneAndUpdate(
-      { _id: req.params.id, user: req.currentUser?.id },
+      { _id: req.params.id, user: req.currentUser?._id },
       req.body
     )
 

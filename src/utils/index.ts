@@ -1,4 +1,5 @@
 export * from './generateFieldError'
-export * from './loadYamlContent'
+export * from './appendYamlFiles'
+export * from './loadYamlFile'
 export * from './sendEmail'
 export * from './jwtDecode'

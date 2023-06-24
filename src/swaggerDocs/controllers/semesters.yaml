@@ -1,0 +1,313 @@
+/semesters:
+  get:
+    summary: Retrieve the list of semesters for the current user.
+    tags:
+      - Semester
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: Successful response containing the list of semesters.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                allOf:
+                  - $ref: '#/components/schemas/Semester'
+                  - type: object
+                    properties:
+                      learningActivities:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/LearningActivity'
+                        description: The learning activities associated with the semester, referenced by their ObjectIds.
+                        example:
+                          $ref: '#/components/examples/LearningActivitiesExample'
+                example:
+                  _id: '609f1f0db1e9aa001f20a5d6'
+                  name: Fall Semester
+                  user: '609f1f0db1e9aa001f20a5d3'
+                  startDate: '2022-09-01'
+                  endDate: null
+                  isCurrentSemester: true
+                  learningActivities:
+                    - _id: '609f1f0db1e9aa001f20a5d4'
+                      subjectName: 'Math'
+                      teacherName: 'John Doe'
+                      weekday: 'Monday'
+                      activityType: 'Lecture'
+                      startingTime: '09:00'
+                      endingTime: '10:30'
+                      user: '609f1f0db1e9aa001f20a5d3'
+                      semester: '609f1f0db1e9aa001f20a5d6'
+                      createdAt: '2022-06-01T10:00:00Z'
+                      updatedAt: '2022-06-01T10:00:00Z'
+                    - _id: '609f1f0db1e9aa001f20a5d5'
+                      subjectName: 'English'
+                      teacherName: 'Jane Smith'
+                      weekday: 'Tuesday'
+                      activityType: 'Practice'
+                      startingTime: '13:30'
+                      endingTime: '15:00'
+                      user: '609f1f0db1e9aa001f20a5d3'
+                      semester: '609f1f0db1e9aa001f20a5d6'
+                      createdAt: '2022-06-02T09:15:00Z'
+                      updatedAt: '2022-06-02T09:15:00Z'
+      401:
+        $ref: '#/components/responses/UnauthorizedAccess'
+      500:
+        $ref: '#/components/responses/InternalServerError'
+
+  post:
+    summary: Create a new semester
+    tags:
+      - Semester
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SemesterPartial'
+    responses:
+      201:
+        description: Semester created successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Semester created successfully
+                _id:
+                  type: string
+                  example: 5f9b3b3b1c9d440000f3e9a0
+                  format: objectid
+      401:
+        $ref: '#/components/responses/UnauthorizedAccess'
+      409:
+        description: Conflict - Semester already exists or user has an active semester
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Semester with the given name already exists or user has an active semester
+      422:
+        $ref: '#/components/responses/UnprocessableEntity'
+      500:
+        $ref: '#/components/responses/InternalServerError'
+
+/semesters/{id}:
+  get:
+    summary: Retrieve semester data by ID.
+    tags:
+      - Semester
+    parameters:
+      - in: path
+        name: id
+        description: id of the semester to retrieve.
+        required: true
+        schema:
+          type: string
+          format: objectid
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: Successful response containing the semester data.
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Semester'
+                - type: object
+                  properties:
+                    learningActivities:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/LearningActivity'
+                      description: The learning activities associated with the semester, referenced by their ObjectIds.
+                      example:
+                        $ref: '#/components/examples/LearningActivitiesExample'
+              example:
+                _id: '609f1f0db1e9aa001f20a5d6'
+                name: Fall Semester
+                user: '609f1f0db1e9aa001f20a5d3'
+                startDate: '2022-09-01'
+                endDate: null
+                isCurrentSemester: true
+                learningActivities:
+                  - _id: '609f1f0db1e9aa001f20a5d4'
+                    subjectName: 'Math'
+                    teacherName: 'John Doe'
+                    weekday: 'Monday'
+                    activityType: 'Lecture'
+                    startingTime: '09:00'
+                    endingTime: '10:30'
+                    user: '609f1f0db1e9aa001f20a5d3'
+                    semester: '609f1f0db1e9aa001f20a5d6'
+                    createdAt: '2022-06-01T10:00:00Z'
+                    updatedAt: '2022-06-01T10:00:00Z'
+                  - _id: '609f1f0db1e9aa001f20a5d5'
+                    subjectName: 'English'
+                    teacherName: 'Jane Smith'
+                    weekday: 'Tuesday'
+                    activityType: 'Practice'
+                    startingTime: '13:30'
+                    endingTime: '15:00'
+                    user: '609f1f0db1e9aa001f20a5d3'
+                    semester: '609f1f0db1e9aa001f20a5d6'
+                    createdAt: '2022-06-02T09:15:00Z'
+                    updatedAt: '2022-06-02T09:15:00Z'
+                createdAt: '2022-06-01T10:00:00Z'
+                updatedAt: '2022-06-01T10:00:00Z'
+      404:
+        $ref: '#/components/responses/NotFound'
+      500:
+        $ref: '#/components/responses/InternalServerError'
+
+  put:
+    summary: Update a semester.
+    tags:
+      - Semester
+    parameters:
+      - in: path
+        name: id
+        description: id of the semester to update.
+        required: true
+        schema:
+          type: string
+          format: objectid
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SemesterPartial'
+    responses:
+      200:
+        description: Semester updated successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Semester updated successfully
+                _id:
+                  type: string
+                  example: 5f9b3b3b1c9d440000f3e9a0
+                  format: objectid
+      401:
+        $ref: '#/components/responses/UnauthorizedAccess'
+      404:
+        $ref: '#/components/responses/NotFound'
+      409:
+        description: Conflict - Semester with the given name already exists
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Semester with the given name already exists
+      422:
+        $ref: '#/components/responses/UnprocessableEntity'
+      500:
+        $ref: '#/components/responses/InternalServerError'
+
+  delete:
+    summary: Delete a semester by ID.
+    tags:
+      - Semester
+    parameters:
+      - in: path
+        name: id
+        description: id of the semester to delete.
+        required: true
+        schema:
+          type: string
+          format: objectid
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: Semester deleted successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Semester deleted successfully
+                _id:
+                  type: string
+                  example: 5f9b3b3b1c9d440000f3e9a0
+                  format: objectid
+      401:
+        $ref: '#/components/responses/UnauthorizedAccess'
+      404:
+        $ref: '#/components/responses/NotFound'
+      500:
+        $ref: '#/components/responses/InternalServerError'
+
+/semesters/{id}/end:
+  put:
+    summary: End a semester by id.
+    tags:
+      - Semester
+    parameters:
+      - in: path
+        name: id
+        description: id of the semester to end.
+        required: true
+        schema:
+          type: string
+          format: objectid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              endDate:
+                type: string
+                format: date
+                example: '2022-12-31'
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: Semester ended successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Semester ended successfully
+                _id:
+                  type: string
+                  example: 5f9b3b3b1c9d440000f3e9a0
+                  format: objectid
+      401:
+        $ref: '#/components/responses/UnauthorizedAccess'
+      404:
+        $ref: '#/components/responses/NotFound'
+      422:
+        $ref: '#/components/responses/UnprocessableEntity'
+      500:
+        $ref: '#/components/responses/InternalServerError'

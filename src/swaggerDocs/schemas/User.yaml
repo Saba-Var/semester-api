@@ -1,0 +1,70 @@
+User:
+  type: object
+  properties:
+    _id:
+      type: string
+      description: The unique identifier of the user.
+      example: '609f1f0db1e9aa001f20a5d7'
+    username:
+      type: string
+      required: true
+      description: The username of the user.
+      example: John Doe
+    email:
+      type: string
+      required: true
+      unique: true
+      description: The email address of the user.
+      example: example@gmail.com
+    active:
+      type: boolean
+      default: false
+      description: Indicates whether the user's account is active or not.
+      example: true
+    activeSemester:
+      type: string
+      format: objectid
+      nullable: true
+      description: The active semester of the user, referenced by its ObjectId.
+      example: '609f1f0db1e9aa001f20a5d9'
+    password:
+      type: string
+      description: The password of the user.
+      example: password123
+    image:
+      type: string
+      nullable: true
+      description: The image associated with the user, stored as a string.
+      example: null
+    semesters:
+      type: array
+      items:
+        type: string
+        format: objectid
+        description: The semesters associated with the user, referenced by their ObjectIds.
+      example:
+        - '609f1f0db1e9aa001f20a5d1'
+        - '609f1f0db1e9aa001f20a5d2'
+    createdAt:
+      type: string
+      format: date-time
+      description: The timestamp when the user was created.
+      example: '2022-06-01T10:00:00Z'
+    updatedAt:
+      type: string
+      format: date-time
+      description: The timestamp when the user was last updated.
+      example: '2022-06-10T15:30:00Z'
+  example:
+    _id: '609f1f0db1e9aa001f20a5d7'
+    username: John Doe
+    email: example@gmail.com
+    active: true
+    activeSemester: 609f1f0db1e9aa001f20a5d9
+    password: password123
+    image: null
+    semesters:
+      - '609f1f0db1e9aa001f20a5d1'
+      - '609f1f0db1e9aa001f20a5d2'
+    createdAt: '2022-06-01T10:00:00Z'
+    updatedAt: '2022-06-10T15:30:00Z'

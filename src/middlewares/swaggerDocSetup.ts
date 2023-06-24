@@ -1,5 +1,5 @@
+import { loadYamlFile, appendYamlFiles } from 'utils'
 import SwaggerUI from 'swagger-ui-express'
-import { loadYamlContent } from 'utils'
 
 const swaggerDocSetup = () => {
   const options = {
@@ -9,11 +9,24 @@ const swaggerDocSetup = () => {
 
   const swaggerDocument = {
     openapi: '3.0.0',
-    info: loadYamlContent('info/info.yaml', 'info'),
-    servers: loadYamlContent('servers/servers.yaml', 'servers'),
-    components: loadYamlContent('components/components.yaml', 'components'),
+    produces: ['application/json'],
+    info: loadYamlFile('info.yaml'),
+    servers: loadYamlFile('servers.yaml'),
+    components: {
+      securitySchemes: loadYamlFile('securitySchemes.yaml'),
+      responses: loadYamlFile('responses.yaml'),
+      schemas: {},
+      examples: {},
+    },
     paths: {},
   }
+
+  const schemaYamlFiles = ['User', 'Semester', 'LearningActivity']
+  appendYamlFiles(
+    swaggerDocument.components.schemas,
+    'schemas',
+    schemaYamlFiles
+  )
 
   const controllerYamlFiles = [
     'authentication',
@@ -21,11 +34,21 @@ const swaggerDocSetup = () => {
     'semesters',
     'learningActivities',
   ]
+  appendYamlFiles(swaggerDocument.paths, 'controllers', controllerYamlFiles)
 
-  controllerYamlFiles.forEach((file) => {
-    const section = loadYamlContent(`controllers/${file}.yaml`)
-    Object.assign(swaggerDocument.paths, section)
-  })
+  const partialYamlFiles = ['SemesterPartial', 'LearningActivityPartial']
+  appendYamlFiles(
+    swaggerDocument.components.schemas,
+    'schemas/partials',
+    partialYamlFiles
+  )
+
+  const examplesYamlFiles = ['LearningActivitiesExample']
+  appendYamlFiles(
+    swaggerDocument.components.examples,
+    'examples',
+    examplesYamlFiles
+  )
 
   return SwaggerUI.setup(swaggerDocument, options)
 }

@@ -7,7 +7,7 @@ export const getUserDetails = async (
   res: Response
 ) => {
   try {
-    const user = await User.findById(req.currentUser?.id).select(
+    const user = await User.findById(req.currentUser?._id).select(
       '-password -verified -active'
     )
 

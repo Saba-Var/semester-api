@@ -10,7 +10,8 @@ export const sendEmail = async (
   to: string,
   res: Response,
   jwtData: object,
-  languageCookie: 'en' | 'ka'
+  languageCookie: 'en' | 'ka',
+  statusCode?: number
 ) => {
   const mg = mailgun({
     apiKey: process.env.MAILGUN_API_KEY!,
@@ -63,6 +64,6 @@ export const sendEmail = async (
       })
     }
 
-    return res.status(200).json({ message })
+    return res.status(statusCode || 200).json({ message })
   })
 }

@@ -1,0 +1,51 @@
+LearningActivityPartial:
+  type: object
+  properties:
+    subjectName:
+      type: string
+      required: true
+      example: 'Mathematics'
+    teacherName:
+      type: string
+      required: true
+      example: 'John Doe'
+    weekday:
+      type: string
+      enum:
+        - 'Monday'
+        - 'Tuesday'
+        - 'Wednesday'
+        - 'Thursday'
+        - 'Friday'
+        - 'Saturday'
+        - 'Sunday'
+      required: true
+      example: 'Monday'
+    activityType:
+      type: string
+      enum:
+        - 'Practice'
+        - 'Lecture'
+        - 'Seminar'
+        - 'Other'
+        - 'Exam'
+        - 'Lab'
+      required: true
+      example: 'Practice'
+    startingTime:
+      type: string
+      required: true
+      example: '10:00'
+      description: The starting time of the learning activity in "HH:MM" format. Minute should be 00 or 30.
+    endingTime:
+      type: string
+      required: true
+      example: '11:30'
+      description: The ending time of the learning activity in "HH:MM" format. Minute should be 00 or 30.
+    semester:
+      type: string
+      format: objectid
+      immutable: true
+      required: true
+      example: '609f1f0db1e9aa001f20a5d6'
+      description: id of the semester associated with the learning activity.

@@ -6,82 +6,16 @@
       - User
     description: Retrieve details of the currently authenticated user.
     responses:
-      '200':
+      200:
         description: User details successfully retrieved.
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                _id:
-                  type: string
-                username:
-                  type: string
-                email:
-                  type: string
-                activeSemester:
-                  oneOf:
-                    - type: null
-                    - type: string
-                semesters:
-                  type: array
-                  items:
-                    type: string
-                image:
-                  oneOf:
-                    - type: null
-                    - type: string
-                createdAt:
-                  type: string
-                  format: date-time
-                updatedAt:
-                  type: string
-                  format: date-time
-            example:
-              _id: '648491ce62b4a82f97cd0cd4'
-              username: 'John Doe'
-              email: 'example@gmail.com'
-              activeSemester: null
-              image: null
-              semesters:
-                - '648492fe62b4a82f97cd0cdf'
-                - '6484986862b4a82f97cd0d05'
-                - '64849f7d62b4a82f97cd0d3e'
-                - '64859adc4a2a250ae23d294b'
-              createdAt: '2023-06-10T15:07:58.589Z'
-              updatedAt: '2023-06-20T08:48:46.185Z'
-      '401':
-        description: User is not authorized to continue. Maybe missing authorization headers, or the access token is invalid or expired.
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-            example:
-              message: Unauthorized access!.
-      '404':
-        description: User not found.
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-            example:
-              message: User not found.
-      '500':
-        description: Internal Server Error.
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-            example:
-              message: Internal Server Error.
-    produces:
-      - application/json
+              $ref: '#/components/schemas/User'
+
+      401:
+        $ref: '#/components/responses/UnauthorizedAccess'
+      404:
+        $ref: '#/components/responses/NotFound'
+      500:
+        $ref: '#/components/responses/InternalServerError'

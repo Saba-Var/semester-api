@@ -32,7 +32,7 @@ router.post(
 router.post('/sign-in', signInSchema, validateRequestSchema, authorization)
 
 router.get(
-  '/change-password-request',
+  '/change-password',
   queryEmailSchema,
   validateRequestSchema,
   passwordChangeRequestEmail

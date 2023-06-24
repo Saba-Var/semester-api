@@ -16,7 +16,7 @@ export const createSemester = async (
     const { name, startDate } = req.body
 
     const semesterExists = await Semester.findOne({
-      user: req?.currentUser?.id,
+      user: req?.currentUser?._id,
       name,
     })
 
@@ -31,7 +31,7 @@ export const createSemester = async (
         )
     }
 
-    const currentUser = await User.findById(req?.currentUser?.id)
+    const currentUser = await User.findById(req?.currentUser?._id)
 
     if (currentUser?.activeSemester) {
       return res.status(409).json({
@@ -40,25 +40,26 @@ export const createSemester = async (
     }
 
     await Semester.updateMany(
-      { user: req?.currentUser?.id },
+      { user: req?.currentUser?._id },
       { isCurrentSemester: false }
     )
 
     const newSemester = await Semester.create({
-      user: req?.currentUser?.id,
+      user: req?.currentUser?._id,
       isCurrentSemester: true,
       startDate,
       name,
     })
 
-    await User.findByIdAndUpdate(req?.currentUser?.id, {
+    await User.findByIdAndUpdate(req?.currentUser?._id, {
       $push: { semesters: newSemester._id },
       $set: { activeSemester: newSemester._id },
     })
 
-    return res
-      .status(201)
-      .json({ message: req.t('semester_created_successfully') })
+    return res.status(201).json({
+      message: req.t('semester_created_successfully'),
+      _id: newSemester._id,
+    })
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
   }
@@ -67,8 +68,8 @@ export const createSemester = async (
 export const getSemesters = async (req: ExtendedAuthRequest, res: Response) => {
   try {
     const semesters = await Semester.find({
-      user: req?.currentUser?.id,
-    }).select('-user')
+      user: req?.currentUser?._id,
+    })
 
     return res.status(200).json(semesters)
   } catch (error: any) {
@@ -83,10 +84,8 @@ export const getSemesterData = async (
   try {
     const semester = await Semester.findOne({
       _id: req.params.id,
-      user: req.currentUser?.id,
-    })
-      .populate('learningActivities')
-      .select('-user -createdAt')
+      user: req.currentUser?._id,
+    }).populate('learningActivities')
 
     if (!semester) {
       return res.status(404).json({
@@ -109,7 +108,7 @@ export const deleteSemester = async (
   try {
     const deletedSemester = await Semester.findOneAndDelete({
       _id: req.params.id,
-      user: req.currentUser?.id,
+      user: req.currentUser?._id,
     })
 
     if (!deletedSemester) {
@@ -118,9 +117,9 @@ export const deleteSemester = async (
       })
     }
 
-    const currentUser = await User.findById(req.currentUser?.id)
+    const currentUser = await User.findById(req.currentUser?._id)
 
-    await User.findByIdAndUpdate(req.currentUser?.id, {
+    await User.findByIdAndUpdate(req.currentUser?._id, {
       $pull: { semesters: deletedSemester._id },
       $set: {
         activeSemester:
@@ -133,6 +132,7 @@ export const deleteSemester = async (
 
     return res.status(200).json({
       message: req.t('semester_deleted_successfully'),
+      _id: deletedSemester._id,
     })
   } catch (error: any) {
     return res.status(500).json({
@@ -180,7 +180,7 @@ export const endSemester = async (
 
     await User.findOneAndUpdate(
       {
-        _id: currentUser?.id,
+        _id: currentUser?._id,
         activeSemester: req.params.id,
       },
       {
@@ -190,6 +190,7 @@ export const endSemester = async (
 
     return res.status(200).json({
       message: req.t('semester_ended_successfully'),
+      _id: semester._id,
     })
   } catch (error: any) {
     return res.status(500).json({
@@ -214,7 +215,7 @@ export const updateSemester = async (
     }
 
     const semesterExists = await Semester.findOne({
-      user: req?.currentUser?.id,
+      user: req?.currentUser?._id,
       name,
       _id: { $ne: req.params.id },
     })
@@ -242,6 +243,7 @@ export const updateSemester = async (
 
     return res.status(200).json({
       message: req.t('semester_updated_successfully'),
+      _id: semester._id,
     })
   } catch (error: any) {
     return res.status(500).json({

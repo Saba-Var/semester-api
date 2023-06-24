@@ -40,9 +40,10 @@ export const registerUser = async (
       email,
       res,
       {
-        id: newUser.id,
+        _id: newUser._id,
       },
-      language
+      language,
+      201
     )
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
@@ -77,7 +78,7 @@ export const authorization = async (
     }
     const devEnvironment = process.env.NODE_ENV === 'production'
 
-    const jwtPayload = { id: currentUser?.id, email }
+    const jwtPayload = { _id: currentUser?._id, email }
 
     const accessToken = jwt.sign(jwtPayload, process.env.ACCESS_TOKEN_SECRET!, {
       expiresIn: devEnvironment ? '1d' : '1h',
@@ -96,7 +97,7 @@ export const authorization = async (
       httpOnly: true,
     })
 
-    return res.status(200).json({ accessToken, id: currentUser.id })
+    return res.status(200).json({ accessToken, _id: currentUser._id })
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
   }
@@ -112,7 +113,7 @@ export const userAccountActivation = async (
     const verified = jwt.verify(token, process.env.ACTIVATION_TOKEN_SECRET!)
 
     if (verified) {
-      const userId = jwtDecode(token, 'id')
+      const userId = jwtDecode(token, '_id')
       const existingUser = await User.findById(userId)
       if (!existingUser) {
         return res.status(404).json({ message: req.t('account_not_found') })
@@ -124,7 +125,7 @@ export const userAccountActivation = async (
         })
       }
 
-      await User.updateOne({ id: userId }, { active: true })
+      await User.updateOne({ _id: userId }, { active: true })
 
       return res.status(200).json({
         message: req.t('account_activated_successfully'),
@@ -160,7 +161,7 @@ export const passwordChangeRequestEmail = async (
       email,
       res,
       {
-        id: existingUser.id,
+        _id: existingUser._id,
       },
       language
     )
@@ -193,7 +194,7 @@ export const changePassword = async (
       })
     }
 
-    const userId = jwtDecode(accessToken, 'id')
+    const userId = jwtDecode(accessToken, '_id')
 
     const existingUser = await User.findById(userId)
 
@@ -217,32 +218,32 @@ export const refresh = async (req: RequestBody<{}>, res: Response) => {
     const refreshToken = req?.cookies?.refreshToken
 
     if (!refreshToken) {
-      return res.status(403).json({ message: req.t('unauthorized_access') })
+      return res.status(401).json({ message: req.t('unauthorized_access') })
     }
 
     const verified = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!)
     if (verified) {
-      const userId = jwtDecode(refreshToken, 'id')
+      const userId = jwtDecode(refreshToken, '_id')
       const email = jwtDecode(refreshToken, 'email')
 
       const existingUser = await User.findById(userId)
 
       if (!email || !existingUser || existingUser.email !== email) {
-        return res.status(403).json({ message: req.t('unauthorized_access') })
+        return res.status(401).json({ message: req.t('unauthorized_access') })
       }
 
       const accessToken = jwt.sign(
-        { id: existingUser.id, email: existingUser.email },
+        { _id: existingUser._id, email: existingUser.email },
         process.env.ACCESS_TOKEN_SECRET!,
         {
-          expiresIn: process.env.NODE_ENV === 'production' ? '10s' : '10m',
+          expiresIn: process.env.NODE_ENV === 'production' ? '1h' : '10m',
         }
       )
 
       return res.status(200).json({ accessToken })
     }
 
-    return res.status(403).json({
+    return res.status(401).json({
       message: req.t('refresh_token_is_invalid'),
     })
   } catch (error: any) {

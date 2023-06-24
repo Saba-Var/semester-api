@@ -1,0 +1,52 @@
+InternalServerError:
+  description: Internal Server Error
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+            example: Internal Server Error
+
+UnauthorizedAccess:
+  description: User is not authorized to continue. Maybe missing authorization headers, or the access token is invalid or expired.
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+      example:
+        message: Unauthorized access!.
+
+UnprocessableEntity:
+  description: Unprocessable Entity
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          errors:
+            type: object
+            properties:
+              fieldName:
+                type: array
+                items:
+                  type: string
+                example:
+                  - Error message
+
+NotFound:
+  description: Not Found
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+            example: Resource not found
+        example:
+          message: Resource not found
