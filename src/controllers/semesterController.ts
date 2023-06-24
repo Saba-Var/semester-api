@@ -72,8 +72,6 @@ export const getSemesters = async (
   next: NextFunction
 ) => {
   try {
-    // throw new Error('111111111111111111111')
-
     const semesters = await Semester.find({
       user: req?.currentUser?._id,
     })
