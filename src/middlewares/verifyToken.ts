@@ -3,7 +3,7 @@ import { NextFunction, Response } from 'express'
 import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
 
-const verifyToken = (
+export const verifyToken = (
   req: ExtendedAuthRequest,
   res: Response,
   next: NextFunction
@@ -16,7 +16,7 @@ const verifyToken = (
     if (!!authHeader && typeof authHeader === 'string') {
       if (!authHeader.startsWith('Bearer ')) {
         return res.status(401).json({
-          message: 'Missing authorization headers. Unauthorized access!',
+          message: req.t('missing_authorization_headers'),
         })
       }
 
@@ -28,7 +28,7 @@ const verifyToken = (
         async (error, JwtPayload) => {
           if (error) {
             return res.status(401).json({
-              message: 'User is not authorized to continue!',
+              message: req.t('user_is_not_authorized_to_continue'),
             })
           }
 
@@ -38,7 +38,7 @@ const verifyToken = (
 
           if (!isValidId || !email || !_id) {
             return res.status(401).json({
-              message: 'User is not authorized to continue!',
+              message: req.t('user_is_not_authorized_to_continue'),
             })
           }
 
@@ -50,11 +50,9 @@ const verifyToken = (
     }
 
     return res.status(401).json({
-      message: 'Missing authorization headers. Unauthorized access!',
+      message: req.t('missing_authorization_headers'),
     })
-  } catch (error: any) {
-    return res.status(500).json({ message: error.message })
+  } catch (error) {
+    return next(error)
   }
 }
-
-export default verifyToken

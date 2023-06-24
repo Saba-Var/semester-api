@@ -19,15 +19,15 @@ export interface AuthRequest<ReqBody = {}, ReqParams = {}, ReqQuery = {}>
   query: ReqQuery
 }
 
-export interface RequestParams<ReqParams> extends ExtendedAuthRequest {
+export interface RequestParams<ReqParams = {}> extends ExtendedAuthRequest {
   params: ReqParams
 }
 
-export interface RequestBody<ReqBody> extends ExtendedAuthRequest {
+export interface RequestBody<ReqBody = {}> extends ExtendedAuthRequest {
   body: ReqBody
 }
 
-export interface RequestQuery<ReqQuery> extends ExtendedAuthRequest {
+export interface RequestQuery<ReqQuery = {}> extends ExtendedAuthRequest {
   query: ReqQuery
 }
 
@@ -76,4 +76,8 @@ export interface LearningActivityModel {
 
 export interface TransformedErrors {
   [key: string]: string[]
+}
+
+export interface CustomError extends Error {
+  status?: number
 }

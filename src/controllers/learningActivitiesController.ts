@@ -1,5 +1,5 @@
+import type { Response, NextFunction } from 'express'
 import { LearningActivity, Semester } from 'models'
-import { Response } from 'express'
 import type {
   LearningActivityModel,
   RequestParams,
@@ -9,7 +9,8 @@ import type {
 
 export const createLearningActivity = async (
   req: RequestBody<LearningActivityModel>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const semester = await Semester.findOne({
@@ -38,16 +39,15 @@ export const createLearningActivity = async (
       message: req.t('learning_activity_created_successfully'),
       _id: newLearningActivity._id,
     })
-  } catch (error: any) {
-    return res.status(500).json({
-      message: error.message,
-    })
+  } catch (error) {
+    return next(error)
   }
 }
 
 export const getLearningActivity = async (
   req: RequestParams<{ id: string }>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const learningActivity = await LearningActivity.findOne({
@@ -62,16 +62,15 @@ export const getLearningActivity = async (
     }
 
     return res.status(200).json(learningActivity)
-  } catch (error: any) {
-    return res.status(500).json({
-      message: error.message,
-    })
+  } catch (error) {
+    return next(error)
   }
 }
 
 export const getAllLearningActivityOfSemester = async (
   req: RequestParams<{ id: string }>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const learningActivities = await LearningActivity.find({
@@ -80,16 +79,15 @@ export const getAllLearningActivityOfSemester = async (
     })
 
     return res.status(200).json(learningActivities)
-  } catch (error: any) {
-    return res.status(500).json({
-      message: error.message,
-    })
+  } catch (error) {
+    return next(error)
   }
 }
 
 export const deleteLearningActivity = async (
   req: RequestParams<{ id: string }>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const deletedLearningActivity = await LearningActivity.findOneAndDelete({
@@ -116,16 +114,15 @@ export const deleteLearningActivity = async (
       message: req.t('learning_activity_deleted_successfully'),
       _id: deletedLearningActivity._id,
     })
-  } catch (error: any) {
-    return res.status(500).json({
-      message: error.message,
-    })
+  } catch (error) {
+    return next(error)
   }
 }
 
 export const updateLearningActivity = async (
   req: AuthRequest<LearningActivityModel, { id: string }>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const updatedLearningActivity = await LearningActivity.findOneAndUpdate(
@@ -142,9 +139,7 @@ export const updateLearningActivity = async (
     return res.status(200).json({
       message: req.t('learning_activity_updated_successfully'),
     })
-  } catch (error: any) {
-    return res.status(500).json({
-      message: error.message,
-    })
+  } catch (error) {
+    return next(error)
   }
 }

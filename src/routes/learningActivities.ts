@@ -1,5 +1,6 @@
 import { learningActivitySchema, idParamSchema } from 'validationSchemas'
 import { validateRequestSchema } from 'middlewares'
+import express from 'express'
 import {
   getAllLearningActivityOfSemester,
   createLearningActivity,
@@ -7,7 +8,6 @@ import {
   updateLearningActivity,
   getLearningActivity,
 } from 'controllers'
-import express from 'express'
 
 const router = express.Router()
 

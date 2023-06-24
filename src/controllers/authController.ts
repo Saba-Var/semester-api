@@ -1,6 +1,6 @@
 import { AuthorizationReq, NewUserReqBody, Email } from './types'
 import { sendEmail, jwtDecode, generateFieldError } from 'utils'
-import type { Response } from 'express'
+import type { Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { User } from 'models'
@@ -14,7 +14,8 @@ import type {
 
 export const registerUser = async (
   req: RequestBody<NewUserReqBody>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const { username, email, password } = req.body
@@ -45,14 +46,15 @@ export const registerUser = async (
       language,
       201
     )
-  } catch (error: any) {
-    return res.status(500).json({ message: error.message })
+  } catch (error) {
+    return next(error)
   }
 }
 
 export const authorization = async (
   req: RequestBody<AuthorizationReq>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const { email, password } = req.body
@@ -98,14 +100,15 @@ export const authorization = async (
     })
 
     return res.status(200).json({ accessToken, _id: currentUser._id })
-  } catch (error: any) {
-    return res.status(500).json({ message: error.message })
+  } catch (error) {
+    return next(error)
   }
 }
 
 export const userAccountActivation = async (
   req: RequestQuery<Token>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const { token } = req.query
@@ -135,16 +138,15 @@ export const userAccountActivation = async (
     return res.status(403).json({
       message: req.t('user_is_not_authorized_to_activate_account'),
     })
-  } catch (error: any) {
-    return res.status(500).json({
-      message: error.message,
-    })
+  } catch (error) {
+    return next(error)
   }
 }
 
 export const passwordChangeRequestEmail = async (
   req: RequestQuery<Email>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const { email } = req.query
@@ -165,8 +167,8 @@ export const passwordChangeRequestEmail = async (
       },
       language
     )
-  } catch (error: any) {
-    return res.status(500).json({ message: error.message })
+  } catch (error) {
+    return next(error)
   }
 }
 
@@ -178,7 +180,8 @@ export const changePassword = async (
       accessToken: string
     }
   >,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const { accessToken } = req.query
@@ -208,12 +211,16 @@ export const changePassword = async (
     return res
       .status(200)
       .json({ message: req.t('password_changed_successfully') })
-  } catch (error: any) {
-    return res.status(500).json({ message: error.message })
+  } catch (error) {
+    return next(error)
   }
 }
 
-export const refresh = async (req: RequestBody<{}>, res: Response) => {
+export const refresh = async (
+  req: ExtendedAuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const refreshToken = req?.cookies?.refreshToken
 
@@ -246,19 +253,25 @@ export const refresh = async (req: RequestBody<{}>, res: Response) => {
     return res.status(401).json({
       message: req.t('refresh_token_is_invalid'),
     })
-  } catch (error: any) {
-    return res.status(500).json({
-      message: error.message,
-    })
+  } catch (error) {
+    return next(error)
   }
 }
 
-export const logout = async (req: ExtendedAuthRequest, res: Response) => {
-  res.clearCookie('refreshToken', {
-    secure: true,
-    sameSite: 'strict',
-    httpOnly: true,
-  })
+export const logout = async (
+  req: ExtendedAuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    res.clearCookie('refreshToken', {
+      secure: true,
+      sameSite: 'strict',
+      httpOnly: true,
+    })
 
-  return res.status(200).json({ message: req.t('log_out_success') })
+    return res.status(200).json({ message: req.t('log_out_success') })
+  } catch (error) {
+    return next(error)
+  }
 }

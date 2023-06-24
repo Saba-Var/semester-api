@@ -1,6 +1,6 @@
 import { Semester, User, SemesterModel } from 'models'
+import type { Response, NextFunction } from 'express'
 import { generateFieldError } from 'utils'
-import type { Response } from 'express'
 import type {
   ExtendedAuthRequest,
   RequestParams,
@@ -10,7 +10,8 @@ import type {
 
 export const createSemester = async (
   req: RequestBody<SemesterModel>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const { name, startDate } = req.body
@@ -60,26 +61,33 @@ export const createSemester = async (
       message: req.t('semester_created_successfully'),
       _id: newSemester._id,
     })
-  } catch (error: any) {
-    return res.status(500).json({ message: error.message })
+  } catch (error) {
+    return next(error)
   }
 }
 
-export const getSemesters = async (req: ExtendedAuthRequest, res: Response) => {
+export const getSemesters = async (
+  req: ExtendedAuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
+    // throw new Error('111111111111111111111')
+
     const semesters = await Semester.find({
       user: req?.currentUser?._id,
     })
 
     return res.status(200).json(semesters)
-  } catch (error: any) {
-    return res.status(500).json({ message: error.message })
+  } catch (error) {
+    return next(error)
   }
 }
 
 export const getSemesterData = async (
   req: RequestParams<{ id: string }>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const semester = await Semester.findOne({
@@ -94,16 +102,15 @@ export const getSemesterData = async (
     }
 
     return res.status(200).json(semester)
-  } catch (error: any) {
-    return res.status(500).json({
-      message: error?.message,
-    })
+  } catch (error) {
+    return next(error)
   }
 }
 
 export const deleteSemester = async (
   req: RequestParams<{ id: string }>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const deletedSemester = await Semester.findOneAndDelete({
@@ -134,16 +141,15 @@ export const deleteSemester = async (
       message: req.t('semester_deleted_successfully'),
       _id: deletedSemester._id,
     })
-  } catch (error: any) {
-    return res.status(500).json({
-      message: error?.message,
-    })
+  } catch (error) {
+    return next(error)
   }
 }
 
 export const endSemester = async (
   req: AuthRequest<{ endDate: Date }, { id: string }>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const { endDate } = req.body
@@ -192,16 +198,15 @@ export const endSemester = async (
       message: req.t('semester_ended_successfully'),
       _id: semester._id,
     })
-  } catch (error: any) {
-    return res.status(500).json({
-      message: error?.message,
-    })
+  } catch (error) {
+    return next(error)
   }
 }
 
 export const updateSemester = async (
   req: AuthRequest<{ name: string; startDate: Date }, { id: string }>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const { name, startDate } = req.body
@@ -245,9 +250,7 @@ export const updateSemester = async (
       message: req.t('semester_updated_successfully'),
       _id: semester._id,
     })
-  } catch (error: any) {
-    return res.status(500).json({
-      message: error?.message,
-    })
+  } catch (error) {
+    return next(error)
   }
 }

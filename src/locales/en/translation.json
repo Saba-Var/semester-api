@@ -63,5 +63,8 @@
   "ending_time_format": "Ending time should be in this format: HH:MM.  Minutes should be either 00 or 30. Minimum hour is 09:00 and maximum hour is 23:30",
   "ending_time_range": "Ending time should be between 09:30 and 23:30",
   "ending_time_minutes": "Ending time minutes should be either 00 or 30",
-  "ending_time_should_be_after_starting_time": "Ending time should be after starting time"
+  "ending_time_should_be_after_starting_time": "Ending time should be after starting time",
+  "missing_authorization_headers": "Missing authorization headers. Unauthorized access!",
+  "user_is_not_authorized_to_continue": "User is not authorized to continue. Unauthorized access!",
+  "internal_server_error": "Internal server error!"
 }
