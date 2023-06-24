@@ -29,3 +29,6 @@ jobs:
 
       - name: Build code
         run: npx tsc
+
+      - name: Build production code
+        run: npm run build:prod
