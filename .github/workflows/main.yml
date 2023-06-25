@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  lint:
+  lint-build-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -34,4 +34,9 @@ jobs:
         run: npm run build:prod
 
       - name: Test code
+        env:
+          TESTING_DATABASE_URI: ${{ secrets.TESTING_DATABASE_URI }}
+          TESTING_USER_EMAIL: ${{ secrets.TESTING_USER_EMAIL }}
+          TESTING_USER_PASSWORD: ${{ secrets.TESTING_USER_PASSWORD }}
+          TESTING_USER_USERNAME: ${{ secrets.TESTING_USER_USERNAME }}
         run: npm test
