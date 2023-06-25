@@ -24,12 +24,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Set environment variables
+      - name: Create .env file
         run: |
-          echo "TESTING_DATABASE_URI=${{ secrets.TESTING_DATABASE_URI }}" >> $GITHUB_ENV
-          echo "TESTING_USER_EMAIL=${{ secrets.TESTING_USER_EMAIL }}" >> $GITHUB_ENV
-          echo "TESTING_USER_PASSWORD=${{ secrets.TESTING_USER_PASSWORD }}" >> $GITHUB_ENV
-          echo "TESTING_USER_USERNAME=${{ secrets.TESTING_USER_USERNAME }}" >> $GITHUB_ENV
+          echo "TESTING_DATABASE_URI=${{ secrets.TESTING_DATABASE_URI }}" > .env
+          echo "TESTING_USER_EMAIL=${{ secrets.TESTING_USER_EMAIL }}" >> .env
+          echo "TESTING_USER_PASSWORD=${{ secrets.TESTING_USER_PASSWORD }}" >> .env
+          echo "TESTING_USER_USERNAME=${{ secrets.TESTING_USER_USERNAME }}" >> .env
+          cat .env
 
       - name: Run tests
         run: npm run test
