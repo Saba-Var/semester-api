@@ -32,3 +32,6 @@ jobs:
 
       - name: Build production code
         run: npm run build:prod
+
+      - name: Test code
+        run: npm test
