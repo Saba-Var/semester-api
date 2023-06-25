@@ -1,0 +1,5 @@
+import '../database/seeders/tests'
+import '../controllers/tests'
+import '../middlewares/tests'
+import '../config/tests'
+import '../utils/tests'

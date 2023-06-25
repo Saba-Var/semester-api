@@ -1,0 +1,42 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create .env file
+        run: |
+          echo "TESTING_DATABASE_URI=${{ secrets.TESTING_DATABASE_URI }}" > .env
+          echo "TESTING_USER_EMAIL=${{ secrets.TESTING_USER_EMAIL }}" >> .env
+          echo "TESTING_USER_PASSWORD=${{ secrets.TESTING_USER_PASSWORD }}" >> .env
+          echo "TESTING_USER_USERNAME=${{ secrets.TESTING_USER_USERNAME }}" >> .env
+          cat .env
+
+      - name: Load Environment Variables
+        run: |
+          node -e "require('dotenv').config()"
+
+      - name: Run tests
+        run: |
+          source .env
+          npm test

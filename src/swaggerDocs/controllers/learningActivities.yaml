@@ -3,6 +3,8 @@
     summary: Create a new learning activity.
     tags:
       - Learning Activities
+    security:
+      - bearerAuth: []
     requestBody:
       required: true
       content:
@@ -36,6 +38,8 @@
                   type: string
                   example: Semester not found.
                   description: Error message indicating that the specified semester was not found.
+      401:
+        $ref: '#/components/responses/UnauthorizedAccess'
       422:
         $ref: '#/components/responses/UnprocessableEntity'
       500:
@@ -46,6 +50,8 @@
     summary: Get a learning activity by id.
     tags:
       - Learning Activities
+    security:
+      - bearerAuth: []
     parameters:
       - in: path
         name: id
@@ -74,6 +80,8 @@
     summary: Delete a learning activity.
     tags:
       - Learning Activities
+    security:
+      - bearerAuth: []
     parameters:
       - in: path
         name: id
@@ -110,6 +118,8 @@
     summary: Update a learning activity.
     tags:
       - Learning Activities
+    security:
+      - bearerAuth: []
     parameters:
       - in: path
         name: id
@@ -149,6 +159,8 @@
     summary: Get all learning activities of a semester.
     tags:
       - Learning Activities
+    security:
+      - bearerAuth: []
     parameters:
       - in: path
         name: id

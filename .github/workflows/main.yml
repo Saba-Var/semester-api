@@ -1,4 +1,4 @@
-name: Lint and build
+name: Lint/Build
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  lint:
+  lint-build-test:
     runs-on: ubuntu-latest
 
     steps:
