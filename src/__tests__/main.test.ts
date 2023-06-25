@@ -1,2 +1,2 @@
 import './database'
-import './controllers'
+import '../controllers/authController.test'

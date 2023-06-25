@@ -32,6 +32,10 @@ jobs:
           echo "TESTING_USER_USERNAME=${{ secrets.TESTING_USER_USERNAME }}" >> .env
           cat .env
 
+      - name: Load Environment Variables
+        run: |
+          node -e "require('dotenv').config()"
+
       - name: Run tests
         run: |
           source .env
