@@ -35,8 +35,8 @@ jobs:
 
       - name: Test code
         env:
-          TESTING_DATABASE_URI: ${{ secrets.TESTING_DATABASE_URI }}
-          TESTING_USER_EMAIL: ${{ secrets.TESTING_USER_EMAIL }}
-          TESTING_USER_PASSWORD: ${{ secrets.TESTING_USER_PASSWORD }}
-          TESTING_USER_USERNAME: ${{ secrets.TESTING_USER_USERNAME }}
+          TESTING_DATABASE_URI: ${{ env.TESTING_DATABASE_URI }}
+          TESTING_USER_EMAIL: ${{ env.TESTING_USER_EMAIL }}
+          TESTING_USER_PASSWORD: ${{ env.TESTING_USER_PASSWORD }}
+          TESTING_USER_USERNAME: ${{ env.TESTING_USER_USERNAME }}
         run: npm test
