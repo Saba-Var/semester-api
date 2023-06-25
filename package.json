@@ -14,9 +14,9 @@
   "homepage": "https://github.com/Saba-Var/semester-api#readme",
   "description": "",
   "scripts": {
-    "start": "node build/server.js",
-    "test": "jest",
-    "dev": "concurrently \"npm run build:watch\" \"nodemon build/server.js\"",
+    "start": "node build/app.js",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=5000",
+    "dev": "concurrently \"npm run build:watch\" \"nodemon build/app.js\"",
     "build:watch": "babel src --out-dir build --extensions .ts --copy-files --watch",
     "build:prod": "babel src --out-dir build --extensions .ts --copy-files --minified",
     "lint": "eslint . --ext .ts"
@@ -61,6 +61,7 @@
     "@typescript-eslint/parser": "^5.59.8",
     "babel-plugin-module-resolver": "^5.0.0",
     "concurrently": "^7.4.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.41.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.8.0",

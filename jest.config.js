@@ -18,5 +18,8 @@ module.exports = {
     '^routes$': '<rootDir>/src/routes',
     '^types.d$': '<rootDir>/src/types.d.ts',
     '^validationSchemas$': '<rootDir>/src/validationSchemas',
+    '^createServer$': '<rootDir>/src/createServer.ts',
+    '^controllers/authController$':
+      '<rootDir>/src/controllers/authController.ts',
   },
 }

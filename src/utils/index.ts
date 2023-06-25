@@ -1,3 +1,4 @@
+export * from './setupTestingDatabase'
 export * from './generateFieldError'
 export * from './appendYamlFiles'
 export * from './loadYamlFile'

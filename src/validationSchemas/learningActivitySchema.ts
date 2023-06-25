@@ -27,14 +27,14 @@ const learningActivitySchema: ValidationChain[] = [
     .trim()
     .notEmpty()
     .withMessage('week_day_is_required')
-    .isIn(Object.values(Weekday))
+    .isIn(Object.values(Weekday || []))
     .withMessage('allowed_week_days'),
 
   check('activityType')
     .trim()
     .notEmpty()
     .withMessage('activity_type_is_required')
-    .isIn(Object.values(ActivityType))
+    .isIn(Object.values(ActivityType || []))
     .withMessage('allowed_activity_type'),
 
   check('semester').custom((value) => {

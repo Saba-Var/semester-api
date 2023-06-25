@@ -18,6 +18,7 @@
     "import/order": "off",
     "no-shadow": "off",
     "no-unused-vars": "off",
-    "import/no-extraneous-dependencies": "off"
+    "import/no-extraneous-dependencies": "off",
+    "jest/expect-expect": "off"
   }
 }

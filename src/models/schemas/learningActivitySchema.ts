@@ -13,12 +13,12 @@ const learningActivitySchema: Schema<LearningActivityModel> = new Schema(
     },
     weekday: {
       type: String,
-      enum: Object.values(Weekday),
+      enum: Object.values(Weekday || []),
       required: true,
     },
     activityType: {
       type: String,
-      enum: Object.values(ActivityType),
+      enum: Object.values(ActivityType || []),
       required: true,
     },
     startingTime: {
