@@ -1,2 +1,5 @@
-import './database'
-import '../controllers/authController.test'
+import '../database/seeders/tests'
+import '../controllers/tests'
+import '../middlewares/tests'
+import '../config/tests'
+import '../utils/tests'
