@@ -5,16 +5,18 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-export const setupTestingDatabase = () => {
+export const setupTestingDatabase = ({
+  databaseUri = process.env.TESTING_DATABASE_URI!,
+} = {}) => {
   const request = supertest(createServer())
 
   beforeAll(async () => {
-    await mongoose.connect(process.env.TESTING_DATABASE_URI!)
+    await mongoose.connect(databaseUri)
   })
 
   afterAll(async () => {
     await mongoose.connection.close()
   })
 
-  return { request }
+  return { ...request }
 }

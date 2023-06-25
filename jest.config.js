@@ -7,7 +7,6 @@ module.exports = {
   moduleFileExtensions: ['ts', 'js'],
   verbose: true,
   forceExit: true,
-
   moduleNameMapper: {
     '^config$': '<rootDir>/src/config',
     '^utils$': '<rootDir>/src/utils',
@@ -21,5 +20,6 @@ module.exports = {
     '^createServer$': '<rootDir>/src/createServer.ts',
     '^controllers/authController$':
       '<rootDir>/src/controllers/authController.ts',
+    '^database$': '<rootDir>/src/database',
   },
 }

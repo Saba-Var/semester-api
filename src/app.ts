@@ -13,6 +13,5 @@ server.use(errorHandler)
 const port = process.env.SERVER_PORT || 4000
 server.listen(port, async () => {
   await connectToMongo()
-  // eslint-disable-next-line no-console
   console.log(`Server started on port ${port}`)
 })

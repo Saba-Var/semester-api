@@ -19,6 +19,7 @@
     "no-shadow": "off",
     "no-unused-vars": "off",
     "import/no-extraneous-dependencies": "off",
-    "jest/expect-expect": "off"
+    "jest/expect-expect": "off",
+    "no-console": "off"
   }
 }
