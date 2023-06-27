@@ -1,8 +1,10 @@
-import { setupTestingDatabase } from 'utils'
+import { setupTestingDatabase, superTestMethods } from 'utils'
 import { testingAuthStore } from 'store'
 
+const { post } = superTestMethods.supertestObject
+
 describe('authorization', () => {
-  const { post } = setupTestingDatabase()
+  setupTestingDatabase()
 
   let activationToken: string | null = null
 

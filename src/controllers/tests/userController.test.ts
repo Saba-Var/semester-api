@@ -1,7 +1,6 @@
-import { setupTestingDatabase } from 'utils'
-import { testingAuthStore } from 'store'
+import { superTestMethods } from 'utils'
 
-const { get } = setupTestingDatabase()
+const { get } = superTestMethods.supertestObject
 
 describe('User Controller', () => {
   describe('Get user details - GET /api/user', () => {
@@ -18,14 +17,9 @@ describe('User Controller', () => {
       })
     })
 
-    it("Should return 200 if user's details are returned successfully", async () => {
-      testingAuthStore.privateAccess(async ({ accessToken }) => {
-        const response = await get('/api/user').set(
-          'Authorization',
-          `Bearer ${accessToken}`
-        )
-
-        expect(response.status).toBe(200)
+    it("Should return 200 if user's details are returned successfully", () => {
+      superTestMethods.privateGet('/api/user').then((res: any) => {
+        expect(res.status).toBe(200)
       })
     })
   })
