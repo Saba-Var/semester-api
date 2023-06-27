@@ -1,18 +1,24 @@
 import { AccessToken } from 'types'
 
 export class TestingAuthStore {
+  // eslint-disable-next-line no-use-before-define
+  private static instance: TestingAuthStore
+
   accessToken = ''
 
-  set setAccessToken(token: string) {
+  static getInstance(): TestingAuthStore {
+    if (!TestingAuthStore.instance) {
+      TestingAuthStore.instance = new TestingAuthStore()
+    }
+    return TestingAuthStore.instance
+  }
+
+  setAccessToken(token: string) {
     this.accessToken = token
   }
 
-  get getAccessToken() {
-    return this.accessToken
-  }
-
   async privateAccess<T>(callback: (data: AccessToken) => T): Promise<T> {
-    return callback({ accessToken: this.getAccessToken })
+    return callback({ accessToken: this.accessToken })
   }
 
   removeAccessToken() {
@@ -20,4 +26,4 @@ export class TestingAuthStore {
   }
 }
 
-export const testingAuthStore = new TestingAuthStore()
+export const testingAuthStore = TestingAuthStore.getInstance()

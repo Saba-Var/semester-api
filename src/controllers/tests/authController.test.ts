@@ -98,7 +98,7 @@ describe('authorization', () => {
       const { accessToken } = body
 
       if (accessToken) {
-        testingAuthStore.setAccessToken = accessToken
+        testingAuthStore.setAccessToken(accessToken)
       }
 
       expect(status).toBe(200)
