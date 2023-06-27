@@ -1,4 +1,4 @@
-import { setupTestingDatabase } from 'utils'
+import { setupTestingDatabase, testingAuthStore } from 'utils'
 
 describe('authorization', () => {
   const { post } = setupTestingDatabase()
@@ -94,6 +94,13 @@ describe('authorization', () => {
         email: process.env.TESTING_USER_EMAIL,
         password: process.env.TESTING_USER_PASSWORD,
       })
+
+      const { accessToken } = body
+
+      if (accessToken) {
+        testingAuthStore.setAccessToken = accessToken
+      }
+
       expect(status).toBe(200)
       expect(body).toHaveProperty('accessToken')
       expect(body).toHaveProperty('_id')
