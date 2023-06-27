@@ -1,6 +1,5 @@
 export * from './setupTestingDatabase'
 export * from './generateFieldError'
-export * from './testingAuthStore'
 export * from './appendYamlFiles'
 export * from './loadYamlFile'
 export * from './sendEmail'

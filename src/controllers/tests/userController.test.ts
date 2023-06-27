@@ -1,4 +1,5 @@
-import { setupTestingDatabase, testingAuthStore } from 'utils'
+import { setupTestingDatabase } from 'utils'
+import { testingAuthStore } from 'store'
 
 const { get } = setupTestingDatabase()
 
