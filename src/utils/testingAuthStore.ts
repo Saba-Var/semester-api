@@ -1,6 +1,6 @@
 import { AccessToken } from 'types'
 
-class TestingAuthStore {
+export class TestingAuthStore {
   accessToken = ''
 
   set setAccessToken(token: string) {
