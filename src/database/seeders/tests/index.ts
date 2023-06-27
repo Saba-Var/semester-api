@@ -1,1 +1,1 @@
-import './seedDatabase.test'
+import './dropTestDatabase.test'

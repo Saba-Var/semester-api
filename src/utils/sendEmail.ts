@@ -64,6 +64,6 @@ export const sendEmail = async (
       })
     }
 
-    return res.status(statusCode || 200).json({ message })
+    return res.status(statusCode || 200).json({ message, token })
   })
 }

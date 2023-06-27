@@ -15,6 +15,7 @@ module.exports = {
     '^models$': '<rootDir>/src/models',
     '^services$': '<rootDir>/src/services',
     '^routes$': '<rootDir>/src/routes',
+    '^store$': '<rootDir>/src/store',
     '^types.d$': '<rootDir>/src/types.d.ts',
     '^validationSchemas$': '<rootDir>/src/validationSchemas',
     '^createServer$': '<rootDir>/src/createServer.ts',

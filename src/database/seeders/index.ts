@@ -1,1 +1,1 @@
-export * from './seedTestDatabase'
+export * from './dropTestDatabase'
