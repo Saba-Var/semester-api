@@ -1,24 +1,21 @@
-import { setupTestingDatabase, superTestMethods } from 'utils'
-import { signUpRequest } from 'requests'
+import { setupTestingDatabase } from 'utils'
 import { testingAuthStore } from 'store'
-
-const { post, get } = superTestMethods.supertestObject
+import { TEST_USER } from 'CONSTANTS'
+import {
+  passwordChangeEmailRequest,
+  activateAccountRequest,
+  signUpRequest,
+  signInRequest,
+} from 'requests'
 
 describe('authorization', () => {
   setupTestingDatabase()
 
-  let activationToken: string | null = null
-
-  const userRegistrationData = {
-    email: process.env.TESTING_USER_EMAIL,
-    password: process.env.TESTING_USER_PASSWORD,
-    confirmPassword: process.env.TESTING_USER_PASSWORD,
-    username: process.env.TESTING_USER_USERNAME,
-  }
+  let activationToken: string
 
   describe('Sign up - POST /api/authentication/sign-up', () => {
     it('Should return 201 if user registered successfully', async () => {
-      const { status, body } = await signUpRequest(userRegistrationData)
+      const { status, body } = await signUpRequest(TEST_USER)
 
       expect(status).toBe(201)
       expect(body).toHaveProperty('token')
@@ -26,7 +23,7 @@ describe('authorization', () => {
     })
 
     it('Should return 409 if user with the same email is already registered', async () => {
-      const { status } = await signUpRequest(userRegistrationData)
+      const { status } = await signUpRequest(TEST_USER)
 
       expect(status).toBe(409)
     })
@@ -40,7 +37,7 @@ describe('authorization', () => {
 
   describe('Sign in - POST /api/authentication/sign-in', () => {
     it('Should return 401 if credentials are incorrect', async () => {
-      const response = await post('/api/authentication/sign-in').send({
+      const response = await signInRequest({
         email: 'incorrect@gmail.com',
         password: 'incorrectPassword',
       })
@@ -52,9 +49,9 @@ describe('authorization', () => {
     })
 
     it('Should return 403 if account is not activated', async () => {
-      const { body, status } = await post('/api/authentication/sign-in').send({
-        email: userRegistrationData.email,
-        password: userRegistrationData.password,
+      const { body, status } = await signInRequest({
+        email: TEST_USER.email,
+        password: TEST_USER.password,
       })
 
       expect(status).toBe(403)
@@ -66,7 +63,7 @@ describe('authorization', () => {
     })
 
     it('Should return 422 if email is invalid and password not provided', async () => {
-      const response = await post('/api/authentication/sign-in').send({
+      const response = await signInRequest({
         email: 'invalidEmail',
       })
 
@@ -81,27 +78,24 @@ describe('authorization', () => {
   })
 
   describe('Activate Account - POST /api/activate-account', () => {
-    const activateAccount = async (token = activationToken) =>
-      post(`/api/authentication/activate-account?token=${token}`)
-
     it('Should return 200 if user account activated successfully', async () => {
-      const { body, status } = await activateAccount()
+      const { body, status } = await activateAccountRequest(activationToken)
 
       expect(status).toBe(200)
       expect(body.message).toBe('Account activated successfully!')
     })
 
     it('Should return 409 if user account already activated', async () => {
-      const { body, status } = await activateAccount()
+      const { body, status } = await activateAccountRequest(activationToken)
 
       expect(status).toBe(409)
       expect(body.message).toBe('Account is already activated!')
     })
 
     it('Should return 200 if user signed in successfully', async () => {
-      const { body, status } = await post('/api/authentication/sign-in').send({
-        email: userRegistrationData.email,
-        password: userRegistrationData.password,
+      const { body, status } = await signInRequest({
+        email: TEST_USER.email,
+        password: TEST_USER.password,
       })
 
       const { accessToken } = body
@@ -112,7 +106,7 @@ describe('authorization', () => {
     })
 
     it('Should return 403 if activation token is invalid', async () => {
-      const { body, status } = await activateAccount('invalidToken')
+      const { body, status } = await activateAccountRequest('invalidToken')
 
       expect(status).toBe(403)
       expect(body.message).toBe(
@@ -121,9 +115,7 @@ describe('authorization', () => {
     })
 
     it('Should return 422 if activation token is not provided', async () => {
-      const { body, status } = await post(
-        '/api/authentication/activate-account'
-      )
+      const { body, status } = await activateAccountRequest('')
 
       expect(status).toBe(422)
       expect(body.errors.token[0]).toBe('JWT is required!')
@@ -131,12 +123,9 @@ describe('authorization', () => {
   })
 
   describe('Change Password (Email request) - GET /api/authentication/change-password', () => {
-    const getPasswordChangeEmail = async (email: string) =>
-      get(`/api/authentication/change-password?email=${email}`)
-
     it('Should return 200 if email with password change link sent successfully', async () => {
-      const { body, status } = await getPasswordChangeEmail(
-        userRegistrationData.email!
+      const { body, status } = await passwordChangeEmailRequest(
+        TEST_USER.email!
       )
 
       expect(status).toBe(200)
@@ -145,7 +134,7 @@ describe('authorization', () => {
     })
 
     it('Should return 404 if user with provided email not found', async () => {
-      const { body, status } = await getPasswordChangeEmail(
+      const { body, status } = await passwordChangeEmailRequest(
         'doesnotexist@gmail.com'
       )
 
