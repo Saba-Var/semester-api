@@ -39,6 +39,11 @@ jobs:
           echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
           echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
           echo "FRONTEND_URI=${{ secrets.FRONTEND_URI }}" >> .env
+          echo "MONGO_PROTOCOL=${{ secrets.MONGO_PROTOCOL }}" >> .env
+          echo "MONGO_USER=${{ secrets.MONGO_USER }}" >> .env
+          echo "MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}" >> .env
+          echo "MONGO_HOST=${{ secrets.MONGO_HOST }}" >> .env
+          echo "MONGO_DATABASE=${{ secrets.MONGO_DATABASE }}" >> .env
 
       - name: Load Environment Variables
         run: |
