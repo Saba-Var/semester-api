@@ -33,6 +33,7 @@ const connectToMongo = async () => {
 
     return mongoose.connect(connectionURL)
   } catch (error: any) {
+    console.log(`Mongo connection error: ${error.message}`)
     throw new Error(error.message)
   }
 }
