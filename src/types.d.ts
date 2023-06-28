@@ -2,6 +2,7 @@ import { JwtPayload } from 'jsonwebtoken'
 import type { UserModel } from 'models'
 import type { Request } from 'express'
 import type { Types } from 'mongoose'
+import supertest from 'supertest'
 
 export interface ExtendedAuthRequest extends Request {
   url: string
@@ -80,4 +81,18 @@ export interface TransformedErrors {
 
 export interface CustomError extends Error {
   status?: number
+}
+
+export type RequestMethods = 'get' | 'post' | 'put' | 'delete'
+
+export type SuperTestRequest = (
+  path: string,
+  sendData?: object
+) => Promise<supertest.Response>
+
+export type PrivateRequests = {
+  get: SuperTestRequest
+  post: SuperTestRequest
+  put: SuperTestRequest
+  delete: SuperTestRequest
 }

@@ -1,3 +1,4 @@
+import { PrivateRequests, RequestMethods } from 'types'
 import { testingAuthStore } from 'store'
 import supertest from 'supertest'
 import server from 'server'
@@ -6,10 +7,26 @@ export class SuperTestMethods {
   // eslint-disable-next-line no-use-before-define
   private static instance: SuperTestMethods
 
-  supertestObject: supertest.SuperTest<supertest.Test>
+  privateRequests: PrivateRequests
+
+  publicRequests: supertest.SuperTest<supertest.Test>
 
   constructor() {
-    this.supertestObject = supertest(server)
+    this.publicRequests = supertest(server)
+
+    this.privateRequests = {
+      get: (path: string, sendData?: object) =>
+        this.privateRequest('get', path, sendData),
+
+      post: (path: string, sendData?: object) =>
+        this.privateRequest('post', path, sendData),
+
+      put: (path: string, sendData?: object) =>
+        this.privateRequest('put', path, sendData),
+
+      delete: (path: string, sendData?: object) =>
+        this.privateRequest('delete', path, sendData),
+    }
   }
 
   static getInstance(): SuperTestMethods {
@@ -19,32 +36,19 @@ export class SuperTestMethods {
     return SuperTestMethods.instance
   }
 
-  privateRequest(
-    method: 'get' | 'delete' | 'put' | 'post',
+  private async privateRequest(
+    method: RequestMethods,
     path: string,
     sendData?: object
   ) {
-    return testingAuthStore.privateAccess(async ({ accessToken }) =>
-      this.supertestObject[method](path)
-        .set('Authorization', `Bearer ${accessToken}`)
-        .send(sendData || undefined)
+    const response = await testingAuthStore.privateAccess(
+      async ({ accessToken }) =>
+        this.publicRequests[method](path)
+          .set('Authorization', `Bearer ${accessToken}`)
+          .send(sendData || '')
     )
-  }
 
-  privateGet(path: string, sendData?: object) {
-    return this.privateRequest('get', path, sendData)
-  }
-
-  privatePost(path: string, sendData?: object) {
-    return this.privateRequest('post', path, sendData)
-  }
-
-  privatePut(path: string, sendData?: object) {
-    return this.privateRequest('put', path, sendData)
-  }
-
-  privateDelete(path: string, sendData?: object) {
-    return this.privateRequest('delete', path, sendData)
+    return response
   }
 }
 
