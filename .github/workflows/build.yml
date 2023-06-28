@@ -32,3 +32,6 @@ jobs:
 
       - name: Build production code
         run: npm run build:prod
+
+      - name: Run server
+        run: npm run dev

@@ -14,9 +14,9 @@
   "homepage": "https://github.com/Saba-Var/semester-api#readme",
   "description": "",
   "scripts": {
-    "start": "node build/app.js",
+    "start": "node build/server.js",
     "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
-    "dev": "concurrently \"npm run build:watch\" \"nodemon build/app.js\"",
+    "dev": "concurrently \"npm run build:watch\" \"nodemon build/server.js\"",
     "build:watch": "babel src --out-dir build --extensions .ts --copy-files --watch",
     "build:prod": "babel src --out-dir build --extensions .ts --copy-files --minified",
     "lint": "eslint . --ext .ts"
