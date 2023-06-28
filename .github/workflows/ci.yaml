@@ -32,6 +32,7 @@ jobs:
           echo "TESTING_USER_USERNAME=${{ secrets.TESTING_USER_USERNAME }}" >> .env
           echo "MAILGUN_API_KEY=${{ secrets.MAILGUN_API_KEY }}" >> .env
           echo "MAILGUN_DOMAIN=${{ secrets.MAILGUN_DOMAIN }}" >> .env
+          echo "EMAIL_SENDER=${{ secrets.EMAIL_SENDER }}" >> .env
           echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> .env
           echo "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}" >> .env
           echo "ACTIVATION_TOKEN_SECRET=${{ secrets.ACTIVATION_TOKEN_SECRET }}" >> .env
