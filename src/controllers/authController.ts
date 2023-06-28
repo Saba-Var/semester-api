@@ -6,6 +6,7 @@ import bcrypt from 'bcryptjs'
 import { User } from 'models'
 import type {
   ExtendedAuthRequest,
+  AccessTokenPayload,
   RequestQuery,
   AuthRequest,
   RequestBody,
@@ -113,31 +114,36 @@ export const userAccountActivation = async (
   try {
     const { token } = req.query
 
-    const verified = jwt.verify(token, process.env.ACTIVATION_TOKEN_SECRET!)
+    return jwt.verify(
+      token,
+      process.env.ACTIVATION_TOKEN_SECRET!,
+      async (error, jwtPayload) => {
+        if (error) {
+          return res.status(403).json({
+            message: req.t('user_is_not_authorized_to_activate_account'),
+          })
+        }
 
-    if (verified) {
-      const userId = jwtDecode(token, '_id')
-      const existingUser = await User.findById(userId)
-      if (!existingUser) {
-        return res.status(404).json({ message: req.t('account_not_found') })
-      }
+        const { _id } = jwtPayload as AccessTokenPayload
 
-      if (existingUser.active) {
-        return res.status(409).json({
-          message: req.t('account_is_already_active'),
+        const existingUser = await User.findById(_id)
+        if (!existingUser) {
+          return res.status(404).json({ message: req.t('account_not_found') })
+        }
+
+        if (existingUser.active) {
+          return res.status(409).json({
+            message: req.t('account_is_already_active'),
+          })
+        }
+
+        await User.updateOne({ _id }, { active: true })
+
+        return res.status(200).json({
+          message: req.t('account_activated_successfully'),
         })
       }
-
-      await User.updateOne({ _id: userId }, { active: true })
-
-      return res.status(200).json({
-        message: req.t('account_activated_successfully'),
-      })
-    }
-
-    return res.status(403).json({
-      message: req.t('user_is_not_authorized_to_activate_account'),
-    })
+    )
   } catch (error) {
     return next(error)
   }
