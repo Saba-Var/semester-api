@@ -1,8 +1,11 @@
 import { Response } from 'express'
 import mailgun from 'mailgun-js'
 import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
 import path from 'path'
 import pug from 'pug'
+
+dotenv.config()
 
 export const sendEmail = async (
   subject: string,

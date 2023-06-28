@@ -4,6 +4,7 @@ import type { Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { User } from 'models'
+import dotenv from 'dotenv'
 import type {
   ExtendedAuthRequest,
   RequestQuery,
@@ -11,6 +12,8 @@ import type {
   RequestBody,
   Token,
 } from 'types'
+
+dotenv.config()
 
 export const registerUser = async (
   req: RequestBody<NewUserReqBody>,
