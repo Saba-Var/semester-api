@@ -1,5 +1,21 @@
-import { loadYamlFile, appendYamlFiles } from 'utils'
 import SwaggerUI from 'swagger-ui-express'
+import YAML from 'yamljs'
+
+const loadYamlFile = (path: string, key?: string) => {
+  try {
+    const yaml = YAML.load(`./src/swaggerDocs/${path}`)
+    return key ? yaml[key] : yaml
+  } catch (error) {
+    return {}
+  }
+}
+
+const appendYamlFiles = (target: {}, directory: string, files: string[]) => {
+  files.forEach((file) => {
+    const section = loadYamlFile(`${directory}/${file}.yaml`)
+    Object.assign(target, section)
+  })
+}
 
 export const swaggerDocSetup = () => {
   const options = {

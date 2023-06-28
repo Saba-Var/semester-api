@@ -1,6 +1,6 @@
-import { createServer } from 'createServer'
 import { testingAuthStore } from 'store'
 import supertest from 'supertest'
+import server from 'server'
 
 export class SuperTestMethods {
   // eslint-disable-next-line no-use-before-define
@@ -9,7 +9,7 @@ export class SuperTestMethods {
   supertestObject: supertest.SuperTest<supertest.Test>
 
   constructor() {
-    this.supertestObject = supertest(createServer())
+    this.supertestObject = supertest(server)
   }
 
   static getInstance(): SuperTestMethods {
