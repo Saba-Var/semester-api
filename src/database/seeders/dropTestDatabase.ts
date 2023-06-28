@@ -7,9 +7,7 @@ export const dropTestDatabase = async () => {
   try {
     const { TESTING_DATABASE_URI } = process.env
 
-    if (mongoose.connection.readyState !== 0) {
-      await mongoose.disconnect()
-    }
+    await mongoose.disconnect()
 
     const db = await mongoose.connect(TESTING_DATABASE_URI!)
 

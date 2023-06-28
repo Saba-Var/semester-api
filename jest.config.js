@@ -18,9 +18,9 @@ module.exports = {
     '^store$': '<rootDir>/src/store',
     '^types.d$': '<rootDir>/src/types.d.ts',
     '^validationSchemas$': '<rootDir>/src/validationSchemas',
-    '^createServer$': '<rootDir>/src/createServer.ts',
     '^controllers/authController$':
       '<rootDir>/src/controllers/authController.ts',
     '^database$': '<rootDir>/src/database',
+    '^server': '<rootDir>/src/server.ts',
   },
 }
