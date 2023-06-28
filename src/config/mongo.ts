@@ -34,7 +34,11 @@ const connectToMongo = async () => {
       connectionURL = process.env.TESTING_DATABASE_URI!
     }
 
-    return mongoose.connect(connectionURL)
+    console.log(connectionURL)
+
+    return mongoose.connect(
+      'mongodb+srv://vartasashvili94:vartasashvili94@cluster0.he6jkyg.mongodb.net/test'
+    )
   } catch (error: any) {
     console.log(`Mongo connection error: ${error.message}`)
     throw new Error(error.message)
