@@ -37,7 +37,6 @@ jobs:
           echo "ACTIVATION_TOKEN_SECRET=${{ secrets.ACTIVATION_TOKEN_SECRET }}" >> .env
           echo "CHANGE_PASSWORD_TOKEN_SECRET=${{ secrets.CHANGE_PASSWORD_TOKEN_SECRET }}" >> .env
           echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
-          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
           echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
           echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
           echo "FRONTEND_URI=${{ secrets.FRONTEND_URI }}" >> .env

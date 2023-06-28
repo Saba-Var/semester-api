@@ -23,9 +23,13 @@ const shouldConnectToLocalDatabase = () =>
 
 const connectToMongo = async () => {
   try {
-    const connectionURL = shouldConnectToLocalDatabase()
+    let connectionURL = shouldConnectToLocalDatabase()
       ? generateLocalMongoURL()
       : generateAtlasMongoURL()
+
+    if (process.env.NODE_ENV === 'testing') {
+      connectionURL = process.env.TESTING_DATABASE_URI!
+    }
 
     return mongoose.connect(connectionURL)
   } catch (error: any) {
