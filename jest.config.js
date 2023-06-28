@@ -22,5 +22,6 @@ module.exports = {
       '<rootDir>/src/controllers/authController.ts',
     '^database$': '<rootDir>/src/database',
     '^server': '<rootDir>/src/server.ts',
+    '^requests$': '<rootDir>/src/requests',
   },
 }
