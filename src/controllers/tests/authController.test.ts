@@ -5,6 +5,7 @@ import {
   passwordChangeEmailRequest,
   activateAccountRequest,
   changePasswordRequest,
+  refreshTokenRequest,
   signUpRequest,
   signInRequest,
 } from 'requests'
@@ -94,13 +95,23 @@ describe('authorization', () => {
     })
 
     it('Should return 200 if user signed in successfully', async () => {
-      const { body, status } = await signInRequest({
+      const { body, status, headers } = await signInRequest({
         email: TEST_USER.email,
         password: TEST_USER.password,
       })
 
       const { accessToken } = body
       if (accessToken) testingAuthStore.setAccessToken(accessToken)
+
+      const refreshToken = headers['set-cookie']
+        .find((el: string) => el.includes('refreshToken'))
+        .split('=')[1]
+        .split(';')[0]
+
+      expect(refreshToken).not.toBeUndefined()
+
+      testingAuthStore.setRefreshToken(refreshToken)
+
       expect(status).toBe(200)
       expect(body).toHaveProperty('accessToken')
       expect(body).toHaveProperty('_id')
@@ -188,6 +199,32 @@ describe('authorization', () => {
         expect(status).toBe(200)
         expect(body.message).toBe('Password changed successfully!')
       })
+    })
+  })
+
+  describe('Refresh token - POST /api/authentication/refresh-token', () => {
+    it('Should return 401 if refresh token is invalid', async () => {
+      const { status } = await refreshTokenRequest('invalidRefreshToken')
+
+      expect(status).toBe(401)
+    })
+
+    it('Should return 422 if refresh token is not provided', async () => {
+      const { status, body } = await refreshTokenRequest('')
+
+      expect(status).toBe(422)
+      expect(body.errors.refreshToken[0]).toBe('Refresh token is required!')
+    })
+
+    it('Should return 200 if refresh token is valid', async () => {
+      const { status, body } = await refreshTokenRequest(
+        testingAuthStore.refreshToken
+      )
+
+      expect(body).toHaveProperty('accessToken')
+      expect(status).toBe(200)
+
+      testingAuthStore.setAccessToken(body.accessToken)
     })
   })
 })

@@ -22,3 +22,8 @@ export const changePasswordRequest = async (
   put(`/api/authentication/change-password?accessToken=${accessToken}`).send(
     data
   )
+
+export const refreshTokenRequest = async (refreshToken: string) =>
+  get('/api/authentication/refresh').set('Cookie', [
+    `refreshToken=${refreshToken}`,
+  ])

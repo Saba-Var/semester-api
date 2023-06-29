@@ -1,8 +1,6 @@
 import { superTestMethods } from 'utils'
 
-const { privateRequests, publicRequests } = superTestMethods
+const { privateRequests } = superTestMethods
 
 export const userInfoPrivateRequest = async () =>
-  privateRequests.get('/api/users/info')
-
-export const userInfoPublicRequest = () => publicRequests.get('/api/users/info')
+  privateRequests.get('/api/user')

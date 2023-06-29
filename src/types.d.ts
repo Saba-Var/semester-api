@@ -88,6 +88,8 @@ export interface CustomError extends Error {
   status?: number
 }
 
+export type UserId = Types.ObjectId
+
 export type RequestMethods = 'get' | 'post' | 'put' | 'delete'
 
 export type SuperTestRequest = (

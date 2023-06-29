@@ -1,5 +1,5 @@
 import { AuthorizationReq, NewUserReqBody, Email } from './types'
-import { sendEmail, jwtDecode, generateFieldError } from 'utils'
+import { sendEmail, generateFieldError } from 'utils'
 import type { Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
@@ -43,6 +43,7 @@ export const registerUser = async (
       res,
       {
         _id: newUser._id,
+        email,
       },
       language,
       201
@@ -124,9 +125,9 @@ export const userAccountActivation = async (
           })
         }
 
-        const { _id } = jwtPayload as AccessTokenPayload
+        const { _id, email } = jwtPayload as AccessTokenPayload
 
-        const existingUser = await User.findById(_id)
+        const existingUser = await User.findOne({ email, _id })
         if (!existingUser) {
           return res.status(404).json({ message: req.t('account_not_found') })
         }
@@ -170,6 +171,7 @@ export const passwordChangeRequestEmail = async (
       res,
       {
         _id: existingUser._id,
+        email,
       },
       language
     )
@@ -203,9 +205,9 @@ export const changePassword = async (
           })
         }
 
-        const { _id } = jwtPayload as AccessTokenPayload
+        const { _id, email } = jwtPayload as AccessTokenPayload
 
-        const existingUser = await User.findById(_id)
+        const existingUser = await User.findOne({ _id, email })
         if (!existingUser) {
           return res.status(401).json({ message: req.t('unauthorized_access') })
         }
@@ -231,35 +233,33 @@ export const refresh = async (
   try {
     const refreshToken = req?.cookies?.refreshToken
 
-    if (!refreshToken) {
-      return res.status(401).json({ message: req.t('unauthorized_access') })
-    }
-
-    const verified = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!)
-    if (verified) {
-      const userId = jwtDecode(refreshToken, '_id')
-      const email = jwtDecode(refreshToken, 'email')
-
-      const existingUser = await User.findById(userId)
-
-      if (!email || !existingUser || existingUser.email !== email) {
-        return res.status(401).json({ message: req.t('unauthorized_access') })
-      }
-
-      const accessToken = jwt.sign(
-        { _id: existingUser._id, email: existingUser.email },
-        process.env.ACCESS_TOKEN_SECRET!,
-        {
-          expiresIn: process.env.NODE_ENV === 'production' ? '1h' : '10m',
+    return jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET!,
+      async (error, jwtPayload) => {
+        if (error) {
+          return res.status(401).json({ message: req.t('unauthorized_access') })
         }
-      )
 
-      return res.status(200).json({ accessToken })
-    }
+        const { _id, email } = jwtPayload as AccessTokenPayload
 
-    return res.status(401).json({
-      message: req.t('refresh_token_is_invalid'),
-    })
+        const existingUser = await User.findOne({ _id, email })
+
+        if (!existingUser) {
+          return res.status(401).json({ message: req.t('unauthorized_access') })
+        }
+
+        const accessToken = jwt.sign(
+          { _id: existingUser?._id, email: existingUser?.email },
+          process.env.ACCESS_TOKEN_SECRET!,
+          {
+            expiresIn: process.env.NODE_ENV === 'production' ? '1h' : '10m',
+          }
+        )
+
+        return res.status(200).json({ accessToken })
+      }
+    )
   } catch (error) {
     return next(error)
   }
