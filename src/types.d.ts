@@ -45,6 +45,11 @@ export interface AccessTokenPayload extends JwtPayload {
   _id: string
 }
 
+export type ChangePasswordData = {
+  password: string
+  confirmPassword: string
+}
+
 export enum Weekday {
   MONDAY = 'Monday',
   TUESDAY = 'Tuesday',

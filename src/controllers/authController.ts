@@ -193,30 +193,31 @@ export const changePassword = async (
     const { accessToken } = req.query
     const { password } = req.body
 
-    const verified = jwt.verify(
+    return jwt.verify(
       accessToken,
-      process.env.CHANGE_PASSWORD_TOKEN_SECRET!
+      process.env.CHANGE_PASSWORD_TOKEN_SECRET!,
+      async (error, jwtPayload) => {
+        if (error) {
+          return res.status(401).json({
+            message: req.t('jwt_is_not_valid'),
+          })
+        }
+
+        const { _id } = jwtPayload as AccessTokenPayload
+
+        const existingUser = await User.findById(_id)
+        if (!existingUser) {
+          return res.status(401).json({ message: req.t('unauthorized_access') })
+        }
+
+        existingUser.password = await bcrypt.hash(password, 12)
+        await existingUser.save()
+
+        return res
+          .status(200)
+          .json({ message: req.t('password_changed_successfully') })
+      }
     )
-    if (!verified) {
-      return res.status(401).json({
-        message: req.t('jwt_is_not_valid'),
-      })
-    }
-
-    const userId = jwtDecode(accessToken, '_id')
-
-    const existingUser = await User.findById(userId)
-
-    if (!existingUser) {
-      return res.status(401).json({ message: req.t('unauthorized_access') })
-    }
-
-    existingUser.password = await bcrypt.hash(password, 12)
-    await existingUser.save()
-
-    return res
-      .status(200)
-      .json({ message: req.t('password_changed_successfully') })
   } catch (error) {
     return next(error)
   }
