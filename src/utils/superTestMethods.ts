@@ -1,4 +1,6 @@
+import type { RateLimitRequestHandler } from 'express-rate-limit'
 import { PrivateRequests, RequestMethods } from 'types'
+import { authLimiter } from 'middlewares'
 import { testingAuthStore } from 'store'
 import supertest from 'supertest'
 import server from 'server'
@@ -12,6 +14,15 @@ export class SuperTestMethods {
   publicRequests: supertest.SuperTest<supertest.Test>
 
   constructor() {
+    const authLimiterMiddlewareIndex = server?._router?.stack?.findIndex(
+      (middleware: { handle: RateLimitRequestHandler }) =>
+        middleware?.handle === authLimiter
+    )
+    // disable authLimiter middleware for testing purposes
+    if (authLimiterMiddlewareIndex) {
+      server._router?.stack?.splice(authLimiterMiddlewareIndex, 1)
+    }
+
     this.publicRequests = supertest(server)
 
     this.privateRequests = {

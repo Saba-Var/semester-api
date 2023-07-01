@@ -1,4 +1,3 @@
-import { setupTestingDatabase } from 'utils'
 import { testingAuthStore } from 'store'
 import { TEST_USER } from 'CONSTANTS'
 import {
@@ -11,8 +10,6 @@ import {
 } from 'requests'
 
 describe('authorization', () => {
-  setupTestingDatabase()
-
   let activationToken: string
 
   describe('Sign up - POST /api/authentication/sign-up', () => {
@@ -223,7 +220,6 @@ describe('authorization', () => {
 
       expect(body).toHaveProperty('accessToken')
       expect(status).toBe(200)
-
       testingAuthStore.setAccessToken(body.accessToken)
     })
   })
