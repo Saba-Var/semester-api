@@ -45,6 +45,11 @@ export interface AccessTokenPayload extends JwtPayload {
   _id: string
 }
 
+export type ChangePasswordData = {
+  password: string
+  confirmPassword: string
+}
+
 export enum Weekday {
   MONDAY = 'Monday',
   TUESDAY = 'Tuesday',
@@ -82,6 +87,8 @@ export interface TransformedErrors {
 export interface CustomError extends Error {
   status?: number
 }
+
+export type UserId = Types.ObjectId
 
 export type RequestMethods = 'get' | 'post' | 'put' | 'delete'
 

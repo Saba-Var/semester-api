@@ -14,8 +14,6 @@ export const dropTestDatabase = async () => {
     if (db.connection.readyState === 1) {
       await mongoose.connection.db.dropDatabase()
 
-      await mongoose.disconnect()
-
       return true
     }
   } catch (error) {

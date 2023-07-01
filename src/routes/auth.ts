@@ -12,6 +12,7 @@ import {
 import {
   refreshTokenCookieSchema,
   changePasswordSchema,
+  refreshTokenSchema,
   queryEmailSchema,
   signInSchema,
   tokenSchema,
@@ -38,7 +39,7 @@ router.get(
   passwordChangeRequestEmail
 )
 
-router.get('/refresh', validateRequestSchema, refresh)
+router.get('/refresh', refreshTokenSchema, validateRequestSchema, refresh)
 
 router.get('/logout', refreshTokenCookieSchema, validateRequestSchema, logout)
 

@@ -1,16 +1,15 @@
-import { setupTestingDatabase } from 'utils'
 import { testingAuthStore } from 'store'
 import { TEST_USER } from 'CONSTANTS'
 import {
   passwordChangeEmailRequest,
   activateAccountRequest,
+  changePasswordRequest,
+  refreshTokenRequest,
   signUpRequest,
   signInRequest,
 } from 'requests'
 
 describe('authorization', () => {
-  setupTestingDatabase()
-
   let activationToken: string
 
   describe('Sign up - POST /api/authentication/sign-up', () => {
@@ -93,13 +92,23 @@ describe('authorization', () => {
     })
 
     it('Should return 200 if user signed in successfully', async () => {
-      const { body, status } = await signInRequest({
+      const { body, status, headers } = await signInRequest({
         email: TEST_USER.email,
         password: TEST_USER.password,
       })
 
       const { accessToken } = body
       if (accessToken) testingAuthStore.setAccessToken(accessToken)
+
+      const refreshToken = headers['set-cookie']
+        .find((el: string) => el.includes('refreshToken'))
+        .split('=')[1]
+        .split(';')[0]
+
+      expect(refreshToken).not.toBeUndefined()
+
+      testingAuthStore.setRefreshToken(refreshToken)
+
       expect(status).toBe(200)
       expect(body).toHaveProperty('accessToken')
       expect(body).toHaveProperty('_id')
@@ -122,25 +131,96 @@ describe('authorization', () => {
     })
   })
 
-  describe('Change Password (Email request) - GET /api/authentication/change-password', () => {
-    it('Should return 200 if email with password change link sent successfully', async () => {
-      const { body, status } = await passwordChangeEmailRequest(
-        TEST_USER.email!
-      )
+  describe('Change Password', () => {
+    let resetPasswordToken = ''
 
-      expect(status).toBe(200)
-      expect(body.message).toBe('Check yor gmail to reset your password!')
-      expect(body).toHaveProperty('token')
+    describe('Email request - GET /api/authentication/change-password', () => {
+      it('Should return 200 if email with password change link sent successfully', async () => {
+        const { body, status } = await passwordChangeEmailRequest(
+          TEST_USER.email!
+        )
+
+        expect(status).toBe(200)
+        expect(body.message).toBe('Check yor gmail to reset your password!')
+        expect(body).toHaveProperty('token')
+
+        resetPasswordToken = body.token
+      })
+
+      it('Should return 404 if user with provided email not found', async () => {
+        const { body, status } = await passwordChangeEmailRequest(
+          'doesnotexist@gmail.com'
+        )
+
+        expect(status).toBe(404)
+        expect(body.message).toBe('User not found!')
+        expect(body).not.toHaveProperty('token')
+      })
     })
 
-    it('Should return 404 if user with provided email not found', async () => {
-      const { body, status } = await passwordChangeEmailRequest(
-        'doesnotexist@gmail.com'
+    describe('Change password - PUT /api/authentication/change-password', () => {
+      it('Should return 401 if token is invalid', async () => {
+        const { body, status } = await changePasswordRequest('invalidToken', {
+          confirmPassword: 'newPassword',
+          password: 'newPassword',
+        })
+
+        expect(status).toBe(401)
+        expect(body.message).toBe('JWT is not valid!')
+      })
+
+      it('Should return 422 if passwords does not match even though token is valid', async () => {
+        const { body, status } = await changePasswordRequest(
+          resetPasswordToken,
+          {
+            confirmPassword: 'confirmPassword',
+            password: 'password',
+          }
+        )
+
+        expect(status).toBe(422)
+        expect(body.errors).toEqual({
+          confirmPassword: ['Confirm password does not match to new password!'],
+        })
+      })
+
+      it('Should return 200 if password changed successfully', async () => {
+        const { body, status } = await changePasswordRequest(
+          resetPasswordToken,
+          {
+            confirmPassword: TEST_USER.password!,
+            password: TEST_USER.confirmPassword!,
+          }
+        )
+
+        expect(status).toBe(200)
+        expect(body.message).toBe('Password changed successfully!')
+      })
+    })
+  })
+
+  describe('Refresh token - POST /api/authentication/refresh-token', () => {
+    it('Should return 401 if refresh token is invalid', async () => {
+      const { status } = await refreshTokenRequest('invalidRefreshToken')
+
+      expect(status).toBe(401)
+    })
+
+    it('Should return 422 if refresh token is not provided', async () => {
+      const { status, body } = await refreshTokenRequest('')
+
+      expect(status).toBe(422)
+      expect(body.errors.refreshToken[0]).toBe('Refresh token is required!')
+    })
+
+    it('Should return 200 if refresh token is valid', async () => {
+      const { status, body } = await refreshTokenRequest(
+        testingAuthStore.refreshToken
       )
 
-      expect(status).toBe(404)
-      expect(body.message).toBe('User not found!')
-      expect(body).not.toHaveProperty('token')
+      expect(body).toHaveProperty('accessToken')
+      expect(status).toBe(200)
+      testingAuthStore.setAccessToken(body.accessToken)
     })
   })
 })
