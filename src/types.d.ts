@@ -106,5 +106,5 @@ export type PrivateRequests = {
   get: SuperTestRequest
   post: SuperTestRequest
   put: SuperTestRequest
-  delete: SuperTestRequest
+  del: SuperTestRequest
 }

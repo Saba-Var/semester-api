@@ -36,10 +36,6 @@ export class TestingAuthStore {
   removeAccessToken() {
     this.accessToken = ''
   }
-
-  removeRefreshToken() {
-    this.refreshToken = ''
-  }
 }
 
 export const testingAuthStore = TestingAuthStore.getInstance()

@@ -221,7 +221,7 @@ export const updateSemester = async (
 
     if (semesterExists) {
       return res
-        .status(409)
+        .status(422)
         .json(
           generateFieldError(
             'name',
@@ -231,7 +231,7 @@ export const updateSemester = async (
     }
 
     if (!semester.isCurrentSemester) {
-      return res.status(400).json({
+      return res.status(409).json({
         message: req.t('semester_is_not_active_to_edit'),
       })
     }

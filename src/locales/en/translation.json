@@ -26,7 +26,7 @@
   "semester_already_ended": "Semester already ended!",
   "end_date_cannot_be_before_start_date": "End date cannot be before start date!",
   "semester_ended_successfully": "Semester ended successfully!",
-  "semester_is_not_active_to_edit": "Semester is not active. You can't edit semester!",
+  "semester_is_not_active_to_edit": "Semester is already ended. You can't edit semester!",
   "semester_updated_successfully": "Semester updated successfully!",
   "jwt_is_required": "JWT is required!",
   "refresh_token_is_required": "Refresh token is required!",
