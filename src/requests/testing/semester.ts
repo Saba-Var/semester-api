@@ -11,3 +11,6 @@ export const allSemestersDataRequest = async () =>
 
 export const oneSemesterDataRequest = async (id: string) =>
   privateRequests.get(`/api/semesters/${id}`)
+
+export const deleteSemesterRequest = async (id: string) =>
+  privateRequests.delete(`/api/semesters/${id}`)

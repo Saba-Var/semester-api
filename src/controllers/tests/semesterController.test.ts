@@ -5,6 +5,7 @@ import {
   userInfoPrivateRequest,
   oneSemesterDataRequest,
   createSemesterRequest,
+  deleteSemesterRequest,
 } from 'requests'
 
 describe('Semester Controller', () => {
@@ -102,6 +103,27 @@ describe('Semester Controller', () => {
         updatedAt: expect.any(String),
         createdAt: expect.any(String),
       })
+    })
+  })
+
+  describe('Delete semester', () => {
+    it('Should return 404 if semester with the given id not found', async () => {
+      const { status, body } = await deleteSemesterRequest(
+        '5f8e9d8b4b2a3c1f4c7a5a1c'
+      )
+      expect(status).toBe(404)
+      expect(body.message).toBe('Semester not found!')
+    })
+
+    it("Should return 200 if the semester was deleted successfully and user's data updated", async () => {
+      const { status, body } = await deleteSemesterRequest(newSemesterId)
+      expect(status).toBe(200)
+      expect(body.message).toBe('Semester deleted successfully!')
+      expect(body).toHaveProperty('_id')
+
+      const userResponse = await userInfoPrivateRequest()
+      expect(userResponse.body.semesters).not.toContain(newSemesterId)
+      expect(userResponse.body.activeSemester).toBeNull()
     })
   })
 })
