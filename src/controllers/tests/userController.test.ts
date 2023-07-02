@@ -1,6 +1,6 @@
 import { userInfoPrivateRequest } from 'requests'
 import { superTestMethods } from 'utils'
-import { TEST_USER } from 'CONSTANTS'
+import { TEST_USER } from './data'
 
 describe('User Controller', () => {
   const { get } = superTestMethods.publicRequests

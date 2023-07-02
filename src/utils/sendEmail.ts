@@ -1,3 +1,4 @@
+import { AccessTokenPayload } from 'types'
 import { Response } from 'express'
 import mailgun from 'mailgun-js'
 import jwt from 'jsonwebtoken'
@@ -12,7 +13,7 @@ export const sendEmail = async (
   emailTemplateType: 'account-activation' | 'reset-password',
   to: string,
   res: Response,
-  jwtData: object,
+  jwtData: AccessTokenPayload,
   languageCookie: 'en' | 'ka',
   statusCode?: number
 ) => {
@@ -67,6 +68,8 @@ export const sendEmail = async (
       })
     }
 
-    return res.status(statusCode || 200).json({ message, token })
+    return res
+      .status(statusCode || 200)
+      .json({ message, token, _id: jwtData._id })
   })
 }

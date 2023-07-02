@@ -8,6 +8,8 @@ export class TestingAuthStore {
 
   refreshToken = ''
 
+  currentUserId = ''
+
   static getInstance(): TestingAuthStore {
     if (!TestingAuthStore.instance) {
       TestingAuthStore.instance = new TestingAuthStore()
@@ -21,6 +23,10 @@ export class TestingAuthStore {
 
   setRefreshToken(refreshToken: string) {
     this.refreshToken = refreshToken
+  }
+
+  setCurrentUserId(userId: string) {
+    this.currentUserId = userId
   }
 
   async privateAccess<T>(callback: (data: AccessToken) => T): Promise<T> {
