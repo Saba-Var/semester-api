@@ -158,12 +158,12 @@ export const endSemester = async (
     }
 
     if (semester.endDate) {
-      return res.status(400).json({
+      return res.status(409).json({
         message: req.t('semester_already_ended'),
       })
     }
 
-    if (semester.startDate > endDate) {
+    if (new Date(semester.startDate) > new Date(endDate)) {
       return res
         .status(422)
         .json(

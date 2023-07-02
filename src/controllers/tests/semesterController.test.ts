@@ -6,6 +6,7 @@ import {
   oneSemesterDataRequest,
   createSemesterRequest,
   deleteSemesterRequest,
+  endSemesterRequest,
 } from 'requests'
 
 describe('Semester Controller', () => {
@@ -72,7 +73,7 @@ describe('Semester Controller', () => {
     })
   })
 
-  describe('Get one semester data by id', () => {
+  describe('Get one semester data by id - GET /api/semesters/:id', () => {
     it('Should return 422 if the provided semester id is invalid', async () => {
       const { status, body } = await oneSemesterDataRequest('invalidId')
       expect(status).toBe(422)
@@ -106,7 +107,57 @@ describe('Semester Controller', () => {
     })
   })
 
-  describe('Delete semester', () => {
+  describe('End semester - PUT /api/semesters/:id', () => {
+    it('Should return 422 if the provided semester id is invalid', async () => {
+      const { status, body } = await oneSemesterDataRequest('invalidId')
+      expect(status).toBe(422)
+      expect(body.errors.id).toEqual([
+        'Invalid id param. Provide a valid mongoDB id.',
+      ])
+    })
+
+    it("Should return 404 if the semester with the given id doesn't exist", async () => {
+      const { status, body } = await oneSemesterDataRequest(
+        '5f8e9d8b4b2a3c1f4c7a5a1c'
+      )
+      expect(status).toBe(404)
+      expect(body.message).toBe('Semester not found!')
+    })
+
+    it("Should return 422 if end date is less than semester's start date. User data should not be modified.", async () => {
+      const { status, body } = await endSemesterRequest(newSemesterId, {
+        endDate: '2000-10-10',
+      })
+      expect(status).toBe(422)
+      expect(body.errors.endDate).toEqual([
+        'End date cannot be before start date!',
+      ])
+
+      const userResponse = await userInfoPrivateRequest()
+      expect(userResponse.body.activeSemester).toBe(newSemesterId)
+    })
+
+    it('Should return 200 if the semester was ended successfully and user data updated', async () => {
+      const { status, body } = await endSemesterRequest(newSemesterId, {
+        endDate: '2024-10-10',
+      })
+      expect(status).toBe(200)
+      expect(body).toHaveProperty('_id')
+
+      const userResponse = await userInfoPrivateRequest()
+      expect(userResponse.body.activeSemester).toBe(null)
+    })
+
+    it('Should return 409 if the semester is already ended', async () => {
+      const { status, body } = await endSemesterRequest(newSemesterId, {
+        endDate: '2024-10-10',
+      })
+      expect(status).toBe(409)
+      expect(body.message).toBe('Semester already ended!')
+    })
+  })
+
+  describe('Delete semester - DELETE /api/semesters/:id', () => {
     it('Should return 404 if semester with the given id not found', async () => {
       const { status, body } = await deleteSemesterRequest(
         '5f8e9d8b4b2a3c1f4c7a5a1c'
