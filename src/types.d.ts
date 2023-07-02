@@ -80,6 +80,11 @@ export interface LearningActivityModel {
   weekday: Weekday
 }
 
+export type NewSemesterData = {
+  name: string
+  startDate: string
+}
+
 export interface TransformedErrors {
   [key: string]: string[]
 }
@@ -101,5 +106,5 @@ export type PrivateRequests = {
   get: SuperTestRequest
   post: SuperTestRequest
   put: SuperTestRequest
-  delete: SuperTestRequest
+  del: SuperTestRequest
 }

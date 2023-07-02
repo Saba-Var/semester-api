@@ -7,7 +7,7 @@ describe('generateFieldError function', () => {
 
     expect(generateFieldError(fieldName, message)).toEqual({
       errors: {
-        [fieldName]: message,
+        [fieldName]: [message],
       },
     })
   })
@@ -18,7 +18,7 @@ describe('generateFieldError function', () => {
 
     expect(generateFieldError(fieldName, message)).not.toEqual({
       errors: {
-        [fieldName]: 'Password is required',
+        [fieldName]: ['Password is required'],
       },
     })
   })

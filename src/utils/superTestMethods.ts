@@ -35,7 +35,7 @@ export class SuperTestMethods {
       put: (path: string, sendData?: object) =>
         this.privateRequest('put', path, sendData),
 
-      delete: (path: string, sendData?: object) =>
+      del: (path: string, sendData?: object) =>
         this.privateRequest('delete', path, sendData),
     }
   }

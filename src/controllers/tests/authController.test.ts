@@ -1,5 +1,5 @@
 import { testingAuthStore } from 'store'
-import { TEST_USER } from 'CONSTANTS'
+import { TEST_USER } from './data'
 import {
   passwordChangeEmailRequest,
   activateAccountRequest,
@@ -18,7 +18,9 @@ describe('authorization', () => {
 
       expect(status).toBe(201)
       expect(body).toHaveProperty('token')
+      expect(body).toHaveProperty('_id')
       activationToken = body.token
+      testingAuthStore.setCurrentUserId(body._id)
     })
 
     it('Should return 409 if user with the same email is already registered', async () => {

@@ -1,15 +1,16 @@
-import { Semester, User, SemesterModel } from 'models'
 import type { Response, NextFunction } from 'express'
 import { generateFieldError } from 'utils'
+import { Semester, User } from 'models'
 import type {
   ExtendedAuthRequest,
+  NewSemesterData,
   RequestParams,
   RequestBody,
   AuthRequest,
 } from 'types'
 
 export const createSemester = async (
-  req: RequestBody<SemesterModel>,
+  req: RequestBody<NewSemesterData>,
   res: Response,
   next: NextFunction
 ) => {
@@ -22,14 +23,9 @@ export const createSemester = async (
     })
 
     if (semesterExists) {
-      return res
-        .status(409)
-        .json(
-          generateFieldError(
-            'name',
-            req.t('semester_with_name_already_exists', { name })
-          )
-        )
+      return res.status(409).json({
+        message: req.t('semester_with_name_already_exists', { name }),
+      })
     }
 
     const currentUser = await User.findById(req?.currentUser?._id)
@@ -162,12 +158,12 @@ export const endSemester = async (
     }
 
     if (semester.endDate) {
-      return res.status(400).json({
+      return res.status(409).json({
         message: req.t('semester_already_ended'),
       })
     }
 
-    if (semester.startDate > endDate) {
+    if (new Date(semester.startDate) > new Date(endDate)) {
       return res
         .status(422)
         .json(
@@ -225,7 +221,7 @@ export const updateSemester = async (
 
     if (semesterExists) {
       return res
-        .status(409)
+        .status(422)
         .json(
           generateFieldError(
             'name',
@@ -235,7 +231,7 @@ export const updateSemester = async (
     }
 
     if (!semester.isCurrentSemester) {
-      return res.status(400).json({
+      return res.status(409).json({
         message: req.t('semester_is_not_active_to_edit'),
       })
     }

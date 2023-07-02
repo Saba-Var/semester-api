@@ -3,7 +3,7 @@ export const generateFieldError = (fieldName: string, message: string) => {
 
   errorsObject = {
     errors: {
-      [fieldName]: message,
+      [fieldName]: [message],
     },
   }
 

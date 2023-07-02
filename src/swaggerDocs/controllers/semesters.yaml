@@ -73,7 +73,7 @@
             $ref: '#/components/schemas/SemesterPartial'
     responses:
       201:
-        description: Semester created successfully
+        description: Semester created successfully!
         content:
           application/json:
             schema:
@@ -81,7 +81,7 @@
               properties:
                 message:
                   type: string
-                  example: Semester created successfully
+                  example: Semester created successfully!
                 _id:
                   type: string
                   example: 5f9b3b3b1c9d440000f3e9a0
