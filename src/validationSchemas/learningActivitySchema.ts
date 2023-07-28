@@ -54,7 +54,7 @@ const learningActivitySchema: ValidationChain[] = [
       max: 5,
     })
     .withMessage('starting_time_length')
-    .matches(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/)
+    .matches(/^(0[9]|1\d|2[0-3]):(00|30)$/)
     .withMessage('starting_time_format')
     .custom((value, { req }) => {
       const startingValues = value.split(':')
@@ -64,14 +64,6 @@ const learningActivitySchema: ValidationChain[] = [
       const endingValues = req.body.endingTime.split(':')
       const endingHour = Number(endingValues[0])
       const endingMinutes = Number(endingValues[1])
-
-      if (startingHour < 9 || startingHour > 23) {
-        throw new Error('starting_time_range')
-      }
-
-      if (startingMinutes !== 0 && startingMinutes !== 30) {
-        throw new Error('starting_time_minutes')
-      }
 
       if (startingHour === 23 && startingMinutes !== 0) {
         throw new Error('starting_time_minute_when_hour_is_23')
@@ -96,26 +88,13 @@ const learningActivitySchema: ValidationChain[] = [
       max: 5,
     })
     .withMessage('ending_time_length')
-    .matches(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/)
+    .matches(/^(?:0[9]|1[0-9]|2[0-3]):(?:30|00)$/)
     .withMessage('ending_time_format')
     .custom((value, { req }) => {
       const [endingHour, endingMinute] = value.split(':').map(Number)
       const [startingHour, startingMinute] = req.body.startingTime
         .split(':')
         .map(Number)
-
-      if (
-        endingHour < 9 ||
-        endingHour > 23 ||
-        (endingHour === 23 && endingMinute > 30) ||
-        (endingHour === 9 && endingMinute < 30)
-      ) {
-        throw new Error('ending_time_range')
-      }
-
-      if (endingMinute % 30 !== 0) {
-        throw new Error('ending_time_minutes')
-      }
 
       if (
         endingHour < startingHour ||

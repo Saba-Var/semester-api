@@ -23,5 +23,6 @@ module.exports = {
     '^database$': '<rootDir>/src/database',
     '^server': '<rootDir>/src/server.ts',
     '^requests$': '<rootDir>/src/requests',
+    '^data$': '<rootDir>/src/data',
   },
 }

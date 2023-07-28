@@ -1,4 +1,4 @@
-import { NEW_SEMESTER_DATA_1, NEW_SEMESTER_DATA_2 } from './data'
+import { FALL_SEMESTER, SPRING_SEMESTER } from 'data'
 import { testingAuthStore } from 'store'
 import {
   allSemestersDataRequest,
@@ -28,7 +28,7 @@ describe('Semester Controller', () => {
     })
 
     it('Should return 201 if the semester was created and user data updated successfully', async () => {
-      const { status, body } = await createSemesterRequest(NEW_SEMESTER_DATA_1)
+      const { status, body } = await createSemesterRequest(FALL_SEMESTER)
       expect(status).toBe(201)
       expect(body.message).toBe('Semester created successfully!')
       expect(body).toHaveProperty('_id')
@@ -40,15 +40,15 @@ describe('Semester Controller', () => {
     })
 
     it('Should return 409 if the semester with the given name already exists', async () => {
-      const { status, body } = await createSemesterRequest(NEW_SEMESTER_DATA_1)
+      const { status, body } = await createSemesterRequest(FALL_SEMESTER)
       expect(status).toBe(409)
       expect(body.message).toBe(
-        `Semester with this name '${NEW_SEMESTER_DATA_1.name}' already exists!`
+        `Semester with this name '${FALL_SEMESTER.name}' already exists!`
       )
     })
 
     it('Should return 409 when creating new semester while user already has got an active semester', async () => {
-      const { status, body } = await createSemesterRequest(NEW_SEMESTER_DATA_2)
+      const { status, body } = await createSemesterRequest(SPRING_SEMESTER)
       expect(status).toBe(409)
       expect(body.message).toBe(
         'You already have an active semester! End it and create a new one.'
@@ -62,7 +62,7 @@ describe('Semester Controller', () => {
       expect(status).toBe(200)
       expect(body).toHaveLength(1)
       expect(body[0]).toEqual({
-        ...NEW_SEMESTER_DATA_1,
+        ...FALL_SEMESTER,
         _id: firstSemesterId,
         user: testingAuthStore.currentUserId,
         endDate: null,
@@ -96,7 +96,7 @@ describe('Semester Controller', () => {
       const { status, body } = await oneSemesterDataRequest(firstSemesterId)
       expect(status).toBe(200)
       expect(body).toEqual({
-        ...NEW_SEMESTER_DATA_1,
+        ...FALL_SEMESTER,
         _id: firstSemesterId,
         user: testingAuthStore.currentUserId,
         endDate: null,
@@ -195,7 +195,7 @@ describe('Semester Controller', () => {
     it("Should return 404 if the semester with the given id doesn't exist", async () => {
       const { status, body } = await updateSemesterRequest(
         '5f8e9d8b4b2a3c1f4c7a5a1c',
-        NEW_SEMESTER_DATA_1
+        FALL_SEMESTER
       )
       expect(status).toBe(404)
       expect(body.message).toBe('Semester not found!')
@@ -203,7 +203,7 @@ describe('Semester Controller', () => {
 
     it('Should return 422 if semester with the given name already exists.', async () => {
       const firstSemesterCreationResponse = await createSemesterRequest(
-        NEW_SEMESTER_DATA_1
+        FALL_SEMESTER
       )
       firstSemesterId = firstSemesterCreationResponse.body._id
       expect(firstSemesterId).toBeDefined()
@@ -214,26 +214,26 @@ describe('Semester Controller', () => {
       expect(endSemesterResponse.status).toBe(200)
 
       const secondSemesterCreationResponse = await createSemesterRequest(
-        NEW_SEMESTER_DATA_2
+        SPRING_SEMESTER
       )
       secondSemesterId = secondSemesterCreationResponse.body._id
       expect(secondSemesterId).toBeDefined()
 
       const { body, status } = await updateSemesterRequest(
         secondSemesterId,
-        NEW_SEMESTER_DATA_1
+        FALL_SEMESTER
       )
 
       expect(status).toBe(422)
       expect(body.errors.name).toEqual([
-        `Semester with this name '${NEW_SEMESTER_DATA_1.name}' already exists!`,
+        `Semester with this name '${FALL_SEMESTER.name}' already exists!`,
       ])
     })
 
     it('Should return 409 if semester is already ended', async () => {
       const { status, body } = await updateSemesterRequest(
         firstSemesterId,
-        NEW_SEMESTER_DATA_1
+        FALL_SEMESTER
       )
       expect(status).toBe(409)
       expect(body.message).toBe(

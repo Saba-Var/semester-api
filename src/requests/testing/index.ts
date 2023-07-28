@@ -1,3 +1,4 @@
 export * from './authRequests'
 export * from './usersRequests'
-export * from './semester'
+export * from './semesterRequests'
+export * from './learningActivitiesRequests'

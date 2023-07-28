@@ -54,7 +54,7 @@
   "provide_valid_mongoDB_id": "მიუთითეთ ვალიდური mongoDB-ის id.",
   "starting_time_is_required": "დაწყების დრო სავალდებულოა!",
   "starting_time_length": "დაწყების დრო უნდა შედგებოდეს 5 სიმბოლოსგან!",
-  "starting_time_format": "დაწყების დრო უნდა იყოს შემდეგი ფორმატით: HH:MM",
+  "starting_time_format": "დაწყების დრო უნდა იყოს შემდეგი ფორმატით: HH:MM. შუალედი 09:00 - 23:00. წუთები უნდა იყოს 00 ან 30.",
   "starting_time_range": "დაწყების დრო უნდა იყოს შემდეგი შუალედიდან: 09:00 - 23:00",
   "starting_time_minutes": "დაწყების დროის წუთები უნდა იყოს 00 ან 30",
   "starting_time_minute_when_hour_is_23": "დაწყების დროის წუთები უნდა იყოს 00 როცა საათი არის 23",
