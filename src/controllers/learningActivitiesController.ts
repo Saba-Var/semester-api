@@ -44,6 +44,31 @@ export const createLearningActivity = async (
   }
 }
 
+export const updateLearningActivity = async (
+  req: AuthRequest<LearningActivityModel, { id: string }>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const updatedLearningActivity = await LearningActivity.findOneAndUpdate(
+      { _id: req.params.id, user: req.currentUser?._id },
+      req.body
+    )
+
+    if (!updatedLearningActivity) {
+      return res.status(404).json({
+        message: req.t('learning_activity_not_found'),
+      })
+    }
+
+    return res.status(200).json({
+      message: req.t('learning_activity_updated_successfully'),
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
 export const getLearningActivity = async (
   req: RequestParams<{ id: string }>,
   res: Response,
@@ -113,31 +138,6 @@ export const deleteLearningActivity = async (
     return res.status(200).json({
       message: req.t('learning_activity_deleted_successfully'),
       _id: deletedLearningActivity._id,
-    })
-  } catch (error) {
-    return next(error)
-  }
-}
-
-export const updateLearningActivity = async (
-  req: AuthRequest<LearningActivityModel, { id: string }>,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const updatedLearningActivity = await LearningActivity.findOneAndUpdate(
-      { _id: req.params.id, user: req.currentUser?._id },
-      req.body
-    )
-
-    if (!updatedLearningActivity) {
-      return res.status(404).json({
-        message: req.t('learning_activity_not_found'),
-      })
-    }
-
-    return res.status(200).json({
-      message: req.t('learning_activity_updated_successfully'),
     })
   } catch (error) {
     return next(error)

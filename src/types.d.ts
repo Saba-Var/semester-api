@@ -69,15 +69,18 @@ export enum ActivityType {
   LAB = 'Lab',
 }
 
-export interface LearningActivityModel {
-  activityType: ActivityType
-  semester: Types.ObjectId
-  startingTime: string
-  user: Types.ObjectId
+export interface LearningActivityPartial {
   subjectName: string
   teacherName: string
-  endingTime: string
   weekday: Weekday
+  activityType: ActivityType
+  startingTime: string
+  endingTime: string
+  semester: Types.ObjectId
+}
+
+export interface LearningActivityModel extends LearningActivityPartial {
+  user: Types.ObjectId
 }
 
 export type NewSemesterData = {
