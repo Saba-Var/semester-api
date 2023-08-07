@@ -24,8 +24,6 @@ const server = express()
 
 dotenv.config()
 
-server.use(authLimiter)
-
 server.use(i18nextMiddleware)
 server.use(bodyParser.json())
 server.use(cookieParser())
@@ -39,7 +37,7 @@ server.use(
 
 server.use('/api-docs', SwaggerUI.serve, swaggerDocSetup())
 
-server.use('/api/authentication', authRouter)
+server.use('/api/authentication', authLimiter, authRouter)
 
 server.use(verifyToken as unknown as RequestHandler)
 
