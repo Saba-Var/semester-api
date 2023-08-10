@@ -1,5 +1,5 @@
 import { JwtPayload } from 'jsonwebtoken'
-import type { UserModel } from 'models'
+import type { IUserModel } from 'models'
 import type { Request } from 'express'
 import type { Types } from 'mongoose'
 import supertest from 'supertest'
