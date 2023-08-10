@@ -14,14 +14,14 @@ import {
   changePasswordSchema,
   refreshTokenSchema,
   queryEmailSchema,
+  userAuthSchema,
   signInSchema,
   tokenSchema,
-  userSchema,
 } from 'validationSchemas'
 
 const router = express.Router()
 
-router.post('/sign-up', userSchema, validateRequestSchema, registerUser)
+router.post('/sign-up', userAuthSchema, validateRequestSchema, registerUser)
 
 router.post(
   '/activate-account',

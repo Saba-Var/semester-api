@@ -29,10 +29,10 @@ describe('User Controller', () => {
         username: TEST_USER.username,
         email: TEST_USER.email,
         activeSemester: null,
-        image: null,
         semesters: [],
         createdAt: expect.any(String),
         updatedAt: expect.any(String),
+        image: expect.any(Object),
       })
     })
   })

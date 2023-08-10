@@ -1,17 +1,14 @@
+import type { ILearningActivityModel, UserImage } from 'types'
 import type { Document, Types } from 'mongoose'
-import { LearningActivityModel } from 'types'
 
 export interface IUserModel extends Document {
   activeSemester: Types.ObjectId
   semesters: Types.ObjectId[]
+  image?: UserImage | null
   password?: string
   username: string
   active: boolean
   email: string
-  image?: {
-    url: string
-    type: 'dicebear' | 'upload'
-  } | null
 }
 
 export interface SemesterModel extends Document {

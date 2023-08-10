@@ -79,7 +79,7 @@ export interface LearningActivityPartial {
   semester: Types.ObjectId
 }
 
-export interface LearningActivityModel extends LearningActivityPartial {
+export interface ILearningActivityModel extends LearningActivityPartial {
   user: Types.ObjectId
 }
 
@@ -110,4 +110,9 @@ export type PrivateRequests = {
   post: SuperTestRequest
   put: SuperTestRequest
   del: SuperTestRequest
+}
+
+export type UserImage = {
+  url: string
+  type: 'dicebear' | 'upload'
 }

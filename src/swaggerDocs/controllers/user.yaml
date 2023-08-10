@@ -12,7 +12,50 @@
           application/json:
             schema:
               $ref: '#/components/schemas/User'
-
+      401:
+        $ref: '#/components/responses/UnauthorizedAccess'
+      404:
+        $ref: '#/components/responses/NotFound'
+      500:
+        $ref: '#/components/responses/InternalServerError'
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - User
+    description: Update details of the currently authenticated user.
+    requestBody:
+      description: User details to update.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              image:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    format: uri
+                  type:
+                    type: string
+    responses:
+      200:
+        description: User details successfully updated.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: User details updated successfully!
+                _id:
+                  type: string
+                  example: 5f9b3b3b1c9d440000f3e9a0
+                  format: objectid
+      400:
+        $ref: '#/components/responses/BadRequest'
       401:
         $ref: '#/components/responses/UnauthorizedAccess'
       404:
