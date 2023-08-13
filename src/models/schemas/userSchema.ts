@@ -1,7 +1,7 @@
-import type { UserModel } from 'models'
+import type { IUserModel } from 'models'
 import { Schema } from 'mongoose'
 
-const userSchema: Schema<UserModel> = new Schema(
+const userSchema: Schema<IUserModel> = new Schema(
   {
     username: {
       type: String,
@@ -30,8 +30,9 @@ const userSchema: Schema<UserModel> = new Schema(
     password: { type: String },
 
     image: {
-      type: String || null,
       default: null,
+      type: Object || null,
+      collectionName: String,
     },
 
     semesters: [

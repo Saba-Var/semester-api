@@ -1,10 +1,10 @@
+import type { ILearningActivityModel, UserImage } from 'types'
 import type { Document, Types } from 'mongoose'
-import { LearningActivityModel } from 'types'
 
-export interface UserModel extends Document {
+export interface IUserModel extends Document {
   activeSemester: Types.ObjectId
   semesters: Types.ObjectId[]
-  image?: string | null
+  image?: UserImage | null
   password?: string
   username: string
   active: boolean

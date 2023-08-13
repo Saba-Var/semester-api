@@ -1,14 +1,14 @@
 import type { Response, NextFunction } from 'express'
 import { LearningActivity, Semester } from 'models'
 import type {
-  LearningActivityModel,
+  ILearningActivityModel,
   RequestParams,
   RequestBody,
   AuthRequest,
 } from 'types'
 
 export const createLearningActivity = async (
-  req: RequestBody<LearningActivityModel>,
+  req: RequestBody<ILearningActivityModel>,
   res: Response,
   next: NextFunction
 ) => {
@@ -45,7 +45,7 @@ export const createLearningActivity = async (
 }
 
 export const updateLearningActivity = async (
-  req: AuthRequest<LearningActivityModel, { id: string }>,
+  req: AuthRequest<ILearningActivityModel, { id: string }>,
   res: Response,
   next: NextFunction
 ) => {

@@ -67,5 +67,6 @@
   "ending_time_should_be_after_starting_time": "Ending time should be after starting time",
   "missing_authorization_headers": "Missing authorization headers. Unauthorized access!",
   "user_is_not_authorized_to_continue": "User is not authorized to continue. Unauthorized access!",
-  "internal_server_error": "Internal server error!"
+  "internal_server_error": "Internal server error!",
+  "user_details_updated_successfully": "User details updated successfully!"
 }

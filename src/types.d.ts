@@ -1,5 +1,5 @@
 import { JwtPayload } from 'jsonwebtoken'
-import type { UserModel } from 'models'
+import type { IUserModel } from 'models'
 import type { Request } from 'express'
 import type { Types } from 'mongoose'
 import supertest from 'supertest'
@@ -79,7 +79,7 @@ export interface LearningActivityPartial {
   semester: Types.ObjectId
 }
 
-export interface LearningActivityModel extends LearningActivityPartial {
+export interface ILearningActivityModel extends LearningActivityPartial {
   user: Types.ObjectId
 }
 
@@ -110,4 +110,10 @@ export type PrivateRequests = {
   post: SuperTestRequest
   put: SuperTestRequest
   del: SuperTestRequest
+}
+
+export type UserImage = {
+  url: string
+  type: 'dicebear' | 'upload'
+  collectionName: string
 }
