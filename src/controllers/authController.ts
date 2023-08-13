@@ -138,12 +138,19 @@ export const userAccountActivation = async (
           })
         }
 
-        const randomSeed = Math.random().toString(36).substring(2)
-        const avatarUrl = `${process.env.DICEBEAR_API_URI}/bottts/${randomSeed}.svg`
+        const collectionName = 'bottts'
+        const avatarUrl = `${process.env.DICEBEAR_API_URI}/${collectionName}/${existingUser.username}.svg`
 
         await User.updateOne(
           { _id },
-          { active: true, image: { url: avatarUrl, type: 'dicebear' } }
+          {
+            active: true,
+            image: {
+              url: avatarUrl,
+              type: 'dicebear',
+              collectionName,
+            },
+          }
         )
 
         return res.status(200).json({

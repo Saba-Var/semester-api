@@ -32,6 +32,7 @@ const userSchema: Schema<IUserModel> = new Schema(
     image: {
       default: null,
       type: Object || null,
+      collectionName: String,
     },
 
     semesters: [

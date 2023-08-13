@@ -115,4 +115,5 @@ export type PrivateRequests = {
 export type UserImage = {
   url: string
   type: 'dicebear' | 'upload'
+  collectionName: string
 }
