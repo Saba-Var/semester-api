@@ -160,3 +160,51 @@
         $ref: '#/components/responses/UnprocessableEntity'
       500:
         $ref: '#/components/responses/InternalServerError'
+
+/user/activate-email:
+  put:
+    security:
+      - bearerAuth: []
+    summary: Activate user email that was requested to be changed. Should provide the token from the email.
+    tags:
+      - User
+    parameters:
+      - in: query
+        name: token
+        description: JWT token from the email.
+        required: true
+        schema:
+          type: objectId
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+    responses:
+      200:
+        description: Successful response indicating the email activated successfully.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Email activated successfully!
+                accessToken:
+                  type: objectId
+                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                _id:
+                  type: string
+                  example: 5f9b3b3b1c9d440000f3e9a0
+      404:
+        $ref: '#/components/responses/NotFound'
+      409:
+        description: Conflict. User with the provided email is already registered.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Email is already in use!
+                  description: Error message indicating the conflict.
+      500:
+        $ref: '#/components/responses/InternalServerError'

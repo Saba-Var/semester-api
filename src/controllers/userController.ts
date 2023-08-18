@@ -119,6 +119,13 @@ export const activateNewEmail = async (
           return res.status(404).json({ message: req.t('user_not_found') })
         }
 
+        const isEmailAvailable = await User.findOne({ email: newEmail })
+        if (isEmailAvailable) {
+          return res.status(409).json({
+            message: req.t('email_is_already_in_use'),
+          })
+        }
+
         existingUser.email = newEmail
         await existingUser.save()
 
@@ -135,7 +142,7 @@ export const activateNewEmail = async (
         })
 
         return res.status(200).json({
-          message: req.t('account_activated_successfully'),
+          message: req.t('email_activated_successfully'),
           _id: existingUser._id,
           accessToken,
         })

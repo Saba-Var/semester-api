@@ -33,7 +33,7 @@ router.get(
   changeEmailRequest
 )
 
-router.get(
+router.put(
   '/activate-email',
   tokenSchema,
   validateRequestSchema,

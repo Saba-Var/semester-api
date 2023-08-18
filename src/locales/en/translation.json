@@ -69,5 +69,6 @@
   "user_is_not_authorized_to_continue": "User is not authorized to continue. Unauthorized access!",
   "internal_server_error": "Internal server error!",
   "user_details_updated_successfully": "User details updated successfully!",
-  "email_is_already_in_use": "Email is already in use!"
+  "email_is_already_in_use": "Email is already in use!",
+  "email_activated_successfully": "Email activated successfully!"
 }
