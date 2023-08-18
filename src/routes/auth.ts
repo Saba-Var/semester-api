@@ -1,10 +1,8 @@
 import { validateRequestSchema } from 'middlewares'
 import express from 'express'
 import {
-  changePasswordOfLoggedInUser,
   passwordChangeRequestEmail,
   userAccountActivation,
-  changeEmailRequest,
   changePassword,
   authorization,
   registerUser,
@@ -17,7 +15,6 @@ import {
   refreshTokenSchema,
   queryEmailSchema,
   userAuthSchema,
-  newEmailSchema,
   signInSchema,
   tokenSchema,
 } from 'validationSchemas'

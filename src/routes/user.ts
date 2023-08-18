@@ -1,6 +1,9 @@
 import { validateRequestSchema } from 'middlewares'
-import { newEmailSchema } from 'validationSchemas'
 import express from 'express'
+import {
+  changeLoggedUserPasswordSchema,
+  newEmailSchema,
+} from 'validationSchemas'
 import {
   changePasswordOfLoggedInUser,
   changeEmailRequest,
@@ -14,7 +17,12 @@ router.get('/', getUserDetails)
 
 router.put('/', updateUserDetails)
 
-router.put('/change-password', changePasswordOfLoggedInUser)
+router.put(
+  '/change-password',
+  changeLoggedUserPasswordSchema,
+  validateRequestSchema,
+  changePasswordOfLoggedInUser
+)
 
 router.get(
   '/change-email',

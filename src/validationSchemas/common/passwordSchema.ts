@@ -1,7 +1,7 @@
 import { check } from 'express-validator'
 
-const passwordSchema = (minLength = 1) =>
-  check('password')
+const passwordSchema = (minLength = 1, fieldName = 'password') =>
+  check(fieldName)
     .isLength({
       min: minLength,
     })

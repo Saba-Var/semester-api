@@ -1,3 +1,4 @@
+export { default as changeLoggedUserPasswordSchema } from './changeLoggedUserPasswordSchema'
 export { default as refreshTokenCookieSchema } from './common/refresh-cookie-schema'
 export { default as learningActivitySchema } from './learningActivitySchema'
 export { default as changePasswordSchema } from './changePasswordSchema'

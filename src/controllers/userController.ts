@@ -93,7 +93,7 @@ export const changeEmailRequest = async (
 }
 
 export const changePasswordOfLoggedInUser = async (
-  req: RequestBody<{ newPassword: string; oldPassword: string }>,
+  req: RequestBody<{ password: string; oldPassword: string }>,
   res: Response,
   next: NextFunction
 ) => {
@@ -104,7 +104,7 @@ export const changePasswordOfLoggedInUser = async (
       return res.status(404).json({ message: req.t('user_not_found') })
     }
 
-    const { newPassword, oldPassword } = req.body
+    const { password, oldPassword } = req.body
 
     const isMatch = await bcrypt.compare(oldPassword, currentUser.password!)
 
@@ -114,7 +114,7 @@ export const changePasswordOfLoggedInUser = async (
       })
     }
 
-    currentUser.password = await bcrypt.hash(newPassword, 12)
+    currentUser.password = await bcrypt.hash(password, 12)
     await currentUser.save()
 
     return res.json({ message: req.t('password_changed_successfully') })

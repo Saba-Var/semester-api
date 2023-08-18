@@ -126,7 +126,7 @@
                 type: string
                 example: 'oldPassword'
                 description: Old Password.
-              newPassword:
+              password:
                 type: string
                 description: New password.
                 example: 'newPassword'
