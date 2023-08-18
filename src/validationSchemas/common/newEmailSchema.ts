@@ -1,6 +1,6 @@
-import { check } from 'express-validator'
+import { query } from 'express-validator'
 
-const newEmailSchema = check('newEmail')
+const newEmailSchema = query('newEmail')
   .trim()
   .notEmpty()
   .withMessage('email_is_required')

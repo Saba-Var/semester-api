@@ -1,6 +1,7 @@
 import { validateRequestSchema } from 'middlewares'
 import express from 'express'
 import {
+  changePasswordOfLoggedInUser,
   passwordChangeRequestEmail,
   userAccountActivation,
   changeEmailRequest,
@@ -39,13 +40,6 @@ router.get(
   queryEmailSchema,
   validateRequestSchema,
   passwordChangeRequestEmail
-)
-
-router.get(
-  '/change-email',
-  newEmailSchema,
-  validateRequestSchema,
-  changeEmailRequest
 )
 
 router.get('/refresh', refreshTokenSchema, validateRequestSchema, refresh)

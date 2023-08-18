@@ -1,0 +1,18 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="../styles/verification-template.css")
+        style
+            include ../styles/verification-template.css
+        title Email confirmation
+    body
+        div.template-wrapper
+            div.email-container
+                h1 Change email
+                p You are receiving this email because you requested a changing current email. If you did not request this change, you can safely ignore this email. If you did request this change, please change your email:
+                div.activation-button
+                    a.activation-link(href=redirectUri) Change email
+                p If that does not works, copy and paste the following link in your browser:
+                p #{redirectUri}

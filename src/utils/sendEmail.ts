@@ -13,7 +13,7 @@ export const sendEmail = async (
   emailTemplateType: 'account-activation' | 'reset-password' | 'change-email',
   to: string,
   res: Response,
-  jwtData: AccessTokenPayload | { newEmail: string },
+  jwtData: AccessTokenPayload | { newEmail: string; _id?: string },
   languageCookie: 'en' | 'ka',
   statusCode?: number
 ) => {
@@ -81,8 +81,12 @@ export const sendEmail = async (
       })
     }
 
-    return res
-      .status(statusCode || 200)
-      .json({ message, token, _id: jwtData._id })
+    const responseData = { message, token, _id: jwtData._id }
+
+    if (emailTemplateType === 'change-email') {
+      delete responseData._id
+    }
+
+    return res.status(statusCode || 200).json(responseData)
   })
 }
