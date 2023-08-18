@@ -3,6 +3,7 @@ import express from 'express'
 import {
   passwordChangeRequestEmail,
   userAccountActivation,
+  changeEmailRequest,
   changePassword,
   authorization,
   registerUser,
@@ -15,6 +16,7 @@ import {
   refreshTokenSchema,
   queryEmailSchema,
   userAuthSchema,
+  newEmailSchema,
   signInSchema,
   tokenSchema,
 } from 'validationSchemas'
@@ -37,6 +39,13 @@ router.get(
   queryEmailSchema,
   validateRequestSchema,
   passwordChangeRequestEmail
+)
+
+router.get(
+  '/change-email',
+  newEmailSchema,
+  validateRequestSchema,
+  changeEmailRequest
 )
 
 router.get('/refresh', refreshTokenSchema, validateRequestSchema, refresh)

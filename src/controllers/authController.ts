@@ -163,6 +163,43 @@ export const userAccountActivation = async (
   }
 }
 
+export const changeEmailRequest = async (
+  req: RequestQuery<{ newEmail: string }>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { newEmail } = req.query
+    const { language } = req.cookies
+
+    const existingUser = await User.findById(req.currentUser?._id)
+    if (!existingUser) {
+      return res.status(404).json({ message: req.t('user_not_found') })
+    }
+
+    const isEmailUsed = await User.findOne({ newEmail })
+
+    if (isEmailUsed) {
+      return res.status(409).json({
+        message: req.t('email_is_already_in_use'),
+      })
+    }
+
+    return sendEmail(
+      'Change email confirmation',
+      'change-email',
+      existingUser.email,
+      res,
+      {
+        newEmail,
+      },
+      language
+    )
+  } catch (error) {
+    return next(error)
+  }
+}
+
 export const passwordChangeRequestEmail = async (
   req: RequestQuery<Email>,
   res: Response,
