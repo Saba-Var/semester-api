@@ -3,11 +3,13 @@ import express from 'express'
 import {
   changeLoggedUserPasswordSchema,
   newEmailSchema,
+  tokenSchema,
 } from 'validationSchemas'
 import {
   changePasswordOfLoggedInUser,
   changeEmailRequest,
   updateUserDetails,
+  activateNewEmail,
   getUserDetails,
 } from 'controllers'
 
@@ -29,6 +31,13 @@ router.get(
   newEmailSchema,
   validateRequestSchema,
   changeEmailRequest
+)
+
+router.get(
+  '/activate-email',
+  tokenSchema,
+  validateRequestSchema,
+  activateNewEmail
 )
 
 export default router

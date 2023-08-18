@@ -28,7 +28,7 @@ export const sendEmail = async (
       : process.env.CHANGE_PASSWORD_TOKEN_SECRET!
 
   if (emailTemplateType === 'change-email') {
-    jwtSecret = process.env.CHNAGE_EMAIL_TOKEN_SECRET!
+    jwtSecret = process.env.CHANGE_EMAIL_TOKEN_SECRET!
   }
 
   const token = jwt.sign(jwtData, jwtSecret, {

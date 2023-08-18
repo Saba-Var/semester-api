@@ -1,5 +1,6 @@
 import type { Response, NextFunction } from 'express'
-import { sendEmail } from 'utils'
+import { sendEmail, generateAuthTokens } from 'utils'
+import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { User } from 'models'
 import type {
@@ -7,6 +8,7 @@ import type {
   RequestQuery,
   RequestBody,
   UserImage,
+  Token,
 } from 'types'
 
 export const getUserDetails = async (
@@ -86,6 +88,58 @@ export const changeEmailRequest = async (
         newEmail,
       },
       language
+    )
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const activateNewEmail = async (
+  req: RequestQuery<Token>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { token } = req.query
+
+    return jwt.verify(
+      token,
+      process.env.CHANGE_EMAIL_TOKEN_SECRET!,
+      async (error, jwtPayload) => {
+        if (error) {
+          return res.status(403).json({
+            message: req.t('unauthorized_access'),
+          })
+        }
+
+        const { newEmail } = jwtPayload as { newEmail: string }
+
+        const existingUser = await User.findById(req.currentUser?._id)
+        if (!existingUser) {
+          return res.status(404).json({ message: req.t('user_not_found') })
+        }
+
+        existingUser.email = newEmail
+        await existingUser.save()
+
+        const { accessToken, refreshToken } = generateAuthTokens({
+          _id: existingUser?._id,
+          email: newEmail,
+        })
+
+        res.cookie('refreshToken', refreshToken, {
+          secure: true,
+          maxAge: 7 * 8640000,
+          sameSite: 'strict',
+          httpOnly: true,
+        })
+
+        return res.status(200).json({
+          message: req.t('account_activated_successfully'),
+          _id: existingUser._id,
+          accessToken,
+        })
+      }
     )
   } catch (error) {
     return next(error)
