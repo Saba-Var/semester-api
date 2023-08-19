@@ -68,5 +68,13 @@
   "missing_authorization_headers": "Missing authorization headers. Unauthorized access!",
   "user_is_not_authorized_to_continue": "User is not authorized to continue. Unauthorized access!",
   "internal_server_error": "Internal server error!",
-  "user_details_updated_successfully": "User details updated successfully!"
+  "user_details_updated_successfully": "User details updated successfully!",
+  "email_is_already_in_use": "Email is already in use!",
+  "email_activated_successfully": "Email activated successfully!",
+  "enter_valid_url": "Enter valid url!",
+  "enter_dicebear_avatar_url": "Enter valid Dicebear avatar url!",
+  "user_image_type_warning": "User image type should be one of the following: 'dicebear' or 'upload'!",
+  "collection_name_is_required": "Collection name is required!",
+  "image_is_required": "Image is required!",
+  "image_type_is_required": "Image type is required!"
 }

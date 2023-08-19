@@ -1,7 +1,7 @@
-import passwordSchema from './passwordSchema'
+import { passwordSchema } from './passwordSchema'
 import { check } from 'express-validator'
 
-const newPasswordSchema = [
+export const newPasswordSchema = [
   passwordSchema(6),
 
   check('confirmPassword').custom((value, { req }) => {
@@ -12,5 +12,3 @@ const newPasswordSchema = [
     }
   }),
 ]
-
-export default newPasswordSchema

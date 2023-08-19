@@ -1,6 +1,6 @@
 import { check } from 'express-validator'
 
-const usernameSchema = check('username')
+export const usernameSchema = check('username')
   .trim()
   .notEmpty()
   .withMessage('username_is_required')
@@ -9,5 +9,3 @@ const usernameSchema = check('username')
     max: 30,
   })
   .withMessage('username_length')
-
-export default usernameSchema

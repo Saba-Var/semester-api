@@ -1,4 +1,4 @@
-import { AccessTokenPayload } from 'types'
+import type { AccessTokenPayload } from 'types'
 import { Response } from 'express'
 import mailgun from 'mailgun-js'
 import jwt from 'jsonwebtoken'
@@ -10,10 +10,10 @@ dotenv.config()
 
 export const sendEmail = async (
   subject: string,
-  emailTemplateType: 'account-activation' | 'reset-password',
+  emailTemplateType: 'account-activation' | 'reset-password' | 'change-email',
   to: string,
   res: Response,
-  jwtData: AccessTokenPayload,
+  jwtData: AccessTokenPayload | { newEmail: string; _id?: string },
   languageCookie: 'en' | 'ka',
   statusCode?: number
 ) => {
@@ -22,13 +22,17 @@ export const sendEmail = async (
     domain: process.env.MAILGUN_DOMAIN!,
   })
 
-  const jwtSecret =
+  let jwtSecret =
     emailTemplateType === 'account-activation'
       ? process.env.ACTIVATION_TOKEN_SECRET!
       : process.env.CHANGE_PASSWORD_TOKEN_SECRET!
 
+  if (emailTemplateType === 'change-email') {
+    jwtSecret = process.env.CHANGE_EMAIL_TOKEN_SECRET!
+  }
+
   const token = jwt.sign(jwtData, jwtSecret, {
-    expiresIn: '30m',
+    expiresIn: '3h',
   })
 
   let message =
@@ -38,13 +42,22 @@ export const sendEmail = async (
     message = 'Check yor gmail to reset your password!'
   }
 
-  const redirectUri = `${process.env.FRONTEND_URI!}${
-    languageCookie === 'en' ? '/en' : ''
-  }/${
+  if (emailTemplateType === 'change-email') {
+    message = 'Check yor gmail to change your email!'
+  }
+
+  let pageUri =
     emailTemplateType === 'account-activation'
       ? 'sign-up/account-activation'
       : emailTemplateType
-  }?token=${token}`
+
+  if (emailTemplateType === 'change-email') {
+    pageUri = `profile?newEmail=${jwtData.newEmail}`
+  }
+
+  const redirectUri = `${process.env.FRONTEND_URI!}${
+    languageCookie === 'en' ? '/en' : ''
+  }/${pageUri}?token=${token}`
 
   const html = pug.renderFile(
     path.join(__dirname, `../views/emails/templates/${emailTemplateType}.pug`),
@@ -68,8 +81,12 @@ export const sendEmail = async (
       })
     }
 
-    return res
-      .status(statusCode || 200)
-      .json({ message, token, _id: jwtData._id })
+    const responseData = { message, token, _id: jwtData._id }
+
+    if (emailTemplateType === 'change-email') {
+      delete responseData._id
+    }
+
+    return res.status(statusCode || 200).json(responseData)
   })
 }

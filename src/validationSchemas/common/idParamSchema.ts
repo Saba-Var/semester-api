@@ -1,7 +1,7 @@
 import { param } from 'express-validator'
 import { mongo } from 'mongoose'
 
-const idParamSchema = [
+export const idParamSchema = [
   param('id').custom((value) => {
     if (!mongo.ObjectId.isValid(value)) {
       throw new Error('invalid_id_param')

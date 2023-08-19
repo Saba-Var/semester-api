@@ -1,5 +1,5 @@
+import { sendEmail, generateFieldError, generateAuthTokens } from 'utils'
 import { AuthorizationReq, NewUserReqBody, Email } from './types'
-import { sendEmail, generateFieldError } from 'utils'
 import type { Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
@@ -80,19 +80,11 @@ export const authorization = async (
         message: req.t('account_is_not_active'),
       })
     }
-    const devEnvironment = process.env.NODE_ENV === 'production'
 
-    const jwtPayload = { _id: currentUser?._id, email }
-
-    const accessToken = jwt.sign(jwtPayload, process.env.ACCESS_TOKEN_SECRET!, {
-      expiresIn: devEnvironment ? '1d' : '1h',
+    const { accessToken, refreshToken } = generateAuthTokens({
+      _id: currentUser?._id,
+      email,
     })
-
-    const refreshToken = jwt.sign(
-      jwtPayload,
-      process.env.REFRESH_TOKEN_SECRET!,
-      { expiresIn: devEnvironment ? '4h' : '7d' }
-    )
 
     res.cookie('refreshToken', refreshToken, {
       secure: true,
@@ -139,7 +131,7 @@ export const userAccountActivation = async (
         }
 
         const collectionName = 'bottts'
-        const avatarUrl = `${process.env.DICEBEAR_API_URI}/${collectionName}/${existingUser.username}.svg`
+        const avatarUrl = `${process.env.DICEBEAR_API_URI}/6.x/${collectionName}/svg?seed=${existingUser.username}`
 
         await User.updateOne(
           { _id },

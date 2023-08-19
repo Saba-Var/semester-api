@@ -1,10 +1,8 @@
-import { check } from 'express-validator'
+import { query } from 'express-validator'
 
-const emailSchema = check('email')
+export const newEmailSchema = query('newEmail')
   .trim()
   .notEmpty()
   .withMessage('email_is_required')
   .isEmail()
   .withMessage('enter_valid_email')
-
-export default emailSchema
