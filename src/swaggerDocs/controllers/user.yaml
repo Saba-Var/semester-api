@@ -37,8 +37,13 @@
                   url:
                     type: string
                     format: uri
+                    example: https://api.dicebear.com/6.x/bottts/svg?seed=Shadow
                   type:
                     type: string
+                    example: dicebear
+                  collectionName:
+                    type: string
+                    example: bottts
     responses:
       200:
         description: User details successfully updated.

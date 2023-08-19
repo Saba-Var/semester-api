@@ -1,3 +1,5 @@
+import type { UserImage } from 'types'
+
 export type Email = {
   email: string
 }
@@ -23,3 +25,7 @@ export interface NewPasswordReq extends Password, Id {
 }
 
 export interface AuthorizationReq extends Password, Email {}
+
+export interface UserUpdateReq extends Username {
+  image?: UserImage
+}

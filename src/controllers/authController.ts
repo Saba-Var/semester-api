@@ -131,7 +131,7 @@ export const userAccountActivation = async (
         }
 
         const collectionName = 'bottts'
-        const avatarUrl = `${process.env.DICEBEAR_API_URI}/${collectionName}/${existingUser.username}.svg`
+        const avatarUrl = `${process.env.DICEBEAR_API_URI}/6.x/${collectionName}/svg?seed=${existingUser.username}`
 
         await User.updateOne(
           { _id },

@@ -1,3 +1,3 @@
-import { usernameSchema } from './common'
+import { usernameSchema, userImageSchema } from './common'
 
-export const userUpdateSchema = [usernameSchema]
+export const userUpdateSchema = [usernameSchema, ...userImageSchema]

@@ -1,5 +1,6 @@
 import type { Response, NextFunction } from 'express'
 import { sendEmail, generateAuthTokens } from 'utils'
+import type { UserUpdateReq } from './types'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { User } from 'models'
@@ -32,21 +33,23 @@ export const getUserDetails = async (
 }
 
 export const updateUserDetails = async (
-  req: RequestBody<{ image?: UserImage }>,
+  req: RequestBody<UserUpdateReq>,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const user = await User.findById(req.currentUser?._id)
-
     if (!user) {
       return res.status(404).json({ message: req.t('user_not_found') })
     }
 
-    if (req.body?.image?.type === 'dicebear') {
-      user.image = req.body.image
-      await user.save()
+    const { username, image } = req.body
+
+    if (image?.type === 'dicebear') {
+      user.image = image
     }
+    user.username = username
+    await user.save()
 
     return res.status(200).json({
       message: req.t('user_details_updated_successfully'),
