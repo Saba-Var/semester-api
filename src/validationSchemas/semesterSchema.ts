@@ -1,6 +1,6 @@
 import { check } from 'express-validator'
 
-const semesterValidationSchema = [
+export const semesterValidationSchema = [
   check('name').trim().notEmpty().withMessage('semester_name_is_required'),
 
   check('startDate')
@@ -10,4 +10,3 @@ const semesterValidationSchema = [
     .isDate()
     .withMessage('start_date_should_be_date'),
 ]
-export default semesterValidationSchema

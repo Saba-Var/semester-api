@@ -32,7 +32,7 @@ export const getUserDetails = async (
 }
 
 export const updateUserDetails = async (
-  req: RequestBody<{ image: UserImage }>,
+  req: RequestBody<{ image?: UserImage }>,
   res: Response,
   next: NextFunction
 ) => {
@@ -43,7 +43,7 @@ export const updateUserDetails = async (
       return res.status(404).json({ message: req.t('user_not_found') })
     }
 
-    if (req.body.image.type === 'dicebear') {
+    if (req.body?.image?.type === 'dicebear') {
       user.image = req.body.image
       await user.save()
     }

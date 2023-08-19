@@ -174,7 +174,7 @@
         description: JWT token from the email.
         required: true
         schema:
-          type: objectId
+          type: string
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
     responses:
       200:
@@ -188,7 +188,7 @@
                   type: string
                   example: Email activated successfully!
                 accessToken:
-                  type: objectId
+                  type: string
                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
                 _id:
                   type: string

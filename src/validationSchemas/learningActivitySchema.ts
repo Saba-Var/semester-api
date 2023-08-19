@@ -2,7 +2,7 @@ import { check, ValidationChain } from 'express-validator'
 import { Weekday, ActivityType } from 'types.d'
 import { mongo } from 'mongoose'
 
-const learningActivitySchema: ValidationChain[] = [
+export const learningActivitySchema: ValidationChain[] = [
   check('subjectName')
     .trim()
     .notEmpty()
@@ -106,5 +106,3 @@ const learningActivitySchema: ValidationChain[] = [
       return true
     }),
 ]
-
-export default learningActivitySchema

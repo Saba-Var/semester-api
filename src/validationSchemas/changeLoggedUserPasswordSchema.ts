@@ -1,8 +1,6 @@
 import { newPasswordSchema, passwordSchema } from './common'
 
-const changeLoggedUserPasswordSchema = [
+export const changeLoggedUserPasswordSchema = [
   ...newPasswordSchema,
   passwordSchema(6, 'oldPassword'),
 ]
-
-export default changeLoggedUserPasswordSchema
