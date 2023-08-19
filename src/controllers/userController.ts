@@ -8,7 +8,6 @@ import type {
   ExtendedAuthRequest,
   RequestQuery,
   RequestBody,
-  UserImage,
   Token,
 } from 'types'
 
