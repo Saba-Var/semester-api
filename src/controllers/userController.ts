@@ -47,7 +47,11 @@ export const updateUserDetails = async (
     if (image?.type === 'dicebear') {
       user.image = image
     }
-    user.username = username
+
+    if (username) {
+      user.username = username
+    }
+
     await user.save()
 
     return res.status(200).json({

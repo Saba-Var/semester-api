@@ -26,6 +26,7 @@ export interface NewPasswordReq extends Password, Id {
 
 export interface AuthorizationReq extends Password, Email {}
 
-export interface UserUpdateReq extends Username {
+export interface UserUpdateReq {
   image?: UserImage
+  username?: string
 }
