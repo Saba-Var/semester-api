@@ -37,26 +37,38 @@ export const updateUserDetails = async (
   next: NextFunction
 ) => {
   try {
-    const user = await User.findById(req.currentUser?._id)
-    if (!user) {
+    const currentUser = await User.findById(req.currentUser?._id)
+    if (!currentUser) {
       return res.status(404).json({ message: req.t('user_not_found') })
     }
 
-    const { username, image } = req.body
+    const { username, image, password: newPassword, oldPassword } = req.body
 
     if (image?.type === 'dicebear') {
-      user.image = image
+      currentUser.image = image
     }
 
     if (username) {
-      user.username = username
+      currentUser.username = username
     }
 
-    await user.save()
+    if (newPassword && oldPassword) {
+      const isMatch = await bcrypt.compare(oldPassword, currentUser.password!)
+
+      if (!isMatch) {
+        return res.status(401).json({
+          message: req.t('password_is_incorrect'),
+        })
+      }
+
+      currentUser.password = await bcrypt.hash(newPassword, 12)
+    }
+
+    await currentUser.save()
 
     return res.status(200).json({
       message: req.t('user_details_updated_successfully'),
-      _id: user._id,
+      _id: currentUser._id,
     })
   } catch (error) {
     return next(error)
@@ -154,37 +166,6 @@ export const activateNewEmail = async (
         })
       }
     )
-  } catch (error) {
-    return next(error)
-  }
-}
-
-export const changePasswordOfLoggedInUser = async (
-  req: RequestBody<{ password: string; oldPassword: string }>,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const currentUser = await User.findById(req.currentUser?._id)
-
-    if (!currentUser) {
-      return res.status(404).json({ message: req.t('user_not_found') })
-    }
-
-    const { password, oldPassword } = req.body
-
-    const isMatch = await bcrypt.compare(oldPassword, currentUser.password!)
-
-    if (!isMatch) {
-      return res.status(401).json({
-        message: req.t('credentials_are_incorrect'),
-      })
-    }
-
-    currentUser.password = await bcrypt.hash(password, 12)
-    await currentUser.save()
-
-    return res.json({ message: req.t('password_changed_successfully') })
   } catch (error) {
     return next(error)
   }

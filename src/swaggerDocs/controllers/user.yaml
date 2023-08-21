@@ -18,6 +18,7 @@
         $ref: '#/components/responses/NotFound'
       500:
         $ref: '#/components/responses/InternalServerError'
+
   put:
     security:
       - bearerAuth: []
@@ -33,6 +34,7 @@
             properties:
               image:
                 type: object
+                required: false
                 properties:
                   url:
                     type: string
@@ -44,6 +46,25 @@
                   collectionName:
                     type: string
                     example: bottts
+              username:
+                required: false
+                type: string
+                example: 'newUsername'
+              oldPassword:
+                required: false
+                type: string
+                example: 'oldPassword'
+                description: Old Password.
+              password:
+                required: false
+                type: string
+                description: New password.
+                example: 'newPassword'
+              confirmPassword:
+                required: false
+                type: string
+                example: 'newPassword'
+                description: Password confirmation.
     responses:
       200:
         description: User details successfully updated.
@@ -59,8 +80,6 @@
                   type: string
                   example: 5f9b3b3b1c9d440000f3e9a0
                   format: objectid
-      400:
-        $ref: '#/components/responses/BadRequest'
       401:
         $ref: '#/components/responses/UnauthorizedAccess'
       404:
@@ -110,59 +129,6 @@
                   type: string
                   example: Email is already in use!
                   description: Error message indicating the conflict.
-      500:
-        $ref: '#/components/responses/InternalServerError'
-
-/user/change-password:
-  put:
-    security:
-      - bearerAuth: []
-    summary: Change the password of logged in user.
-    tags:
-      - User
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              oldPassword:
-                type: string
-                example: 'oldPassword'
-                description: Old Password.
-              password:
-                type: string
-                description: New password.
-                example: 'newPassword'
-              confirmPassword:
-                type: string
-                example: 'newPassword'
-                description: Password confirmation.
-    responses:
-      200:
-        description: Successful response indicating the password has been changed.
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  example: Password changed successfully.
-      401:
-        description: Credentials are incorrect.
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  example: Credentials are incorrect.
-                  description: Error message indicating the wrong old password.
-      422:
-        $ref: '#/components/responses/UnprocessableEntity'
       500:
         $ref: '#/components/responses/InternalServerError'
 

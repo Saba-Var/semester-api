@@ -76,5 +76,7 @@
   "user_image_type_warning": "User image type should be one of the following: 'dicebear' or 'upload'!",
   "collection_name_is_required": "Collection name is required!",
   "image_is_required": "Image is required!",
-  "image_type_is_required": "Image type is required!"
+  "image_type_is_required": "Image type is required!",
+  "password_is_incorrect": "Password is incorrect!",
+  "password_confirmation_is_required": "Password confirmation is required!"
 }

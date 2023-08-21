@@ -1,13 +1,11 @@
 import { validateRequestSchema } from 'middlewares'
 import express from 'express'
 import {
-  changeLoggedUserPasswordSchema,
   userUpdateSchema,
   newEmailSchema,
   tokenSchema,
 } from 'validationSchemas'
 import {
-  changePasswordOfLoggedInUser,
   changeEmailRequest,
   updateUserDetails,
   activateNewEmail,
@@ -19,13 +17,6 @@ const router = express.Router()
 router.get('/', getUserDetails)
 
 router.put('/', userUpdateSchema, validateRequestSchema, updateUserDetails)
-
-router.put(
-  '/change-password',
-  changeLoggedUserPasswordSchema,
-  validateRequestSchema,
-  changePasswordOfLoggedInUser
-)
 
 router.get(
   '/change-email',
