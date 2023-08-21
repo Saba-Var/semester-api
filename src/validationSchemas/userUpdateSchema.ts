@@ -19,10 +19,7 @@ export const userUpdateSchema = [
       throw new Error('password_should_include_at_least_6_characters')
     }
 
-    if (
-      value &&
-      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})/.test(value)
-    ) {
+    if (value && !/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(value)) {
       throw new Error('new_password_requirements')
     }
 
