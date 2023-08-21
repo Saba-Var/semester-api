@@ -1,7 +1,12 @@
 import { check } from 'express-validator'
 
-export const passwordSchema = (minLength = 1, fieldName = 'password') =>
+export const passwordSchema = ({
+  fieldName = 'password',
+  minLength = 1,
+  optional = false,
+} = {}) =>
   check(fieldName)
+    .optional(optional)
     .isLength({
       min: minLength,
     })

@@ -76,5 +76,7 @@
   "user_image_type_warning": "სურათის ტიპი უნდა იყოს შემდეგი: 'dicebear' or 'upload'!",
   "collection_name_is_required": "კოლექციის სახელი სავალდებულოა!",
   "image_is_required": "სურათი სავალდებულოა!",
-  "image_type_is_required": "სურათის ტიპი სავალდებულოა!"
+  "image_type_is_required": "სურათის ტიპი სავალდებულოა!",
+  "password_is_incorrect": "პაროლი არასწორია!",
+  "password_confirmation_is_required": "პაროლის დადასტურება სავალდებულოა!"
 }
