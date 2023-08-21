@@ -78,5 +78,8 @@
   "image_is_required": "სურათი სავალდებულოა!",
   "image_type_is_required": "სურათის ტიპი სავალდებულოა!",
   "password_is_incorrect": "პაროლი არასწორია!",
-  "password_confirmation_is_required": "პაროლის დადასტურება სავალდებულოა!"
+  "password_confirmation_is_required": "პაროლის დადასტურება სავალდებულოა!",
+  "new_password_is_required": "ახალი პაროლი სავალდებულოა!",
+  "current_password_is_required": "მიმდინარე პაროლი სავალდებულოა!",
+  "new_password_requirements": "ახალი პაროლი უნდა შეიცავდეს: მაღალი რეგისტრის ასოს, დაბალი რეგისტრის ასოს და სიმბოლოს"
 }

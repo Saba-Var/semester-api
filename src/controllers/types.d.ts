@@ -29,7 +29,7 @@ export interface AuthorizationReq extends Password, Email {}
 export interface UserUpdateReq {
   image?: UserImage
   username?: string
-  password?: string
+  newPassword?: string
   oldPassword?: string
   confirmPassword?: string
 }

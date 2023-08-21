@@ -55,7 +55,7 @@
                 type: string
                 example: 'oldPassword'
                 description: Old Password.
-              password:
+              newPassword:
                 required: false
                 type: string
                 description: New password.

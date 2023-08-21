@@ -42,7 +42,7 @@ export const updateUserDetails = async (
       return res.status(404).json({ message: req.t('user_not_found') })
     }
 
-    const { username, image, password: newPassword, oldPassword } = req.body
+    const { username, image, newPassword, oldPassword } = req.body
 
     if (image?.type === 'dicebear') {
       currentUser.image = image

@@ -78,5 +78,8 @@
   "image_is_required": "Image is required!",
   "image_type_is_required": "Image type is required!",
   "password_is_incorrect": "Password is incorrect!",
-  "password_confirmation_is_required": "Password confirmation is required!"
+  "password_confirmation_is_required": "Password confirmation is required!",
+  "new_password_is_required": "New password is required!",
+  "current_password_is_required": "Current password is required!",
+  "new_password_requirements": "New password should include at least 1 lowercase letter, 1 uppercase letter, 1 number and 1 special character."
 }
