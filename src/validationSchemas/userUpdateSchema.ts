@@ -37,7 +37,7 @@ export const userUpdateSchema = [
   }),
 
   check('confirmPassword').custom((value, { req }) => {
-    if ((req.body.newPassword || req.body.oldPassword) && !value) {
+    if (isPasswordChangeMode(value, req)) {
       throw new Error('password_confirmation_is_required')
     } else if (value !== req.body.newPassword) {
       throw new Error('confirm_password_does_not_match')
