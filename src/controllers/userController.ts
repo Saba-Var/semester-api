@@ -163,6 +163,7 @@ export const activateNewEmail = async (
           message: req.t('email_activated_successfully'),
           _id: existingUser._id,
           accessToken,
+          email: newEmail,
         })
       }
     )

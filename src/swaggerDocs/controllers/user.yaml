@@ -161,6 +161,9 @@
                 _id:
                   type: string
                   example: 5f9b3b3b1c9d440000f3e9a0
+                email:
+                  type: string
+                  example: newemail@gmail.com
       404:
         $ref: '#/components/responses/NotFound'
       409:
