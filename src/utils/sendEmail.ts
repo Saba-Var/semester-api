@@ -57,7 +57,7 @@ export const sendEmail = async (
 
   const redirectUri = `${process.env.FRONTEND_URI!}${
     languageCookie === 'en' ? '/en' : ''
-  }/${pageUri}?token=${token}`
+  }/${pageUri}${emailTemplateType === 'change-email' ? '&' : '?'}token=${token}`
 
   const html = pug.renderFile(
     path.join(__dirname, `../views/emails/templates/${emailTemplateType}.pug`),
