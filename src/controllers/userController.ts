@@ -93,7 +93,7 @@ export const changeEmailRequest = async (
 
     if (isEmailUsed) {
       return res.status(409).json({
-        message: req.t('email_is_already_in_use'),
+        email: req.t('email_is_already_in_use'),
       })
     }
 
