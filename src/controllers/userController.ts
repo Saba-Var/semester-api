@@ -100,7 +100,7 @@ export const changeEmailRequest = async (
     return sendEmail(
       'Change email confirmation',
       'change-email',
-      existingUser.email,
+      newEmail,
       res,
       {
         newEmail,
