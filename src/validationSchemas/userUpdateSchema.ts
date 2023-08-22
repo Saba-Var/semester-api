@@ -19,6 +19,7 @@ export const userUpdateSchema = [
       throw new Error('password_should_include_at_least_6_characters')
     }
 
+    // eslint-disable-next-line no-useless-escape
     if (value && !/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(value)) {
       throw new Error('new_password_requirements')
     }
