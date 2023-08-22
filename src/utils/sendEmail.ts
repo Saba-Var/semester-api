@@ -81,10 +81,14 @@ export const sendEmail = async (
       })
     }
 
-    const responseData = { message, token, _id: jwtData._id }
+    let responseData: { message: string; token?: string; _id?: string } = {
+      _id: jwtData._id,
+      message,
+      token,
+    }
 
     if (emailTemplateType === 'change-email') {
-      delete responseData._id
+      responseData = { message }
     }
 
     return res.status(statusCode || 200).json(responseData)

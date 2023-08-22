@@ -113,9 +113,6 @@
                 message:
                   type: string
                   example: Check yor gmail to reset your password!
-                token:
-                  type: objectId
-                  example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
       404:
         $ref: '#/components/responses/NotFound'
       409:
