@@ -52,12 +52,12 @@ export const sendEmail = async (
       : emailTemplateType
 
   if (emailTemplateType === 'change-email') {
-    pageUri = `profile?newEmail=${jwtData.newEmail}`
+    pageUri = `profile`
   }
 
   const redirectUri = `${process.env.FRONTEND_URI!}${
     languageCookie === 'en' ? '/en' : ''
-  }/${pageUri}${emailTemplateType === 'change-email' ? '&' : '?'}token=${token}`
+  }/${pageUri}?emailToken=${token}`
 
   const html = pug.renderFile(
     path.join(__dirname, `../views/emails/templates/${emailTemplateType}.pug`),
