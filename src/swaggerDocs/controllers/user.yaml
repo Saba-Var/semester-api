@@ -55,7 +55,7 @@
                 type: string
                 example: 'oldPassword'
                 description: Old Password.
-              password:
+              newPassword:
                 required: false
                 type: string
                 description: New password.
@@ -113,9 +113,6 @@
                 message:
                   type: string
                   example: Check yor gmail to reset your password!
-                token:
-                  type: objectId
-                  example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
       404:
         $ref: '#/components/responses/NotFound'
       409:
@@ -164,6 +161,9 @@
                 _id:
                   type: string
                   example: 5f9b3b3b1c9d440000f3e9a0
+                email:
+                  type: string
+                  example: newemail@gmail.com
       404:
         $ref: '#/components/responses/NotFound'
       409:

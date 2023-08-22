@@ -52,12 +52,12 @@ export const sendEmail = async (
       : emailTemplateType
 
   if (emailTemplateType === 'change-email') {
-    pageUri = `profile?newEmail=${jwtData.newEmail}`
+    pageUri = `profile`
   }
 
   const redirectUri = `${process.env.FRONTEND_URI!}${
     languageCookie === 'en' ? '/en' : ''
-  }/${pageUri}?token=${token}`
+  }/${pageUri}?emailToken=${token}`
 
   const html = pug.renderFile(
     path.join(__dirname, `../views/emails/templates/${emailTemplateType}.pug`),
@@ -81,10 +81,14 @@ export const sendEmail = async (
       })
     }
 
-    const responseData = { message, token, _id: jwtData._id }
+    let responseData: { message: string; token?: string; _id?: string } = {
+      _id: jwtData._id,
+      message,
+      token,
+    }
 
     if (emailTemplateType === 'change-email') {
-      delete responseData._id
+      responseData = { message }
     }
 
     return res.status(statusCode || 200).json(responseData)

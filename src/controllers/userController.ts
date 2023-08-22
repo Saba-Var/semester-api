@@ -42,7 +42,7 @@ export const updateUserDetails = async (
       return res.status(404).json({ message: req.t('user_not_found') })
     }
 
-    const { username, image, password: newPassword, oldPassword } = req.body
+    const { username, image, newPassword, oldPassword } = req.body
 
     if (image?.type === 'dicebear') {
       currentUser.image = image
@@ -93,14 +93,14 @@ export const changeEmailRequest = async (
 
     if (isEmailUsed) {
       return res.status(409).json({
-        message: req.t('email_is_already_in_use'),
+        email: req.t('email_is_already_in_use'),
       })
     }
 
     return sendEmail(
       'Change email confirmation',
       'change-email',
-      existingUser.email,
+      newEmail,
       res,
       {
         newEmail,
@@ -163,6 +163,7 @@ export const activateNewEmail = async (
           message: req.t('email_activated_successfully'),
           _id: existingUser._id,
           accessToken,
+          email: newEmail,
         })
       }
     )
