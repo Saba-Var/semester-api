@@ -1,4 +1,4 @@
-import type { ILearningActivityModel, UserImage } from 'types'
+import type { ILearningActivityModel, UserImage, Timestamps } from 'types'
 import type { Document, Types } from 'mongoose'
 
 export interface IUserModel extends Document {
@@ -18,4 +18,26 @@ export interface SemesterModel extends Document {
   startDate: Date
   endDate: Date
   name: string
+}
+
+interface IUniversityModel extends Document {
+  name: string
+  ratings: Types.ObjectId[]
+  image?: string
+  averageRatings?: {
+    [key: string]: number
+  }
+  overallRating: null
+  createdAt?: Date
+  updatedAt?: Date
+}
+
+export interface IUniversityRatingModel extends Document {
+  university: Types.ObjectId
+  user: Types.ObjectId
+  scores: {
+    [key: string]: number
+  }
+  createdAt?: Date
+  updatedAt?: Date
 }

@@ -1,4 +1,6 @@
 export { default as LearningActivity } from './LearningActivity'
+export { default as UniversityRating } from './UniversityRating'
+export { default as University } from './University'
 export { default as Semester } from './Semester'
 export { default as User } from './User'
 export * from './types.d'
