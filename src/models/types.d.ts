@@ -38,6 +38,7 @@ export interface IUniversityRatingModel extends Document {
   scores: {
     [key: string]: number
   }
+  overallRating: null
   createdAt?: Date
   updatedAt?: Date
 }

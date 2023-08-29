@@ -21,7 +21,6 @@ const universitySchema = new Schema<IUniversityModel>(
       {
         type: Schema.Types.ObjectId,
         ref: 'universityRating',
-        default: [],
       },
     ],
   },

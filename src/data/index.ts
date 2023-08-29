@@ -1,2 +1,2 @@
-export * from './NEW_SEMESTERS_DATA'
-export * from './TEST_USER'
+export * from './evaluationCriterias'
+export * from './testingData'

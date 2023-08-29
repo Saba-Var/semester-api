@@ -1,27 +1,8 @@
 import { IUniversityRatingModel } from 'models'
+import { evaluationCriterias } from 'data'
 import { Schema } from 'mongoose'
 
-const criterias = [
-  'qualityOfEducation',
-  'employability',
-  'classSize',
-  'researchOpportunities',
-  'facilities',
-  'studentLife',
-  'supportServices',
-  'location',
-  'diversityAndInclusion',
-  'internshipAndJobs',
-  'socialResponsibility',
-  'alumniSuccess',
-  'affordability',
-  'buffet',
-  'staffEducation',
-  'library',
-  'techEquipment',
-]
-
-export const criteriaTypes = criterias.reduce(
+export const criteriaTypes = evaluationCriterias.reduce(
   (acc, criteria) => ({
     ...acc,
     [criteria]: {
@@ -48,6 +29,11 @@ const universityRatingSchema = new Schema<IUniversityRatingModel>(
       ref: 'user',
       required: true,
       immutable: true,
+    },
+    overallRating: {
+      type: Number,
+      required: true,
+      default: null,
     },
     scores: criteriaTypes,
   },
