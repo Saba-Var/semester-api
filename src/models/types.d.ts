@@ -23,19 +23,9 @@ export interface SemesterModel extends Document {
 interface IUniversityModel extends Document {
   name: string
   ratings: Types.ObjectId[]
+  voteCount: number
   image?: string
   averageRatings?: {
-    [key: string]: number
-  }
-  overallRating: null
-  createdAt?: Date
-  updatedAt?: Date
-}
-
-export interface IUniversityRatingModel extends Document {
-  university: Types.ObjectId
-  user: Types.ObjectId
-  scores: {
     [key: string]: number
   }
   overallRating: null

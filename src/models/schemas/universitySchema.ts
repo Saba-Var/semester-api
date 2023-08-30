@@ -1,5 +1,20 @@
+import { evaluationCriterias } from 'data'
 import { IUniversityModel } from 'models'
 import { Schema } from 'mongoose'
+
+const criteriaTypes = evaluationCriterias.reduce(
+  (acc, criteria) => ({
+    ...acc,
+    [criteria]: {
+      type: Number,
+      required: true,
+      min: 0,
+      max: 10,
+      default: null,
+    },
+  }),
+  {}
+)
 
 const universitySchema = new Schema<IUniversityModel>(
   {
@@ -17,12 +32,12 @@ const universitySchema = new Schema<IUniversityModel>(
       required: true,
       default: null,
     },
-    ratings: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'universityRating',
-      },
-    ],
+    ratings: [criteriaTypes],
+    voteCount: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
   },
   {
     versionKey: false,
