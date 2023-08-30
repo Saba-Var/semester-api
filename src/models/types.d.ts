@@ -3,6 +3,12 @@ import type { Document, Types } from 'mongoose'
 
 export interface IUserModel extends Document {
   activeSemester: Types.ObjectId
+  userUniversityInfo: {
+    currentUniversity: Types.ObjectId
+    selectedDate: Date
+    ratedUniversities: Types.ObjectId[]
+    allUniversities: Types.ObjectId[]
+  } | null
   semesters: Types.ObjectId[]
   image?: UserImage | null
   password?: string

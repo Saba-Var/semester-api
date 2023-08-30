@@ -41,6 +41,29 @@ const userSchema: Schema<IUserModel> = new Schema(
         ref: 'semester',
       },
     ],
+
+    userUniversityInfo: {
+      type: {
+        currentUniversity: {
+          type: Schema.Types.ObjectId,
+          ref: 'university',
+        },
+        allUniversities: {
+          type: [Schema.Types.ObjectId],
+          ref: 'university',
+        },
+        selectedDate: {
+          type: Date,
+        },
+        ratedUniversities: [
+          {
+            type: Schema.Types.ObjectId,
+            ref: 'university',
+          },
+        ],
+      },
+      default: null,
+    },
   },
   {
     versionKey: false,
