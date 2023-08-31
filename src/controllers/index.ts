@@ -1,4 +1,5 @@
 export * from './learningActivitiesController'
+export * from './universitiesController'
 export * from './semesterController'
 export * from './authController'
 export * from './userController'

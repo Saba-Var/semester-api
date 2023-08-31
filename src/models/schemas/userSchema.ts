@@ -21,6 +21,12 @@ const userSchema: Schema<IUserModel> = new Schema(
       default: false,
     },
 
+    role: {
+      default: 'user',
+      type: String,
+      immutable: true,
+    },
+
     activeSemester: {
       type: Schema.Types.ObjectId || null,
       ref: 'semester',
@@ -41,6 +47,29 @@ const userSchema: Schema<IUserModel> = new Schema(
         ref: 'semester',
       },
     ],
+
+    userUniversityInfo: {
+      type: {
+        currentUniversity: {
+          type: Schema.Types.ObjectId,
+          ref: 'university',
+        },
+        allUniversities: {
+          type: [Schema.Types.ObjectId],
+          ref: 'university',
+        },
+        selectedDate: {
+          type: Date,
+        },
+        ratedUniversities: [
+          {
+            type: Schema.Types.ObjectId,
+            ref: 'university',
+          },
+        ],
+      },
+      default: null,
+    },
   },
   {
     versionKey: false,

@@ -81,5 +81,7 @@
   "password_confirmation_is_required": "პაროლის დადასტურება სავალდებულოა!",
   "new_password_is_required": "ახალი პაროლი სავალდებულოა!",
   "current_password_is_required": "მიმდინარე პაროლი სავალდებულოა!",
-  "new_password_requirements": "ახალი პაროლი უნდა შეიცავდეს: მაღალი რეგისტრის ასოს, დაბალი რეგისტრის ასოს და სიმბოლოს"
+  "new_password_requirements": "ახალი პაროლი უნდა შეიცავდეს: მაღალი რეგისტრის ასოს, დაბალი რეგისტრის ასოს და სიმბოლოს",
+  "university_already_exists": "უკვე არსებობს ამ სახელით უნივერსიტეტი!",
+  "university_created_successfully": "უნივერსიტეტი წარმატებით შეიქმნა!"
 }

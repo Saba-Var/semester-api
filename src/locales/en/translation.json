@@ -81,5 +81,7 @@
   "password_confirmation_is_required": "Password confirmation is required!",
   "new_password_is_required": "New password is required!",
   "current_password_is_required": "Current password is required!",
-  "new_password_requirements": "New password should include at least 1 lowercase letter, 1 uppercase letter, 1 number and 1 special character."
+  "new_password_requirements": "New password should include at least 1 lowercase letter, 1 uppercase letter, 1 number and 1 special character.",
+  "university_already_exists": "University with this name already exists!",
+  "university_created_successfully": "University created successfully!"
 }

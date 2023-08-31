@@ -1,5 +1,5 @@
 import { check, ValidationChain } from 'express-validator'
-import { Weekday, ActivityType } from 'types.d'
+import { Weekday, ActivityType } from 'types'
 import { mongo } from 'mongoose'
 
 export const learningActivitySchema: ValidationChain[] = [

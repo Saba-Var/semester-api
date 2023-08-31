@@ -4,13 +4,21 @@ import type { Request } from 'express'
 import type { Types } from 'mongoose'
 import supertest from 'supertest'
 
+export type UserRoles = 'user' | 'admin'
+
 export interface ExtendedAuthRequest extends Request {
   url: string
   cookies: {
     refreshToken: string
     language: 'en' | 'ka'
   }
-  currentUser?: { email: string; _id: string }
+  currentUser?: { email: string; _id: string; role: UserRoles }
+}
+
+export interface AccessTokenPayload extends JwtPayload {
+  email: string
+  _id: string
+  role?: UserRoles
 }
 
 export interface AuthRequest<ReqBody = {}, ReqParams = {}, ReqQuery = {}>
@@ -38,11 +46,6 @@ export type AccessToken = {
 
 export type Token = {
   token: string
-}
-
-export interface AccessTokenPayload extends JwtPayload {
-  email: string
-  _id: string
 }
 
 export type ChangePasswordData = {
