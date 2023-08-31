@@ -34,13 +34,12 @@ export interface SemesterModel extends Document {
 
 interface IUniversityModel extends Document {
   name: string
-  ratings: Types.ObjectId[]
-  voteCount: number
-  image?: string
-  averageRatings?: {
+  ratings: {
     [key: string]: number
   }
-  overallRating: null
+  overallRating: number
+  voteCount: number
+  logoSrc?: string
   createdAt?: Date
   updatedAt?: Date
 }

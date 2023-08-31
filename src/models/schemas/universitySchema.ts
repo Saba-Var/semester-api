@@ -6,7 +6,6 @@ const criteriaTypes = evaluationCriterias.reduce(
   (acc, criteria) => ({
     ...acc,
     [criteria]: {
-      required: true,
       type: Number,
       default: null,
       min: 0,
@@ -23,7 +22,7 @@ const universitySchema = new Schema<IUniversityModel>(
       required: true,
       immutable: true,
     },
-    image: {
+    logoSrc: {
       type: String,
       required: true,
     },
@@ -32,7 +31,7 @@ const universitySchema = new Schema<IUniversityModel>(
       required: true,
       default: null,
     },
-    ratings: [criteriaTypes],
+    ratings: criteriaTypes,
     voteCount: {
       type: Number,
       required: true,

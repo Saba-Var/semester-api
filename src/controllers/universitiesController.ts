@@ -14,9 +14,37 @@ export const createUniversity = async (
       })
     }
 
-    const university = await University.create(req.body)
+    const { name, logoSrc, ratings } = req.body
 
-    return res.status(201).json(university)
+    const existingUniversity = await University.findOne({
+      name,
+    })
+
+    if (existingUniversity) {
+      return res.status(409).json({
+        message: req.t('university_already_exists'),
+      })
+    }
+
+    const criteriaRatingValues = Object.values(ratings)
+
+    const overallRating =
+      criteriaRatingValues.reduce(
+        (acc, currentValue) => acc + currentValue,
+        0
+      ) / criteriaRatingValues.length
+
+    const newUniversity = await University.create({
+      overallRating,
+      ratings,
+      logoSrc,
+      name,
+    })
+
+    return res.status(201).json({
+      message: req.t('university_created_successfully'),
+      _id: newUniversity._id,
+    })
   } catch (error) {
     return next(error)
   }
