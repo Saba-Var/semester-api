@@ -18,7 +18,7 @@ export interface ExtendedAuthRequest extends Request {
 export interface AccessTokenPayload extends JwtPayload {
   email: string
   _id: string
-  role: UserRoles
+  role?: UserRoles
 }
 
 export interface AuthRequest<ReqBody = {}, ReqParams = {}, ReqQuery = {}>
