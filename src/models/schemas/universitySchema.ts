@@ -6,11 +6,11 @@ const criteriaTypes = evaluationCriterias.reduce(
   (acc, criteria) => ({
     ...acc,
     [criteria]: {
-      type: Number,
       required: true,
+      type: Number,
+      default: null,
       min: 0,
       max: 10,
-      default: null,
     },
   }),
   {}

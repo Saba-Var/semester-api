@@ -1,5 +1,10 @@
-import type { ILearningActivityModel, UserImage, Timestamps } from 'types'
 import type { Document, Types } from 'mongoose'
+import type {
+  ILearningActivityModel,
+  Timestamps,
+  UserImage,
+  UserRoles,
+} from 'types'
 
 export interface IUserModel extends Document {
   activeSemester: Types.ObjectId
@@ -13,6 +18,7 @@ export interface IUserModel extends Document {
   image?: UserImage | null
   password?: string
   username: string
+  role: UserRoles
   active: boolean
   email: string
 }

@@ -21,6 +21,12 @@ const userSchema: Schema<IUserModel> = new Schema(
       default: false,
     },
 
+    role: {
+      default: 'user',
+      type: String,
+      immutable: true,
+    },
+
     activeSemester: {
       type: Schema.Types.ObjectId || null,
       ref: 'semester',

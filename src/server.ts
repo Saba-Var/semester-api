@@ -15,6 +15,7 @@ import {
 } from 'middlewares'
 import {
   learningActivitiesRouter,
+  universityRouter,
   semesterRouter,
   authRouter,
   userRouter,
@@ -42,6 +43,7 @@ server.use('/api/authentication', authLimiter, authRouter)
 server.use(verifyToken as unknown as RequestHandler)
 
 server.use('/api/learning-activities', learningActivitiesRouter)
+server.use('/api/universities', universityRouter)
 server.use('/api/semesters', semesterRouter)
 server.use('/api/user', userRouter)
 
