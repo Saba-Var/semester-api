@@ -28,14 +28,14 @@ export const createUniversity = async (
 
     const criteriaRatingValues = Object.values(ratings)
 
-    const overallRating =
+    const averageRating =
       criteriaRatingValues.reduce(
         (acc, currentValue) => acc + currentValue,
         0
       ) / criteriaRatingValues.length
 
     const newUniversity = await University.create({
-      overallRating,
+      averageRating,
       ratings,
       logoSrc,
       name,

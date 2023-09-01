@@ -36,6 +36,8 @@ server.use(
   })
 )
 
+server.use(express.static('public'))
+
 server.use('/api-docs', SwaggerUI.serve, swaggerDocSetup())
 
 server.use('/api/authentication', authLimiter, authRouter)
