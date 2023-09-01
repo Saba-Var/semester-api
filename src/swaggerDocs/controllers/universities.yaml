@@ -1,0 +1,42 @@
+/universities:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Universities (Admin)
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UniversityPartial'
+    description: Create a new university.
+    responses:
+      201:
+        description: User details successfully retrieved.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: University created successfully!
+                _id:
+                  type: string
+                  example: 5f9b3b3b1c9d440000f3e9a0
+                  format: objectid
+      401:
+        $ref: '#/components/responses/UnauthorizedAccess'
+      409:
+        description: University with the same name already exists.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: University with this name already exists!
+      500:
+        $ref: '#/components/responses/InternalServerError'

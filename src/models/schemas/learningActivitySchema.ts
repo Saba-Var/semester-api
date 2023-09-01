@@ -1,4 +1,4 @@
-import { Weekday, ActivityType, ILearningActivityModel } from 'types.d'
+import { Weekday, ActivityType, ILearningActivityModel } from 'types'
 import { Schema } from 'mongoose'
 
 const learningActivitySchema: Schema<ILearningActivityModel> = new Schema(

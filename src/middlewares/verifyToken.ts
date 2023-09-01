@@ -31,7 +31,9 @@ export const verifyToken = (
           })
         }
 
-        const { email, _id } = JwtPayload as AccessTokenPayload
+        const { email, _id, role } = JwtPayload as AccessTokenPayload & {
+          role: string
+        }
 
         const isValidId = mongoose.Types.ObjectId.isValid(_id)
 
@@ -41,7 +43,7 @@ export const verifyToken = (
           })
         }
 
-        req.currentUser = { email, _id }
+        req.currentUser = { email, _id, role }
 
         return next()
       }

@@ -82,6 +82,7 @@ export const authorization = async (
     }
 
     const { accessToken, refreshToken } = generateAuthTokens({
+      role: currentUser.role,
       _id: currentUser?._id,
       email,
     })
