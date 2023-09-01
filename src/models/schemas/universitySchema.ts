@@ -25,6 +25,7 @@ const universitySchema = new Schema<IUniversityModel>(
       required: true,
       immutable: true,
       unique: true,
+      _id: false,
     },
     logoSrc: {
       type: String,

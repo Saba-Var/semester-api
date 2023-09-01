@@ -20,7 +20,8 @@
     "build:watch": "babel src --out-dir build --extensions .ts --copy-files --watch",
     "build:prod": "babel src --out-dir build --extensions .ts --copy-files --minified",
     "lint": "eslint . --ext .ts",
-    "create-migration": "node build/bin/create-migration.js"
+    "create-migration": "node build/bin/create-migration.js",
+    "seed": "node build/database/seeders/seed.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
