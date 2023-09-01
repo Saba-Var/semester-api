@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { logger } from 'bin'
 
 const generateLocalMongoURL = () => {
   const { MONGO_PROTOCOL, MONGO_HOST, MONGO_PORT, MONGO_DATABASE } = process.env
@@ -29,7 +30,7 @@ const connectToMongo = async () => {
 
     return mongoose.connect(connectionURL)
   } catch (error: any) {
-    console.log(`Mongo connection error: ${error.message}`)
+    logger(`Mongo connection error: ${error.message}`, 'error')
     throw new Error(error.message)
   }
 }

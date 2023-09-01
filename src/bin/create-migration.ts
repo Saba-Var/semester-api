@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
+import { logger } from './logger'
+import fs from 'fs/promises'
 import path from 'path'
-import fs from 'fs'
 
 const getFormattedDate = () => {
   const currentDate = new Date()
@@ -9,7 +10,7 @@ const getFormattedDate = () => {
 }
 
 const exitWithError = () => {
-  console.error('Usage: npm run create-migration <migration_name>')
+  logger('command usage - npm run create-migration <migration_name>', 'error')
   process.exit(1)
 }
 
@@ -20,25 +21,40 @@ if (args.length !== 1) {
 }
 
 const migrationName = args[0]
-
 const migrationsFolder = path.join('src', 'database', 'migrations')
 
 if (!migrationName) {
   exitWithError()
 }
 
-const migrationContent = `// migration logic for "${migrationName}" here
-`
+const migrationContent = `// migration logic for "${migrationName}" here\n`
 
 const migrationFileName = `${getFormattedDate()}_${migrationName}.ts`
 const migrationFilePath = `${migrationsFolder}/${migrationFileName}`
 
-if (!fs.existsSync(migrationsFolder)) {
-  fs.mkdirSync(migrationsFolder, { recursive: true })
-}
+;(async () => {
+  try {
+    if (!(await fs.access(migrationsFolder).catch(() => false))) {
+      await fs.mkdir(migrationsFolder, { recursive: true })
+    }
 
-fs.writeFileSync(migrationFilePath, migrationContent)
+    const fileExists = await fs
+      .access(migrationFilePath)
+      .then(() => true)
+      .catch(() => false)
 
-console.log(
-  `Migration file "${migrationFileName}" created in "${migrationsFolder}"`
-)
+    if (fileExists) {
+      logger(`Migration file "${migrationFileName}" already exists.`, 'error')
+    } else {
+      await fs.writeFile(migrationFilePath, migrationContent)
+
+      logger(
+        `Migration file "${migrationFileName}" created in "${migrationsFolder}"`,
+        'success'
+      )
+    }
+  } catch (error: any) {
+    logger(error.message, 'error')
+    process.exit(1)
+  }
+})()

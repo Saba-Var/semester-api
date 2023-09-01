@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { logger } from 'bin'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -16,8 +17,8 @@ export const dropTestDatabase = async () => {
 
       return true
     }
-  } catch (error) {
-    console.error('Error seeding:', error)
+  } catch (error: any) {
+    logger(error, 'error')
   }
 
   return false
