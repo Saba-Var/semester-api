@@ -3,6 +3,7 @@ import SwaggerUI from 'swagger-ui-express'
 import cookieParser from 'cookie-parser'
 import { connectToMongo } from 'config'
 import bodyParser from 'body-parser'
+import { logger } from 'bin'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import path from 'path'
@@ -36,6 +37,8 @@ server.use(
   })
 )
 
+server.use(express.static('public'))
+
 server.use('/api-docs', SwaggerUI.serve, swaggerDocSetup())
 
 server.use('/api/authentication', authLimiter, authRouter)
@@ -55,7 +58,7 @@ server.use(errorHandler)
 const port = process.env.SERVER_PORT || 4000
 server.listen(port, async () => {
   await connectToMongo()
-  console.log(`Server started on port ${port}`)
+  logger(`Server started on port ${port}`, 'success')
 })
 
 export default server

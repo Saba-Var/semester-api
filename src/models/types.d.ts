@@ -32,14 +32,18 @@ export interface SemesterModel extends Document {
   name: string
 }
 
-interface IUniversityModel extends Document {
-  name: string
+export interface IUniversityModel extends Document {
+  name: {
+    en: string
+    ka: string
+  }
   ratings: {
     [key: string]: number
   }
-  overallRating: number
+  averageRating: number
   voteCount: number
-  logoSrc?: string
+  logoSrc: string
+  alias: string
   createdAt?: Date
   updatedAt?: Date
 }

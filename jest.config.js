@@ -24,5 +24,6 @@ module.exports = {
     '^requests$': '<rootDir>/src/requests',
     '^data$': '<rootDir>/src/data',
     '^types': '<rootDir>/src/types',
+    '^bin': '<rootDir>/src/bin',
   },
 }

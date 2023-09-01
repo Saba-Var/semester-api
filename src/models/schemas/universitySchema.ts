@@ -18,18 +18,28 @@ const criteriaTypes = evaluationCriterias.reduce(
 const universitySchema = new Schema<IUniversityModel>(
   {
     name: {
-      type: String,
+      type: {
+        en: String,
+        ka: String,
+      },
       required: true,
       immutable: true,
+      unique: true,
     },
     logoSrc: {
       type: String,
       required: true,
+      unique: true,
     },
-    overallRating: {
+    averageRating: {
       type: Number,
       required: true,
       default: null,
+    },
+    alias: {
+      type: String,
+      required: true,
+      unique: true,
     },
     ratings: criteriaTypes,
     voteCount: {
