@@ -19,11 +19,13 @@
     "dev": "concurrently \"npm run build:watch\" \"nodemon build/server.js\"",
     "build:watch": "babel src --out-dir build --extensions .ts --copy-files --watch",
     "build:prod": "babel src --out-dir build --extensions .ts --copy-files --minified",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "create-migration": "node build/bin/create-migration.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
+    "commander": "^11.0.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
