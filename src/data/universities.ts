@@ -1,26 +1,11 @@
 import { evaluationCriterias } from 'data'
 
-const ratingCriteriasObject = evaluationCriterias.reduce(
-  (acc, criteria) => ({
-    ...acc,
-    [criteria]: null,
-  }),
-  {}
-)
-
-export const universities = [
+const universitiesBaseData = [
   {
     name: {
       ka: 'ივანე ჯავახიშვილის სახელობის თბილისის სახელმწიფო უნივერსიტეტი',
       en: 'Ivane Javakhishvili Tbilisi State University',
     },
-    logoSrc: 'public/images/universities/tsu.png',
-    ratings: {
-      criterias: ratingCriteriasObject,
-      users: [],
-    },
-    averageRating: 0,
-    voteCount: 0,
     alias: 'tsu',
   },
 
@@ -29,13 +14,25 @@ export const universities = [
       ka: 'საქართველოს ტექნიკური უნივერსიტეტი',
       en: 'Georgian Technical University',
     },
-    logoSrc: 'public/images/universities/stu.png',
-    ratings: {
-      criterias: ratingCriteriasObject,
-      users: [],
-    },
-    averageRating: 0,
-    voteCount: 0,
     alias: 'stu',
   },
-] as const
+]
+
+const ratingCriteriasObject = evaluationCriterias.reduce(
+  (acc, criteria) => ({
+    ...acc,
+    [criteria]: null,
+  }),
+  {}
+)
+
+export const universities = universitiesBaseData.map((university) => ({
+  ...university,
+  logoSrc: `public/images/universities/${university.alias}.png`,
+  ratings: {
+    criterias: ratingCriteriasObject,
+    users: [],
+  },
+  averageRating: 0,
+  voteCount: 0,
+}))
