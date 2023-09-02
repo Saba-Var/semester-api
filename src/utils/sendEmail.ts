@@ -2,6 +2,7 @@ import type { AccessTokenPayload } from 'types'
 import { Response } from 'express'
 import mailgun from 'mailgun-js'
 import jwt from 'jsonwebtoken'
+import { logger } from 'utils'
 import dotenv from 'dotenv'
 import path from 'path'
 import pug from 'pug'
@@ -76,8 +77,12 @@ export const sendEmail = async (
   }
 
   // TODO: create user after email is sent
-  return mg.messages().send(data, (error) => {
+  return mg.messages().send(data, (error: any) => {
     if (error) {
+      logger.error(error.message, {
+        stack: error.stack,
+      })
+
       return res.status(500).json({
         message: error.message,
       })

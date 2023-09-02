@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { logger } from 'bin'
+import { coloredLogger } from 'bin'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -31,10 +31,10 @@ const connectToMongo = async () => {
       ? generateLocalMongoURL()
       : generateAtlasMongoURL()
 
-    logger(`Connected to mongoDb successfully!`, 'success')
+    coloredLogger(`Connected to mongoDb successfully!`, 'success')
     return mongoose.connect(connectionURL)
   } catch (error: any) {
-    logger(`Mongo connection error: ${error.message}`, 'error')
+    coloredLogger(`Mongo connection error: ${error.message}`, 'error')
     throw new Error(error.message)
   }
 }

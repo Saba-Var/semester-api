@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { logger } from 'bin'
+import { coloredLogger } from 'bin'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -18,7 +18,7 @@ export const dropTestDatabase = async () => {
       return true
     }
   } catch (error: any) {
-    logger(error, 'error')
+    coloredLogger(error, 'error')
   }
 
   return false

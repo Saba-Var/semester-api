@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { logger } from './logger'
+import { coloredLogger } from './coloredLogger'
 import fs from 'fs/promises'
 import path from 'path'
 
@@ -10,7 +10,10 @@ const getFormattedDate = () => {
 }
 
 const exitWithError = () => {
-  logger('command usage - npm run create-migration <migration_name>', 'error')
+  coloredLogger(
+    'command usage - npm run create-migration <migration_name>',
+    'error'
+  )
   process.exit(1)
 }
 
@@ -44,17 +47,20 @@ const migrationFilePath = `${migrationsFolder}/${migrationFileName}`
       .catch(() => false)
 
     if (fileExists) {
-      logger(`Migration file "${migrationFileName}" already exists.`, 'error')
+      coloredLogger(
+        `Migration file "${migrationFileName}" already exists.`,
+        'error'
+      )
     } else {
       await fs.writeFile(migrationFilePath, migrationContent)
 
-      logger(
+      coloredLogger(
         `Migration file "${migrationFileName}" created in "${migrationsFolder}"`,
         'success'
       )
     }
   } catch (error: any) {
-    logger(error.message, 'error')
+    coloredLogger(error.message, 'error')
     process.exit(1)
   }
 })()
