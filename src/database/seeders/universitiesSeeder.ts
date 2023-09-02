@@ -1,6 +1,6 @@
 import { universities } from 'data'
 import { University } from 'models'
-import { logger } from 'bin'
+import { coloredLogger } from 'bin'
 
 export const universitiesSeeder = async () => {
   try {
@@ -10,8 +10,8 @@ export const universitiesSeeder = async () => {
       })
     )
 
-    logger('Universities seeded successfully!', 'success')
+    coloredLogger('Universities seeded successfully!', 'success')
   } catch (error: any) {
-    logger(`Universities seeder - ${error.message}`, 'error')
+    coloredLogger(`Universities seeder - ${error.message}`, 'error')
   }
 }
