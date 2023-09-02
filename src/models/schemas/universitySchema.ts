@@ -42,6 +42,11 @@ const universitySchema = new Schema<IUniversityModel>(
       required: true,
       unique: true,
     },
+    code: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     ratings: {
       type: Object,
       required: true,
@@ -59,7 +64,11 @@ const universitySchema = new Schema<IUniversityModel>(
         default: [],
       },
     },
-
+    website: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     voteCount: {
       type: Number,
       required: true,
