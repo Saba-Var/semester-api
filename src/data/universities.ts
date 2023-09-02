@@ -15,7 +15,10 @@ export const universities = [
       en: 'Ivane Javakhishvili Tbilisi State University',
     },
     logoSrc: 'public/images/universities/tsu.png',
-    ratings: ratingCriteriasObject,
+    ratings: {
+      criterias: ratingCriteriasObject,
+      users: [],
+    },
     averageRating: 0,
     voteCount: 0,
     alias: 'tsu',
@@ -27,7 +30,10 @@ export const universities = [
       en: 'Georgian Technical University',
     },
     logoSrc: 'public/images/universities/stu.png',
-    ratings: ratingCriteriasObject,
+    ratings: {
+      criterias: ratingCriteriasObject,
+      users: [],
+    },
     averageRating: 0,
     voteCount: 0,
     alias: 'stu',

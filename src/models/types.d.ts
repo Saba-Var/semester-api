@@ -38,7 +38,10 @@ export interface IUniversityModel extends Document {
     ka: string
   }
   ratings: {
-    [key: string]: number
+    users: Types.ObjectId[]
+    criterias: {
+      [key: string]: number
+    }
   }
   averageRating: number
   voteCount: number
