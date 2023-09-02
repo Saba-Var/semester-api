@@ -32,18 +32,26 @@ export interface SemesterModel extends Document {
   name: string
 }
 
-export interface IUniversityModel extends Document {
+export type IUniversitiesBaseData = {
   name: {
     en: string
     ka: string
   }
+  alias: string
+  code: string
+  website: string
+}
+
+export interface IUniversityModel extends Document, IUniversitiesBaseData {
   ratings: {
-    [key: string]: number
+    users: Types.ObjectId[]
+    criterias: {
+      [key: string]: number
+    }
   }
   averageRating: number
   voteCount: number
   logoSrc: string
-  alias: string
   createdAt?: Date
   updatedAt?: Date
 }

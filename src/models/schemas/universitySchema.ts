@@ -42,7 +42,33 @@ const universitySchema = new Schema<IUniversityModel>(
       required: true,
       unique: true,
     },
-    ratings: criteriaTypes,
+    code: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    ratings: {
+      type: Object,
+      required: true,
+
+      criterias: criteriaTypes,
+
+      users: {
+        type: [
+          {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+          },
+        ],
+        required: true,
+        default: [],
+      },
+    },
+    website: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     voteCount: {
       type: Number,
       required: true,

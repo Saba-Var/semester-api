@@ -26,7 +26,7 @@ export const createUniversity = async (
       })
     }
 
-    const criteriaRatingValues = Object.values(ratings)
+    const criteriaRatingValues = Object.values(ratings.criterias)
 
     const averageRating =
       criteriaRatingValues.reduce(
