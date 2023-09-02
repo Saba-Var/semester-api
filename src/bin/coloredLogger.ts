@@ -1,4 +1,4 @@
-export const logger = (message: string, type: 'success' | 'error') => {
+export const coloredLogger = (message: string, type: 'success' | 'error') => {
   const colors = {
     success: '\x1b[32m',
     error: '\x1b[31m',

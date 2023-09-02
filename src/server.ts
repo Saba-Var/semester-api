@@ -3,7 +3,7 @@ import SwaggerUI from 'swagger-ui-express'
 import cookieParser from 'cookie-parser'
 import { connectToMongo } from 'config'
 import bodyParser from 'body-parser'
-import { logger } from 'bin'
+import { coloredLogger } from 'bin'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import path from 'path'
@@ -56,9 +56,10 @@ server.set('views', path.join(__dirname, 'views'))
 server.use(errorHandler)
 
 const port = process.env.SERVER_PORT || 4000
+
 server.listen(port, async () => {
   await connectToMongo()
-  logger(`Server started on port ${port}`, 'success')
+  coloredLogger(`Server started on port ${port}`, 'success')
 })
 
 export default server
