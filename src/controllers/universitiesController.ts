@@ -1,6 +1,7 @@
-import type { Response, NextFunction, Request } from 'express'
 import { type IUniversityModel, University } from 'models'
 import type { RequestBody, RequestQuery } from 'types'
+import type { Response, NextFunction } from 'express'
+import { paginate } from 'utils'
 
 export const createUniversity = async (
   req: RequestBody<IUniversityModel>,
@@ -51,29 +52,16 @@ export const createUniversity = async (
 }
 
 export const getUniversities = async (
-  req: RequestQuery<{ page: string; limit: string }>,
+  req: RequestQuery<{ page: number; limit: number }>,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const page = parseInt(req.query.page, 10) || 1
-    const limit = parseInt(req.query.limit, 10) || 10
+    const { data, paginationInfo } = await paginate(University, {
+      ...req.query,
+    })
 
-    const skip = (page - 1) * limit
-
-    const totalItems = await University.countDocuments()
-    const totalPages = Math.ceil(totalItems / limit)
-
-    const universities = await University.find().skip(skip).limit(limit)
-
-    const paginationInfo = {
-      currentPage: page,
-      totalPages,
-      totalItems,
-      limit,
-    }
-
-    return res.status(200).json({ universities, paginationInfo })
+    return res.status(200).json({ data, paginationInfo })
   } catch (error: any) {
     return next(error)
   }
