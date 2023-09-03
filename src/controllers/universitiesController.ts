@@ -52,7 +52,7 @@ export const createUniversity = async (
 }
 
 export const getUniversities = async (
-  req: RequestQuery<{ page: number; limit: number }>,
+  req: RequestQuery<{ page: string; limit: string }>,
   res: Response,
   next: NextFunction
 ) => {

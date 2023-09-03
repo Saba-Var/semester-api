@@ -1,8 +1,8 @@
 import { PaginateParams } from './types'
 
 export const paginate = async ({ query, model }: PaginateParams) => {
-  const limit = query?.limit || 10
-  const page = query?.page || 1
+  const limit = query?.limit ? +query.limit : 10
+  const page = query?.page ? +query.page : 1
 
   const skip = (page - 1) * limit
 
