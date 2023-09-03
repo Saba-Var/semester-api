@@ -57,8 +57,9 @@ export const getUniversities = async (
   next: NextFunction
 ) => {
   try {
-    const { data, paginationInfo } = await paginate(University, {
-      ...req.query,
+    const { data, paginationInfo } = await paginate({
+      model: University,
+      query: req.query,
     })
 
     return res.status(200).json({ data, paginationInfo })

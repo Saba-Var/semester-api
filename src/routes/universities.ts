@@ -1,11 +1,17 @@
 import { createUniversity, getUniversities } from 'controllers'
-import { isAdmin } from 'middlewares'
-import express from 'express'
+import { validateRequestSchema, isAdmin } from 'middlewares'
+import { paginationSchema } from 'validationSchemas'
+import express, { RequestHandler } from 'express'
 
 const router = express.Router()
 
 router.post('/', isAdmin, createUniversity)
 
-router.get('/', getUniversities)
+router.get(
+  '/',
+  paginationSchema,
+  validateRequestSchema,
+  getUniversities as unknown as RequestHandler
+)
 
 export default router
