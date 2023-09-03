@@ -1,4 +1,144 @@
 /universities:
+  get:
+    summary: Get all universities with pagination.
+    tags:
+      - University
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: number
+      - in: query
+        name: limit
+        description: Number of items per page
+        schema:
+          type: number
+    responses:
+      200:
+        description: Universities successfully retrieved.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        format: objectid
+                        example: 5f9b3b3b1c9d440000f3e9a0
+                      name:
+                        type: object
+                        properties:
+                          en:
+                            type: string
+                            example: University Name
+                          ka:
+                            type: string
+                            example: უნივერსიტეტის სახელი
+                      logoSrc:
+                        type: string
+                        example: public/images/universities/uni.png
+                      averageRating:
+                        type: number
+                        example: 9.5
+                      alias:
+                        type: string
+                        example: uni
+                      code:
+                        type: string
+                        example: '001'
+                      ratings:
+                        type: object
+                        properties:
+                          criterias:
+                            type: object
+                            properties:
+                              qualityOfEducation:
+                                type: number
+                                example: 9.5
+                              employability:
+                                type: number
+                                example: 9.5
+                              facilities:
+                                type: number
+                                example: 9.5
+                              studentLife:
+                                type: number
+                                example: 9.5
+                              supportServices:
+                                type: number
+                                example: 9.5
+                              location:
+                                type: number
+                                example: 9.5
+                              internshipAndJobs:
+                                type: number
+                                example: 9.5
+                              alumniSuccess:
+                                type: number
+                                example: 9.5
+                              affordability:
+                                type: number
+                                example: 9.5
+                              buffet:
+                                type: number
+                                example: 9.5
+                              staffEducation:
+                                type: number
+                                example: 9.5
+                              library:
+                                type: number
+                                example: 9.5
+                              techEquipment:
+                                type: number
+                                example: 9.5
+                          users:
+                            type: array
+                            items:
+                              type: string
+                              format: objectid
+                              example: 5f9b3b3b1c9d440000f3e9a0
+                      website:
+                        type: string
+                        example: https://uni.ge
+                      voteCount:
+                        type: number
+                        example: 100
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: 2020-10-30T12:00:00.000Z
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: 2020-10-30T12:00:00.000Z
+                paginationInfo:
+                  type: object
+                  properties:
+                    page:
+                      type: integer
+                      example: 1
+                    limit:
+                      type: integer
+                      example: 10
+                    totalItems:
+                      type: integer
+                      example: 100
+                    lastPage:
+                      type: integer
+                      example: 10
+      401:
+        $ref: '#/components/responses/UnauthorizedAccess'
+      500:
+        $ref: '#/components/responses/InternalServerError'
+
   post:
     security:
       - bearerAuth: []

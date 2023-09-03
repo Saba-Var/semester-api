@@ -1,6 +1,7 @@
+import type { RequestBody, RequestQuery, PaginationBaseQuery } from 'types'
 import { type IUniversityModel, University } from 'models'
 import type { Response, NextFunction } from 'express'
-import type { RequestBody } from 'types'
+import { paginate } from 'utils'
 
 export const createUniversity = async (
   req: RequestBody<IUniversityModel>,
@@ -46,6 +47,23 @@ export const createUniversity = async (
       _id: newUniversity._id,
     })
   } catch (error) {
+    return next(error)
+  }
+}
+
+export const getUniversities = async (
+  req: RequestQuery<PaginationBaseQuery>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { data, paginationInfo } = await paginate({
+      model: University,
+      query: req.query,
+    })
+
+    return res.status(200).json({ data, paginationInfo })
+  } catch (error: any) {
     return next(error)
   }
 }

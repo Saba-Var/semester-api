@@ -1,10 +1,5 @@
 import type { Document, Types } from 'mongoose'
-import type {
-  ILearningActivityModel,
-  Timestamps,
-  UserImage,
-  UserRoles,
-} from 'types'
+import type { UserImage, UserRoles } from 'types'
 
 export interface IUserModel extends Document {
   activeSemester: Types.ObjectId

@@ -83,5 +83,7 @@
   "current_password_is_required": "Current password is required!",
   "new_password_requirements": "New password should include at least 1 lowercase letter, 1 uppercase letter, 1 number and 1 special character.",
   "university_already_exists": "University with this name already exists!",
-  "university_created_successfully": "University created successfully!"
+  "university_created_successfully": "University created successfully!",
+  "page_must_be_a_positive_number": "Page must be a positive number!",
+  "limit_must_be_a_positive_number": "Limit must be a positive number!"
 }
