@@ -11,5 +11,10 @@ export const paginate = async ({ query, model }: PaginateParams) => {
 
   const data = await model.find().skip(skip).limit(limit)
 
-  return { data, paginationInfo: { page, limit, totalItems, totalPages } }
+  const lastPage = totalPages > 0 ? totalPages : 1
+
+  return {
+    paginationInfo: { page, limit, totalItems, lastPage },
+    data,
+  }
 }

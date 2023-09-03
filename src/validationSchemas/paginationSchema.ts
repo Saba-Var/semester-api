@@ -1,3 +1,3 @@
-import { queryEmailSchema, pageQuerySchema } from './common'
+import { limitQueryParam, pageQuerySchema } from './common'
 
-export const paginationSchema = [queryEmailSchema, pageQuerySchema]
+export const paginationSchema = [limitQueryParam, pageQuerySchema]
