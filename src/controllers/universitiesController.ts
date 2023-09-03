@@ -1,5 +1,5 @@
+import type { RequestBody, RequestQuery, PaginationBaseQuery } from 'types'
 import { type IUniversityModel, University } from 'models'
-import type { RequestBody, RequestQuery } from 'types'
 import type { Response, NextFunction } from 'express'
 import { paginate } from 'utils'
 
@@ -52,7 +52,7 @@ export const createUniversity = async (
 }
 
 export const getUniversities = async (
-  req: RequestQuery<{ page: string; limit: string }>,
+  req: RequestQuery<PaginationBaseQuery>,
   res: Response,
   next: NextFunction
 ) => {

@@ -120,3 +120,8 @@ export type UserImage = {
   type: 'dicebear' | 'upload'
   collectionName: string
 }
+
+export type PaginationBaseQuery = {
+  page?: string
+  limit?: string
+}
