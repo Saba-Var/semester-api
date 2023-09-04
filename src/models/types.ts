@@ -19,6 +19,7 @@ export interface IUserModel extends Document {
   image?: UserImage | null
   password?: string
   username: string
+  lastActive: Date
   role: UserRoles
   active: boolean
   email: string

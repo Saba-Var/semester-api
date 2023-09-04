@@ -1,5 +1,6 @@
 export * from './validateRequestSchema'
 export * from './i18nextMiddleware'
+export * from './updateLastActive'
 export * from './swaggerDocSetup'
 export * from './errorHandler'
 export * from './verifyToken'
