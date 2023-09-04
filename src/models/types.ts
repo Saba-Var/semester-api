@@ -5,8 +5,14 @@ export interface IUserModel extends Document {
   activeSemester: Types.ObjectId
   userUniversityInfo: {
     currentUniversity: Types.ObjectId | null
-    ratedUniversities: Types.ObjectId[]
-    allUniversities: Types.ObjectId[]
+    ratedUniversities: {
+      university: Types.ObjectId
+      rateDate: Date
+    }[]
+    allUniversities: {
+      university: Types.ObjectId
+      selectedDate: Date
+    }[]
     selectedDate: Date | null
   }
   semesters: Types.ObjectId[]

@@ -68,7 +68,10 @@ export const updateUserDetails = async (
       const { userUniversityInfo } = currentUser
 
       const selectUniversity = () => {
-        userUniversityInfo.allUniversities.push(university)
+        userUniversityInfo.allUniversities.push({
+          selectedDate: new Date(),
+          university,
+        })
         userUniversityInfo.currentUniversity = university
         userUniversityInfo.selectedDate = new Date()
       }
@@ -95,7 +98,10 @@ export const updateUserDetails = async (
           })
         }
 
-        if (isUniversityExist._id === userUniversityInfo.currentUniversity) {
+        if (
+          isUniversityExist._id.toString() ===
+          userUniversityInfo.currentUniversity?.toString()
+        ) {
           return res.status(409).json({
             message: req.t('you_already_have_this_university_as_current', {
               universityName:
