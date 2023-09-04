@@ -34,7 +34,6 @@
             properties:
               image:
                 type: object
-                required: false
                 properties:
                   url:
                     type: string
@@ -47,24 +46,24 @@
                     type: string
                     example: bottts
               username:
-                required: false
                 type: string
                 example: 'newUsername'
               oldPassword:
-                required: false
                 type: string
                 example: 'oldPassword'
                 description: Old Password.
               newPassword:
-                required: false
                 type: string
                 description: New password.
                 example: 'newPassword'
               confirmPassword:
-                required: false
                 type: string
                 example: 'newPassword'
                 description: Password confirmation.
+              university:
+                example: 5f9b3b3b1c9d440000f3e9a0
+                format: objectid
+                type: string
     responses:
       200:
         description: User details successfully updated.

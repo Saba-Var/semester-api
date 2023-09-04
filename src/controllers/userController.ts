@@ -1,9 +1,9 @@
 import type { Response, NextFunction } from 'express'
 import { sendEmail, generateAuthTokens } from 'utils'
 import type { UserUpdateReq } from './types'
+import { University, User } from 'models'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
-import { User } from 'models'
 import type {
   ExtendedAuthRequest,
   RequestQuery,
@@ -42,7 +42,7 @@ export const updateUserDetails = async (
       return res.status(404).json({ message: req.t('user_not_found') })
     }
 
-    const { username, image, newPassword, oldPassword } = req.body
+    const { username, image, newPassword, oldPassword, university } = req.body
 
     if (image?.type === 'dicebear') {
       currentUser.image = image
@@ -62,6 +62,63 @@ export const updateUserDetails = async (
       }
 
       currentUser.password = await bcrypt.hash(newPassword, 12)
+    }
+
+    if (university) {
+      const { userUniversityInfo } = currentUser
+
+      const selectUniversity = () => {
+        userUniversityInfo.allUniversities.push({
+          selectedDate: new Date(),
+          university,
+        })
+        userUniversityInfo.currentUniversity = university
+        userUniversityInfo.selectedDate = new Date()
+      }
+
+      const universitySelectedDate = userUniversityInfo.selectedDate
+
+      if (!universitySelectedDate) {
+        selectUniversity()
+      } else {
+        const currentDate = new Date()
+        const twoMonths = 5184000000
+        const selectTimeDifferenceBetweenUniversitySelections =
+          currentDate.getTime() - universitySelectedDate.getTime()
+        const daysLeft = Math.floor(
+          (twoMonths - selectTimeDifferenceBetweenUniversitySelections) /
+            86400000
+        )
+
+        const isUniversityExist = await University.findById(university)
+
+        if (!isUniversityExist) {
+          return res.status(404).json({
+            message: req.t('university_not_found'),
+          })
+        }
+
+        if (
+          isUniversityExist._id.toString() ===
+          userUniversityInfo.currentUniversity?.toString()
+        ) {
+          return res.status(409).json({
+            message: req.t('you_already_have_this_university_as_current', {
+              universityName:
+                isUniversityExist.name[req.cookies.language || 'en'],
+            }),
+          })
+        }
+
+        if (selectTimeDifferenceBetweenUniversitySelections < twoMonths) {
+          return res.status(403).json({
+            message: req.t('you_can_change_university_once_in_two_months', {
+              daysLeft,
+            }),
+          })
+        }
+        selectUniversity()
+      }
     }
 
     await currentUser.save()

@@ -54,21 +54,41 @@ const userSchema: Schema<IUserModel> = new Schema(
           type: Schema.Types.ObjectId,
           ref: 'university',
         },
-        allUniversities: {
-          type: [Schema.Types.ObjectId],
-          ref: 'university',
-        },
+        allUniversities: [
+          {
+            university: {
+              type: Schema.Types.ObjectId,
+              ref: 'university',
+            },
+            selectedDate: {
+              type: Date,
+            },
+            _id: false,
+          },
+        ],
         selectedDate: {
           type: Date,
         },
         ratedUniversities: [
           {
-            type: Schema.Types.ObjectId,
-            ref: 'university',
+            university: {
+              type: Schema.Types.ObjectId,
+              ref: 'university',
+            },
+            ratedDate: {
+              type: Date,
+            },
+            _id: false,
           },
         ],
       },
-      default: null,
+      default: {
+        currentUniversity: null,
+        allUniversities: [],
+        selectedDate: null,
+        ratedUniversities: [],
+      },
+      _id: false,
     },
   },
   {

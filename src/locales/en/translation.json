@@ -85,5 +85,9 @@
   "university_already_exists": "University with this name already exists!",
   "university_created_successfully": "University created successfully!",
   "page_must_be_a_positive_number": "Page must be a positive number!",
-  "limit_must_be_a_positive_number": "Limit must be a positive number!"
+  "limit_must_be_a_positive_number": "Limit must be a positive number!",
+  "you_can_change_university_once_in_two_months": "You can change university once in two months! You will be able to change university after {{daysLeft}} days",
+  "university_not_found": "University not found!",
+  "you_already_have_this_university_as_current": "You already have selected {{universityName}} as your current university!",
+  "invalid_mongoDB_id": "Invalid mongoDB id!"
 }

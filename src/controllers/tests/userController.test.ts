@@ -34,7 +34,7 @@ describe('User Controller', () => {
         updatedAt: expect.any(String),
         image: expect.any(Object),
         role: 'user',
-        userUniversityInfo: null,
+        userUniversityInfo: expect.any(Object),
       })
     })
   })

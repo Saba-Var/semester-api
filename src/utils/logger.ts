@@ -16,7 +16,7 @@ export const logger = createLogger({
   format: combine(
     label({ label: CATEGORY }),
     timestamp({
-      format: 'MMM-DD-YYYY HH:mm:ss',
+      format: 'ddd-DD-MMM-YYYY MM-DD-YYYY HH:mm:ss',
     }),
     format.prettyPrint()
   ),

@@ -1,14 +1,20 @@
-import type { Document, Types } from 'mongoose'
 import type { UserImage, UserRoles } from 'types'
+import type { Document, Types } from 'mongoose'
 
 export interface IUserModel extends Document {
   activeSemester: Types.ObjectId
   userUniversityInfo: {
-    currentUniversity: Types.ObjectId
-    selectedDate: Date
-    ratedUniversities: Types.ObjectId[]
-    allUniversities: Types.ObjectId[]
-  } | null
+    currentUniversity: Types.ObjectId | null
+    ratedUniversities: {
+      university: Types.ObjectId
+      rateDate: Date
+    }[]
+    allUniversities: {
+      university: Types.ObjectId
+      selectedDate: Date
+    }[]
+    selectedDate: Date | null
+  }
   semesters: Types.ObjectId[]
   image?: UserImage | null
   password?: string
