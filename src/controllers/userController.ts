@@ -1,9 +1,9 @@
 import type { Response, NextFunction } from 'express'
 import { sendEmail, generateAuthTokens } from 'utils'
 import type { UserUpdateReq } from './types'
+import { University, User } from 'models'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
-import { User } from 'models'
 import type {
   ExtendedAuthRequest,
   RequestQuery,
@@ -64,8 +64,9 @@ export const updateUserDetails = async (
       currentUser.password = await bcrypt.hash(newPassword, 12)
     }
 
-    const { userUniversityInfo } = currentUser
-    if (userUniversityInfo && university) {
+    if (university) {
+      const { userUniversityInfo } = currentUser
+
       const selectUniversity = () => {
         userUniversityInfo.allUniversities.push(university)
         userUniversityInfo.currentUniversity = university
@@ -79,13 +80,31 @@ export const updateUserDetails = async (
       } else {
         const currentDate = new Date()
         const twoMonths = 5184000000
-        const selectTimeDifference =
+        const selectTimeDifferenceBetweenUniversitySelections =
           currentDate.getTime() - universitySelectedDate.getTime()
-
         const daysLeft = Math.floor(
-          (twoMonths - selectTimeDifference) / 86400000
+          (twoMonths - selectTimeDifferenceBetweenUniversitySelections) /
+            86400000
         )
-        if (selectTimeDifference < twoMonths) {
+
+        const isUniversityExist = await University.findById(university)
+
+        if (!isUniversityExist) {
+          return res.status(404).json({
+            message: req.t('university_not_found'),
+          })
+        }
+
+        if (isUniversityExist._id === userUniversityInfo.currentUniversity) {
+          return res.status(409).json({
+            message: req.t('you_already_have_this_university_as_current', {
+              universityName:
+                isUniversityExist.name[req.cookies.language || 'en'],
+            }),
+          })
+        }
+
+        if (selectTimeDifferenceBetweenUniversitySelections < twoMonths) {
           return res.status(403).json({
             message: req.t('you_can_change_university_once_in_two_months', {
               daysLeft,

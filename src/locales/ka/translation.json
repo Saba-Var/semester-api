@@ -84,5 +84,7 @@
   "new_password_requirements": "ახალი პაროლი უნდა შეიცავდეს: მაღალი რეგისტრის ასოს, დაბალი რეგისტრის ასოს და სიმბოლოს",
   "university_already_exists": "უკვე არსებობს ამ სახელით უნივერსიტეტი!",
   "university_created_successfully": "უნივერსიტეტი წარმატებით შეიქმნა!",
-  "you_can_change_university_once_in_two_months": "უნივერსიტეტის შეცვლა ორ თვეში ერთხელ შეგიძლია! უნივერსიტეტის შეცვლა შეგეძლება {{daysLeft}} დღეში."
+  "you_can_change_university_once_in_two_months": "უნივერსიტეტის შეცვლა ორ თვეში ერთხელ შეგიძლია! უნივერსიტეტის შეცვლა შეგეძლება {{daysLeft}} დღეში.",
+  "university_not_found": "უნივერსიტეტი ვერ მოიძებნა!",
+  "you_already_have_this_university_as_current": "შენ უკვე გაქვს {{universityName}} არჩეული როგორიც მიმდინარე!"
 }
