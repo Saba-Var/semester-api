@@ -79,9 +79,7 @@ describe('Semester Controller', () => {
     it('Should return 422 if the provided semester id is invalid', async () => {
       const { status, body } = await oneSemesterDataRequest('invalidId')
       expect(status).toBe(422)
-      expect(body.errors.id).toEqual([
-        'Invalid id param. Provide a valid mongoDB id.',
-      ])
+      expect(body.errors.id).toEqual(['Invalid mongoDB id!'])
     })
 
     it("Should return 404 if the semester with the given id doesn't exist", async () => {
@@ -113,9 +111,7 @@ describe('Semester Controller', () => {
     it('Should return 422 if the provided semester id is invalid', async () => {
       const { status, body } = await oneSemesterDataRequest('invalidId')
       expect(status).toBe(422)
-      expect(body.errors.id).toEqual([
-        'Invalid id param. Provide a valid mongoDB id.',
-      ])
+      expect(body.errors.id).toEqual(['Invalid mongoDB id!'])
     })
 
     it("Should return 404 if the semester with the given id doesn't exist", async () => {
