@@ -48,6 +48,11 @@ const userSchema: Schema<IUserModel> = new Schema(
       },
     ],
 
+    lastActive: {
+      type: Date,
+      default: null,
+    },
+
     userUniversityInfo: {
       type: {
         currentUniversity: {

@@ -45,6 +45,11 @@ User:
       example:
         - '609f1f0db1e9aa001f20a5d1'
         - '609f1f0db1e9aa001f20a5d2'
+    lastActive:
+      type: string
+      format: date-time
+      description: The timestamp when the user hit the API for the last time.
+      example: '2022-06-01T10:00:00Z'
     createdAt:
       type: string
       format: date-time

@@ -1,14 +1,14 @@
+import { connectToMongo, configuredCors } from 'config'
 import express, { type RequestHandler } from 'express'
 import SwaggerUI from 'swagger-ui-express'
 import cookieParser from 'cookie-parser'
-import { connectToMongo } from 'config'
 import bodyParser from 'body-parser'
 import { coloredLogger } from 'bin'
 import dotenv from 'dotenv'
-import cors from 'cors'
 import path from 'path'
 import {
   i18nextMiddleware,
+  updateLastActive,
   swaggerDocSetup,
   errorHandler,
   verifyToken,
@@ -30,12 +30,7 @@ server.use(i18nextMiddleware)
 server.use(bodyParser.json())
 server.use(cookieParser())
 
-server.use(
-  cors({
-    origin: process.env.FRONTEND_URI!,
-    credentials: true,
-  })
-)
+server.use(configuredCors)
 
 server.use(express.static('public'))
 
@@ -44,6 +39,8 @@ server.use('/api-docs', SwaggerUI.serve, swaggerDocSetup())
 server.use('/api/authentication', authLimiter, authRouter)
 
 server.use(verifyToken as unknown as RequestHandler)
+
+server.use(updateLastActive)
 
 server.use('/api/learning-activities', learningActivitiesRouter)
 server.use('/api/universities', universityRouter)
