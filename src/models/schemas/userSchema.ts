@@ -68,7 +68,13 @@ const userSchema: Schema<IUserModel> = new Schema(
           },
         ],
       },
-      default: null,
+      default: {
+        currentUniversity: null,
+        allUniversities: [],
+        selectedDate: null,
+        ratedUniversities: [],
+      },
+      _id: false,
     },
   },
   {

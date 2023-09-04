@@ -42,7 +42,7 @@ export const updateUserDetails = async (
       return res.status(404).json({ message: req.t('user_not_found') })
     }
 
-    const { username, image, newPassword, oldPassword } = req.body
+    const { username, image, newPassword, oldPassword, university } = req.body
 
     if (image?.type === 'dicebear') {
       currentUser.image = image
@@ -62,6 +62,38 @@ export const updateUserDetails = async (
       }
 
       currentUser.password = await bcrypt.hash(newPassword, 12)
+    }
+
+    const { userUniversityInfo } = currentUser
+    if (userUniversityInfo && university) {
+      const selectUniversity = () => {
+        userUniversityInfo.allUniversities.push(university)
+        userUniversityInfo.currentUniversity = university
+        userUniversityInfo.selectedDate = new Date()
+      }
+
+      const universitySelectedDate = userUniversityInfo.selectedDate
+
+      if (!universitySelectedDate) {
+        selectUniversity()
+      } else {
+        const currentDate = new Date()
+        const twoMonths = 5184000000
+        const selectTimeDifference =
+          currentDate.getTime() - universitySelectedDate.getTime()
+
+        const daysLeft = Math.floor(
+          (twoMonths - selectTimeDifference) / 86400000
+        )
+        if (selectTimeDifference < twoMonths) {
+          return res.status(403).json({
+            message: req.t('you_can_change_university_once_in_two_months', {
+              daysLeft,
+            }),
+          })
+        }
+        selectUniversity()
+      }
     }
 
     await currentUser.save()

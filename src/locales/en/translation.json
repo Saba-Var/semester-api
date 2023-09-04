@@ -85,5 +85,6 @@
   "university_already_exists": "University with this name already exists!",
   "university_created_successfully": "University created successfully!",
   "page_must_be_a_positive_number": "Page must be a positive number!",
-  "limit_must_be_a_positive_number": "Limit must be a positive number!"
+  "limit_must_be_a_positive_number": "Limit must be a positive number!",
+  "you_can_change_university_once_in_two_months": "You can change university once in two months! You will be able to change university in {{daysLeft}}s"
 }
