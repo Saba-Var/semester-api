@@ -45,5 +45,5 @@ export const userUpdateSchema = [
     }
   }),
 
-  check('university').custom(validateMongoDbId),
+  check('university').optional().custom(validateMongoDbId),
 ]
