@@ -54,51 +54,132 @@
                       code:
                         type: string
                         example: '001'
-                      ratings:
+                      evaluation:
                         type: object
                         properties:
+                          voteCount:
+                            type: number
+                            example: 100
                           criterias:
                             type: object
                             properties:
                               qualityOfEducation:
-                                type: number
-                                example: 9.5
+                                type: object
+                                properties:
+                                  totalScore:
+                                    type: number
+                                    example: 340
+                                  averageScore:
+                                    type: number
+                                    example: 9.5
                               employability:
-                                type: number
-                                example: 9.5
+                                type: object
+                                properties:
+                                  totalScore:
+                                    type: number
+                                    example: 100
+                                  averageScore:
+                                    type: number
+                                    example: 8
                               facilities:
-                                type: number
-                                example: 9.5
+                                type: object
+                                properties:
+                                  totalScore:
+                                    type: number
+                                    example: 34
+                                  averageScore:
+                                    type: number
+                                    example: 3.4
                               studentLife:
-                                type: number
-                                example: 9.5
+                                type: object
+                                properties:
+                                  totalScore:
+                                    type: number
+                                    example: 312
+                                  averageScore:
+                                    type: number
+                                    example: 5.6
                               supportServices:
-                                type: number
-                                example: 9.5
+                                type: object
+                                properties:
+                                  totalScore:
+                                    type: number
+                                    example: 200
+                                  averageScore:
+                                    type: number
+                                    example: 7.8
                               location:
-                                type: number
-                                example: 9.5
+                                type: object
+                                properties:
+                                  totalScore:
+                                    type: number
+                                    example: 684
+                                  averageScore:
+                                    type: number
+                                    example: 8.33
                               internshipAndJobs:
-                                type: number
-                                example: 9.5
+                                type: object
+                                properties:
+                                  totalScore:
+                                    type: number
+                                    example: 12
+                                  averageScore:
+                                    type: number
+                                    example: 6
                               alumniSuccess:
-                                type: number
-                                example: 9.5
+                                type: object
+                                properties:
+                                  totalScore:
+                                    type: number
+                                    example: 9.5
+                                  averageScore:
+                                    type: number
+                                    example: 9.5
                               affordability:
-                                type: number
-                                example: 9.5
+                                type: object
+                                properties:
+                                  totalScore:
+                                    type: number
+                                    example: 9.5
+                                  averageScore:
+                                    type: number
+                                    example: 9.5
                               buffet:
-                                type: number
-                                example: 9.5
+                                type: object
+                                properties:
+                                  totalScore:
+                                    type: number
+                                    example: 9.5
+                                  averageScore:
+                                    type: number
+                                    example: 9.5
                               staffEducation:
-                                type: number
-                                example: 9.5
+                                type: object
+                                properties:
+                                  totalScore:
+                                    type: number
+                                    example: 9.5
+                                  averageScore:
+                                    type: number
+                                    example: 9.5
                               library:
-                                type: number
-                                example: 9.5
+                                type: object
+                                properties:
+                                  totalScore:
+                                    type: number
+                                    example: 9.5
+                                  averageScore:
+                                    type: number
+                                    example: 9.5
                               techEquipment:
-                                type: number
-                                example: 9.5
+                                type: object
+                                properties:
+                                  totalScore:
+                                    type: number
+                                    example: 9.5
+                                  averageScore:
+                                    type: number
+                                    example: 9.5
                           users:
                             type: array
                             items:
@@ -108,9 +189,6 @@
                       website:
                         type: string
                         example: https://uni.ge
-                      voteCount:
-                        type: number
-                        example: 100
                       createdAt:
                         type: string
                         format: date-time

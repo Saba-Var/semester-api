@@ -236,7 +236,10 @@ const universitiesBaseData: IUniversitiesBaseData[] = [
 const ratingCriteriasObject = evaluationCriterias.reduce(
   (acc, criteria) => ({
     ...acc,
-    [criteria]: null,
+    [criteria]: {
+      averageScore: null,
+      totalScore: 0,
+    },
   }),
   {}
 )
@@ -244,10 +247,10 @@ const ratingCriteriasObject = evaluationCriterias.reduce(
 export const universities = universitiesBaseData.map((university) => ({
   ...university,
   logoSrc: `public/images/universities/${university.alias}.png`,
-  ratings: {
+  evaluation: {
     criterias: ratingCriteriasObject,
     users: [],
+    voteCount: 0,
   },
   averageRating: 0,
-  voteCount: 0,
 }))

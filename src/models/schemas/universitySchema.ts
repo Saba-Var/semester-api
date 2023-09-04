@@ -6,10 +6,19 @@ const criteriaTypes = evaluationCriterias.reduce(
   (acc, criteria) => ({
     ...acc,
     [criteria]: {
-      type: Number,
-      default: null,
-      min: 0,
-      max: 10,
+      averageScore: {
+        type: Number,
+        default: null,
+        min: 0,
+      },
+
+      totalScore: {
+        type: Number,
+        default: 0,
+        min: 0,
+      },
+
+      _id: false,
     },
   }),
   {}
@@ -47,11 +56,17 @@ const universitySchema = new Schema<IUniversityModel>(
       required: true,
       unique: true,
     },
-    ratings: {
+    evaluation: {
       type: Object,
       required: true,
 
       criterias: criteriaTypes,
+
+      voteCount: {
+        type: Number,
+        required: true,
+        default: 0,
+      },
 
       users: {
         type: [
@@ -68,11 +83,6 @@ const universitySchema = new Schema<IUniversityModel>(
       type: String,
       required: true,
       unique: true,
-    },
-    voteCount: {
-      type: Number,
-      required: true,
-      default: 0,
     },
   },
   {
