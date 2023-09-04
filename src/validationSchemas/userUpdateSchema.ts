@@ -1,4 +1,5 @@
 import { userImageSchema, usernameSchema } from './common'
+import { validateMongoDbId } from 'utils'
 import { check } from 'express-validator'
 
 const isPasswordChangeMode = (value: string | undefined, req: any) =>
@@ -43,4 +44,6 @@ export const userUpdateSchema = [
       return true
     }
   }),
+
+  check('university').custom(validateMongoDbId),
 ]

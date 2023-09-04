@@ -55,16 +55,33 @@ User:
       format: date-time
       description: The timestamp when the user was last updated.
       example: '2022-06-10T15:30:00Z'
-  example:
-    _id: '609f1f0db1e9aa001f20a5d7'
-    username: John Doe
-    email: example@gmail.com
-    active: true
-    activeSemester: 609f1f0db1e9aa001f20a5d9
-    password: password123
-    image: null
-    semesters:
-      - '609f1f0db1e9aa001f20a5d1'
-      - '609f1f0db1e9aa001f20a5d2'
-    createdAt: '2022-06-01T10:00:00Z'
-    updatedAt: '2022-06-10T15:30:00Z'
+    userUniversityInfo:
+      type: object
+      properties:
+        currentUniversity:
+          type: string
+          description: The current university of the user.
+          format: objectid
+          example: '609f1f0db1e9aa001f20a5d3'
+        allUniversities:
+          type: array
+          items:
+            type: string
+            format: objectid
+          description: All universities associated with the user.
+          example:
+            - '609f1f0db1e9aa001f20a5d4'
+            - '609f1f0db1e9aa001f20a5d5'
+        selectedDate:
+          type: string
+          format: date-time
+          description: The selected date related to university info.
+          example: '2022-08-15T08:00:00Z'
+        ratedUniversities:
+          type: array
+          items:
+            type: string
+            format: objectid
+          description: Universities that the user has rated.
+          example:
+            - '609f1f0db1e9aa001f20a5d6'

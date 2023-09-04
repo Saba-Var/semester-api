@@ -1,16 +1,17 @@
-import type { Request, Response, NextFunction } from 'express'
-import type { CustomError } from 'types'
+import type { CustomError, ExtendedAuthRequest } from 'types'
+import type { Response, NextFunction } from 'express'
 import { logger } from 'utils'
 
 export const errorHandler = (
   err: CustomError,
-  req: Request,
+  req: ExtendedAuthRequest,
   res: Response,
   _next: NextFunction
 ) => {
   const message = err.message || req.t('internal_server_error')
 
   logger.error(message, {
+    user: req.currentUser,
     method: req.method,
     params: req.params,
     query: req.query,
