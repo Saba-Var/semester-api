@@ -64,10 +64,19 @@ User:
       type: object
       properties:
         currentUniversity:
-          type: string
-          description: The current university of the user.
-          format: objectid
-          example: '609f1f0db1e9aa001f20a5d3'
+          type: object
+          description: Information about current university associated with the user.
+          properties:
+            universityId:
+              type: string
+              format: objectid
+              description: Id of the current university.
+              example: '609f1f0db1e9aa001f20a5d4'
+            selectedDate:
+              type: string
+              format: date-time
+              description: The selected date related to university info.
+              example: '2022-08-15T08:00:00Z'
         allUniversities:
           type: array
           description: All universities associated with the user.
@@ -84,11 +93,6 @@ User:
                 format: date-time
                 description: The selected date related to university info.
                 example: '2022-08-15T08:00:00Z'
-        selectedDate:
-          type: string
-          format: date-time
-          description: The selected date related to university info.
-          example: '2022-08-15T08:00:00Z'
         ratedUniversities:
           type: array
           description: All rated universities associated with the user.

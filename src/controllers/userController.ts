@@ -67,13 +67,18 @@ export const updateUserDetails = async (
     if (university) {
       const { userUniversityInfo } = currentUser
 
+      const universityUpdateDate = new Date()
+
       const selectUniversity = () => {
         userUniversityInfo.allUniversities.push({
-          selectedDate: new Date(),
+          selectedDate: universityUpdateDate,
           university,
         })
-        userUniversityInfo.currentUniversity = university
-        userUniversityInfo.selectedDate = new Date()
+        userUniversityInfo.currentUniversity = {
+          universityId: university,
+          selectedDate: universityUpdateDate,
+        }
+        userUniversityInfo.selectedDate = universityUpdateDate
       }
 
       const universitySelectedDate = userUniversityInfo.selectedDate

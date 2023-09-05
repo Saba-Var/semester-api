@@ -4,7 +4,10 @@ import type { Document, Types } from 'mongoose'
 export interface IUserModel extends Document {
   activeSemester: Types.ObjectId
   userUniversityInfo: {
-    currentUniversity: Types.ObjectId | null
+    currentUniversity: {
+      universityId: Types.ObjectId | null
+      selectedDate: Date | null
+    }
     ratedUniversities: {
       university: Types.ObjectId
       rateDate: Date
@@ -45,14 +48,17 @@ export type IUniversitiesBaseData = {
 }
 
 export interface IUniversityModel extends Document, IUniversitiesBaseData {
-  ratings: {
+  evaluation: {
     users: Types.ObjectId[]
+    voteCount: number
     criterias: {
-      [key: string]: number
+      [key: string]: {
+        averageScore: number | null
+        totalScore: number
+      }
     }
   }
   averageRating: number
-  voteCount: number
   logoSrc: string
   createdAt?: Date
   updatedAt?: Date

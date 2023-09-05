@@ -125,3 +125,7 @@ export type PaginationBaseQuery = {
   page?: string
   limit?: string
 }
+
+export type Id = {
+  id: string
+}

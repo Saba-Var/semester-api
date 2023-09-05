@@ -1,0 +1,15 @@
+PaginationInfo:
+  type: object
+  properties:
+    page:
+      type: integer
+      example: 1
+    limit:
+      type: integer
+      example: 10
+    totalItems:
+      type: integer
+      example: 100
+    lastPage:
+      type: integer
+      example: 10

@@ -1,7 +1,13 @@
-import type { RequestBody, RequestQuery, PaginationBaseQuery } from 'types'
 import { type IUniversityModel, University } from 'models'
 import type { Response, NextFunction } from 'express'
 import { paginate } from 'utils'
+import type {
+  PaginationBaseQuery,
+  RequestParams,
+  RequestQuery,
+  RequestBody,
+  Id,
+} from 'types'
 
 export const createUniversity = async (
   req: RequestBody<IUniversityModel>,
@@ -9,13 +15,7 @@ export const createUniversity = async (
   next: NextFunction
 ) => {
   try {
-    if (req.currentUser?.role !== 'admin') {
-      return res.status(401).json({
-        message: req.t('user_is_not_authorized_to_continue'),
-      })
-    }
-
-    const { name, logoSrc, ratings } = req.body
+    const { name, evaluation } = req.body
 
     const existingUniversity = await University.findOne({
       name,
@@ -27,19 +27,18 @@ export const createUniversity = async (
       })
     }
 
-    const criteriaRatingValues = Object.values(ratings.criterias)
+    const criteriaRatingValues = Object.values(evaluation.criterias)
 
     const averageRating =
-      criteriaRatingValues.reduce(
-        (acc, currentValue) => acc + currentValue,
-        0
-      ) / criteriaRatingValues.length
+      criteriaRatingValues.reduce((acc, currentValue) => {
+        if (!currentValue.averageScore) return acc
+
+        return acc + currentValue.averageScore
+      }, 0) / criteriaRatingValues.length
 
     const newUniversity = await University.create({
+      ...req.body,
       averageRating,
-      ratings,
-      logoSrc,
-      name,
     })
 
     return res.status(201).json({
@@ -63,6 +62,28 @@ export const getUniversities = async (
     })
 
     return res.status(200).json({ data, paginationInfo })
+  } catch (error: any) {
+    return next(error)
+  }
+}
+
+export const getUniversityData = async (
+  req: RequestParams<Id>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params
+
+    const university = await University.findById(id)
+
+    if (!university) {
+      return res.status(404).json({
+        message: req.t('university_not_found'),
+      })
+    }
+
+    return res.status(200).json(university)
   } catch (error: any) {
     return next(error)
   }
