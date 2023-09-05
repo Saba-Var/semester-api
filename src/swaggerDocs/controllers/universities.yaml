@@ -25,193 +25,13 @@
               type: object
               properties:
                 data:
-                  type: array
-                  items:
-                    type: object
+                  $ref: '#/components/schemas/University'
+                  not:
                     properties:
                       _id:
                         type: string
-                        format: objectid
-                        example: 5f9b3b3b1c9d440000f3e9a0
-                      name:
-                        type: object
-                        properties:
-                          en:
-                            type: string
-                            example: University Name
-                          ka:
-                            type: string
-                            example: უნივერსიტეტის სახელი
-                      logoSrc:
-                        type: string
-                        example: public/images/universities/uni.png
-                      averageRating:
-                        type: number
-                        example: 9.5
-                      alias:
-                        type: string
-                        example: uni
-                      code:
-                        type: string
-                        example: '001'
-                      evaluation:
-                        type: object
-                        properties:
-                          voteCount:
-                            type: number
-                            example: 100
-                          criterias:
-                            type: object
-                            properties:
-                              qualityOfEducation:
-                                type: object
-                                properties:
-                                  totalScore:
-                                    type: number
-                                    example: 340
-                                  averageScore:
-                                    type: number
-                                    example: 9.5
-                              employability:
-                                type: object
-                                properties:
-                                  totalScore:
-                                    type: number
-                                    example: 100
-                                  averageScore:
-                                    type: number
-                                    example: 8
-                              facilities:
-                                type: object
-                                properties:
-                                  totalScore:
-                                    type: number
-                                    example: 34
-                                  averageScore:
-                                    type: number
-                                    example: 3.4
-                              studentLife:
-                                type: object
-                                properties:
-                                  totalScore:
-                                    type: number
-                                    example: 312
-                                  averageScore:
-                                    type: number
-                                    example: 5.6
-                              supportServices:
-                                type: object
-                                properties:
-                                  totalScore:
-                                    type: number
-                                    example: 200
-                                  averageScore:
-                                    type: number
-                                    example: 7.8
-                              location:
-                                type: object
-                                properties:
-                                  totalScore:
-                                    type: number
-                                    example: 684
-                                  averageScore:
-                                    type: number
-                                    example: 8.33
-                              internshipAndJobs:
-                                type: object
-                                properties:
-                                  totalScore:
-                                    type: number
-                                    example: 12
-                                  averageScore:
-                                    type: number
-                                    example: 6
-                              alumniSuccess:
-                                type: object
-                                properties:
-                                  totalScore:
-                                    type: number
-                                    example: 9.5
-                                  averageScore:
-                                    type: number
-                                    example: 9.5
-                              affordability:
-                                type: object
-                                properties:
-                                  totalScore:
-                                    type: number
-                                    example: 9.5
-                                  averageScore:
-                                    type: number
-                                    example: 9.5
-                              buffet:
-                                type: object
-                                properties:
-                                  totalScore:
-                                    type: number
-                                    example: 9.5
-                                  averageScore:
-                                    type: number
-                                    example: 9.5
-                              staffEducation:
-                                type: object
-                                properties:
-                                  totalScore:
-                                    type: number
-                                    example: 9.5
-                                  averageScore:
-                                    type: number
-                                    example: 9.5
-                              library:
-                                type: object
-                                properties:
-                                  totalScore:
-                                    type: number
-                                    example: 9.5
-                                  averageScore:
-                                    type: number
-                                    example: 9.5
-                              techEquipment:
-                                type: object
-                                properties:
-                                  totalScore:
-                                    type: number
-                                    example: 9.5
-                                  averageScore:
-                                    type: number
-                                    example: 9.5
-                          users:
-                            type: array
-                            items:
-                              type: string
-                              format: objectid
-                              example: 5f9b3b3b1c9d440000f3e9a0
-                      website:
-                        type: string
-                        example: https://uni.ge
-                      createdAt:
-                        type: string
-                        format: date-time
-                        example: 2020-10-30T12:00:00.000Z
-                      updatedAt:
-                        type: string
-                        format: date-time
-                        example: 2020-10-30T12:00:00.000Z
                 paginationInfo:
-                  type: object
-                  properties:
-                    page:
-                      type: integer
-                      example: 1
-                    limit:
-                      type: integer
-                      example: 10
-                    totalItems:
-                      type: integer
-                      example: 100
-                    lastPage:
-                      type: integer
-                      example: 10
+                  $ref: '#/components/schemas/PaginationInfo'
       401:
         $ref: '#/components/responses/UnauthorizedAccess'
       500:
@@ -227,7 +47,7 @@
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/UniversityPartial'
+            $ref: '#/components/schemas/University'
     description: Create a new university.
     responses:
       201:

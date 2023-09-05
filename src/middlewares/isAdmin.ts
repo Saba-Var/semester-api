@@ -9,7 +9,7 @@ export const isAdmin = (
   try {
     if (req.currentUser?.role !== 'admin') {
       return res.status(401).json({
-        message: req.t('user_is_not_authorized_to_continue'),
+        message: req.t('admin_privileges_are_required'),
       })
     }
 

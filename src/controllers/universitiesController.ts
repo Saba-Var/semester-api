@@ -9,13 +9,7 @@ export const createUniversity = async (
   next: NextFunction
 ) => {
   try {
-    if (req.currentUser?.role !== 'admin') {
-      return res.status(401).json({
-        message: req.t('user_is_not_authorized_to_continue'),
-      })
-    }
-
-    const { name, logoSrc, ratings } = req.body
+    const { name, evaluation } = req.body
 
     const existingUniversity = await University.findOne({
       name,
@@ -27,19 +21,18 @@ export const createUniversity = async (
       })
     }
 
-    const criteriaRatingValues = Object.values(ratings.criterias)
+    const criteriaRatingValues = Object.values(evaluation.criterias)
 
     const averageRating =
-      criteriaRatingValues.reduce(
-        (acc, currentValue) => acc + currentValue,
-        0
-      ) / criteriaRatingValues.length
+      criteriaRatingValues.reduce((acc, currentValue) => {
+        if (!currentValue.averageScore) return acc
+
+        return acc + currentValue.averageScore
+      }, 0) / criteriaRatingValues.length
 
     const newUniversity = await University.create({
+      ...req.body,
       averageRating,
-      ratings,
-      logoSrc,
-      name,
     })
 
     return res.status(201).json({
