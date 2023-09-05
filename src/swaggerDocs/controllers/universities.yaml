@@ -2,7 +2,7 @@
   get:
     summary: Get all universities with pagination.
     tags:
-      - University
+      - Universities
     security:
       - bearerAuth: []
     parameters:
@@ -76,5 +76,32 @@
                 message:
                   type: string
                   example: University with this name already exists!
+      500:
+        $ref: '#/components/responses/InternalServerError'
+
+/universities/{id}:
+  get:
+    summary: Get university by id.
+    tags:
+      - Universities
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: University id
+        schema:
+          type: string
+          format: objectid
+    responses:
+      200:
+        description: University successfully retrieved.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/University'
+      404:
+        $ref: '#/components/responses/NotFound'
       500:
         $ref: '#/components/responses/InternalServerError'

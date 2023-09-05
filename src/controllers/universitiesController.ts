@@ -1,7 +1,13 @@
-import type { RequestBody, RequestQuery, PaginationBaseQuery, Id } from 'types'
 import { type IUniversityModel, University } from 'models'
 import type { Response, NextFunction } from 'express'
 import { paginate } from 'utils'
+import type {
+  PaginationBaseQuery,
+  RequestParams,
+  RequestQuery,
+  RequestBody,
+  Id,
+} from 'types'
 
 export const createUniversity = async (
   req: RequestBody<IUniversityModel>,
@@ -62,12 +68,12 @@ export const getUniversities = async (
 }
 
 export const getUniversityData = async (
-  req: RequestQuery<Id>,
+  req: RequestParams<Id>,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { id } = req.query
+    const { id } = req.params
 
     const university = await University.findById(id)
 
