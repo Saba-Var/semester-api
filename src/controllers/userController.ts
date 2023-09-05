@@ -72,7 +72,10 @@ export const updateUserDetails = async (
           selectedDate: new Date(),
           university,
         })
-        userUniversityInfo.currentUniversity = university
+        userUniversityInfo.currentUniversity = {
+          universityId: university,
+          selectedDate: new Date(),
+        }
         userUniversityInfo.selectedDate = new Date()
       }
 
