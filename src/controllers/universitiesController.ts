@@ -1,4 +1,4 @@
-import type { RequestBody, RequestQuery, PaginationBaseQuery } from 'types'
+import type { RequestBody, RequestQuery, PaginationBaseQuery, Id } from 'types'
 import { type IUniversityModel, University } from 'models'
 import type { Response, NextFunction } from 'express'
 import { paginate } from 'utils'
@@ -56,6 +56,28 @@ export const getUniversities = async (
     })
 
     return res.status(200).json({ data, paginationInfo })
+  } catch (error: any) {
+    return next(error)
+  }
+}
+
+export const getUniversityData = async (
+  req: RequestQuery<Id>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.query
+
+    const university = await University.findById(id)
+
+    if (!university) {
+      return res.status(404).json({
+        message: req.t('university_not_found'),
+      })
+    }
+
+    return res.status(200).json(university)
   } catch (error: any) {
     return next(error)
   }
