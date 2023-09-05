@@ -56,8 +56,14 @@ const userSchema: Schema<IUserModel> = new Schema(
     userUniversityInfo: {
       type: {
         currentUniversity: {
-          type: Schema.Types.ObjectId,
-          ref: 'university',
+          universityId: {
+            type: Schema.Types.ObjectId,
+            ref: 'university',
+          },
+          selectedDate: {
+            type: Date,
+          },
+          _id: false,
         },
         allUniversities: [
           {
@@ -71,9 +77,6 @@ const userSchema: Schema<IUserModel> = new Schema(
             _id: false,
           },
         ],
-        selectedDate: {
-          type: Date,
-        },
         ratedUniversities: [
           {
             university: {
@@ -88,7 +91,10 @@ const userSchema: Schema<IUserModel> = new Schema(
         ],
       },
       default: {
-        currentUniversity: null,
+        currentUniversity: {
+          universityId: null,
+          selectedDate: null,
+        },
         allUniversities: [],
         selectedDate: null,
         ratedUniversities: [],
