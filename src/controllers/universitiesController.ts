@@ -111,31 +111,52 @@ export const rateUniversity = async (
 
     let criteriaTotalScore = 0
 
-    for (const criteriaName of evaluationCriterias) {
-      const criteria = req.body[criteriaName]
+    await Promise.all(
+      evaluationCriterias.map(async (criteriaName) => {
+        const criteriaScore = req.body[criteriaName]
 
-      if (criteria) {
-        const criteriaData = university.evaluation.criterias[criteriaName]
+        if (criteriaScore) {
+          const criteriaData = university.evaluation.criterias[criteriaName]
 
-        const newTotalScore = criteriaData.totalScore + criteria
-        const newAverageScore = newTotalScore / university.evaluation.voteCount
+          const newTotalScore = criteriaData.totalScore + criteriaScore
+          const newAverageScore =
+            university.evaluation.voteCount === 0
+              ? criteriaScore
+              : (university.evaluation.criterias[criteriaName].totalScore +
+                  criteriaScore) /
+                (university.evaluation.voteCount + 1)
 
-        criteriaData.totalScore = newTotalScore
-        criteriaData.averageScore = newAverageScore
+          criteriaData.totalScore = newTotalScore
+          criteriaData.averageScore = newAverageScore
 
-        criteriaTotalScore += criteria
-      }
-    }
+          criteriaTotalScore += criteriaScore
 
-    university.evaluation.users.push(
-      new mongoose.Types.ObjectId(req.currentUser?._id)
+          await university.updateOne({
+            $set: {
+              [`evaluation.criterias.${criteriaName}.totalScore`]:
+                newTotalScore,
+              [`evaluation.criterias.${criteriaName}.averageScore`]:
+                newAverageScore,
+            },
+          })
+        }
+      })
     )
-    university.evaluation.voteCount += 1
-    university.totalScore += criteriaTotalScore
-    university.averageRating =
-      university.totalScore / university.evaluation.voteCount
 
-    await university.save()
+    await university.updateOne({
+      $push: {
+        'evaluation.users': new mongoose.Types.ObjectId(req.currentUser?._id),
+      },
+      $inc: {
+        'evaluation.voteCount': 1,
+        totalScore: criteriaTotalScore,
+      },
+      $set: {
+        averageRating:
+          (university.totalScore + criteriaTotalScore) /
+          (university.evaluation.voteCount + 1),
+      },
+    })
 
     return res.status(200).json({
       message: req.t('university_rated_successfully'),

@@ -43,7 +43,6 @@ export const swaggerDocSetup = () => {
     'LearningActivity',
     'University',
     'PaginationInfo',
-    'Criterias',
   ]
 
   appendYamlFiles(

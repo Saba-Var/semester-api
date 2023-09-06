@@ -126,7 +126,44 @@
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Criterias'
+            type: object
+            properties:
+              employability:
+                type: number
+                example: 100
+              facilities:
+                type: number
+                example: 754
+              studentLife:
+                type: number
+                example: 560
+              supportServices:
+                type: number
+                example: 780
+              location:
+                type: number
+                example: 833
+              internshipAndJobs:
+                type: number
+                example: 600
+              alumniSuccess:
+                type: number
+                example: 950
+              affordability:
+                type: number
+                example: 950
+              buffet:
+                type: number
+                example: 950
+              staffEducation:
+                type: number
+                example: 311
+              library:
+                type: number
+                example: 409
+              techEquipment:
+                type: number
+                example: 950
     responses:
       200:
         description: University rated successfully.

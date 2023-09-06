@@ -65,15 +65,6 @@ University:
         criterias:
           type: object
           properties:
-            qualityOfEducation:
-              type: object
-              properties:
-                totalScore:
-                  type: number
-                  example: 1000
-                averageScore:
-                  type: number
-                  example: 10
             employability:
               type: object
               properties:

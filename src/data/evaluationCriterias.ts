@@ -1,5 +1,4 @@
 export const evaluationCriterias = [
-  'qualityOfEducation',
   'employability',
   'facilities',
   'studentLife',
