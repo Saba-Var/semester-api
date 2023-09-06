@@ -38,7 +38,5 @@ export interface UserUpdateReq {
 }
 
 export type UniversityRatingsRequestData = {
-  criterias: {
-    [keyof in typeof evaluationCriterias[number]]: number
-  }
+  [keyof in typeof evaluationCriterias[number]]: number
 }

@@ -1,6 +1,7 @@
 import type { UniversityRatingsRequestData } from './types'
 import { type IUniversityModel, University } from 'models'
 import type { Response, NextFunction } from 'express'
+import { evaluationCriterias } from 'data'
 import { paginate } from 'utils'
 import mongoose from 'mongoose'
 import type {
@@ -108,21 +109,21 @@ export const rateUniversity = async (
       })
     }
 
-    const { criterias } = req.body
-
     let criteriaTotalScore = 0
 
-    for (const key in criterias) {
-      if (Object.prototype.hasOwnProperty.call(criterias, key)) {
-        const criteria = university.evaluation.criterias[key]
+    for (const criteriaName of evaluationCriterias) {
+      const criteria = req.body[criteriaName]
 
-        const newTotalScore = criteria.totalScore + criterias[key]
+      if (criteria) {
+        const criteriaData = university.evaluation.criterias[criteriaName]
+
+        const newTotalScore = criteriaData.totalScore + criteria
         const newAverageScore = newTotalScore / university.evaluation.voteCount
 
-        criteria.totalScore = newTotalScore
-        criteria.averageScore = newAverageScore
+        criteriaData.totalScore = newTotalScore
+        criteriaData.averageScore = newAverageScore
 
-        criteriaTotalScore += criterias[key]
+        criteriaTotalScore += criteria
       }
     }
 

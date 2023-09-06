@@ -5,6 +5,7 @@ import {
   getUniversityData,
   createUniversity,
   getUniversities,
+  rateUniversity,
 } from 'controllers'
 
 const router = express.Router()
@@ -19,5 +20,7 @@ router.get(
 )
 
 router.get('/:id', idParamSchema, validateRequestSchema, getUniversityData)
+
+router.put('/:id/rate', idParamSchema, validateRequestSchema, rateUniversity)
 
 export default router

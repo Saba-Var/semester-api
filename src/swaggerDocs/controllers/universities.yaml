@@ -105,3 +105,46 @@
         $ref: '#/components/responses/NotFound'
       500:
         $ref: '#/components/responses/InternalServerError'
+
+/universities/{id}/rate:
+  put:
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: University id
+        schema:
+          type: string
+          format: objectid
+    tags:
+      - Universities
+    description: Rate a university.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Criterias'
+    responses:
+      200:
+        description: University rated successfully.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: University rated successfully!
+                _id:
+                  type: string
+                  example: 5f9b3b3b1c9d440000f3e9a0
+                  format: objectid
+      401:
+        $ref: '#/components/responses/UnauthorizedAccess'
+      404:
+        $ref: '#/components/responses/NotFound'
+      500:
+        $ref: '#/components/responses/InternalServerError'
