@@ -59,6 +59,7 @@ export interface IUniversityModel extends Document, IUniversitiesBaseData {
     }
   }
   averageRating: number
+  totalScore: number
   logoSrc: string
   createdAt?: Date
   updatedAt?: Date

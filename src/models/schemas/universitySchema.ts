@@ -46,6 +46,11 @@ const universitySchema = new Schema<IUniversityModel>(
       required: true,
       default: null,
     },
+    totalScore: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     alias: {
       type: String,
       required: true,

@@ -253,4 +253,5 @@ export const universities = universitiesBaseData.map((university) => ({
     voteCount: 0,
   },
   averageRating: 0,
+  totalScore: 0,
 }))

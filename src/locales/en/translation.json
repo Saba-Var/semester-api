@@ -90,5 +90,6 @@
   "university_not_found": "University not found!",
   "you_already_have_this_university_as_current": "You already have selected {{universityName}} as your current university!",
   "invalid_mongoDB_id": "Invalid mongoDB id!",
-  "admin_privileges_are_required": "Admin privileges are required!"
+  "admin_privileges_are_required": "Admin privileges are required!",
+  "university_rated_successfully": "University rated successfully!"
 }
