@@ -4,7 +4,7 @@ import {
   universityEvaluationValidation,
   paginationSchema,
   idParamSchema,
-} from 'validationSchemas'
+} from 'validation'
 import {
   getUniversityData,
   createUniversity,

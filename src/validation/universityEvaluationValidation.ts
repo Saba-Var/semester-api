@@ -6,6 +6,6 @@ export const universityEvaluationValidation = evaluationCriterias.map(
     check(criteria)
       .isNumeric()
       .withMessage('evaluation_criteria_must_be_a_number')
-      .isInt({ min: 0, max: 10 })
+      .isFloat({ min: 0, max: 10 })
       .withMessage('evaluation_criteria_range')
 )

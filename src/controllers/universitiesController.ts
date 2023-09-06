@@ -107,6 +107,19 @@ export const rateUniversity = async (
       })
     }
 
+    const userObjectId = new mongoose.Types.ObjectId(req.currentUser?._id)
+    const userHasRated = university.evaluation.users.some((userId) =>
+      userId.equals(userObjectId)
+    )
+
+    if (userHasRated) {
+      return res.status(400).json({
+        message: req.t('user_already_rated_university', {
+          name: university.name.en,
+        }),
+      })
+    }
+
     let criteriaTotalScore = 0
 
     await Promise.all(

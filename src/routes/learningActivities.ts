@@ -1,4 +1,4 @@
-import { learningActivitySchema, idParamSchema } from 'validationSchemas'
+import { learningActivitySchema, idParamSchema } from 'validation'
 import { validateRequestSchema } from 'middlewares'
 import express from 'express'
 import {

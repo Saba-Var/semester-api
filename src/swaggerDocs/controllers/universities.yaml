@@ -130,40 +130,40 @@
             properties:
               employability:
                 type: number
-                example: 100
+                example: 10
               facilities:
                 type: number
-                example: 754
+                example: 7
               studentLife:
                 type: number
-                example: 560
+                example: 5
               supportServices:
                 type: number
-                example: 780
+                example: 4
               location:
                 type: number
-                example: 833
+                example: 8
               internshipAndJobs:
                 type: number
-                example: 600
+                example: 6
               alumniSuccess:
                 type: number
-                example: 950
+                example: 9
               affordability:
                 type: number
-                example: 950
+                example: 9
               buffet:
                 type: number
-                example: 950
+                example: 9.5
               staffEducation:
                 type: number
-                example: 311
+                example: 8
               library:
                 type: number
-                example: 409
+                example: 2
               techEquipment:
                 type: number
-                example: 950
+                example: 1
     responses:
       200:
         description: University rated successfully.
