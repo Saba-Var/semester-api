@@ -1,6 +1,7 @@
 import type { UniversityRatingsRequestData } from './types'
 import { type IUniversityModel, University } from 'models'
 import type { Response, NextFunction } from 'express'
+import { updateCriterias } from 'services'
 import { evaluationCriterias } from 'data'
 import { paginate } from 'utils'
 import mongoose from 'mongoose'
@@ -99,10 +100,7 @@ export const rateUniversity = async (
   next: NextFunction
 ) => {
   try {
-    const { id } = req.params
-
-    const university = await University.findById(id)
-
+    const university = await University.findById(req.params.id)
     if (!university) {
       return res.status(404).json({
         message: req.t('university_not_found'),
@@ -114,32 +112,8 @@ export const rateUniversity = async (
     await Promise.all(
       evaluationCriterias.map(async (criteriaName) => {
         const criteriaScore = req.body[criteriaName]
-
-        if (criteriaScore) {
-          const criteriaData = university.evaluation.criterias[criteriaName]
-
-          const newTotalScore = criteriaData.totalScore + criteriaScore
-          const newAverageScore =
-            university.evaluation.voteCount === 0
-              ? criteriaScore
-              : (university.evaluation.criterias[criteriaName].totalScore +
-                  criteriaScore) /
-                (university.evaluation.voteCount + 1)
-
-          criteriaData.totalScore = newTotalScore
-          criteriaData.averageScore = newAverageScore
-
-          criteriaTotalScore += criteriaScore
-
-          await university.updateOne({
-            $set: {
-              [`evaluation.criterias.${criteriaName}.totalScore`]:
-                newTotalScore,
-              [`evaluation.criterias.${criteriaName}.averageScore`]:
-                newAverageScore,
-            },
-          })
-        }
+        await updateCriterias(university, criteriaName, criteriaScore)
+        criteriaTotalScore += criteriaScore
       })
     )
 
