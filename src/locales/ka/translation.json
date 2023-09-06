@@ -89,5 +89,7 @@
   "you_already_have_this_university_as_current": "შენ უკვე გაქვს {{universityName}} არჩეული როგორიც მიმდინარე!",
   "invalid_mongoDB_id": "არასწორი mongoDB-ის id!",
   "admin_privileges_are_required": "ადმინის უფლებები სავალდებულოა!",
-  "university_rated_successfully": "უნივერსიტეტი წარმატებით შეფასდა!"
+  "university_rated_successfully": "უნივერსიტეტი წარმატებით შეფასდა!",
+  "evaluation_criteria_range": "შეფასების კრიტერიუმი უნდა იყოს 0-დან 10-მდე!",
+  "evaluation_criteria_must_be_a_number": "შეფასების კრიტერიუმი უნდა იყოს რიცხვი!"
 }

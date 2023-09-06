@@ -1,6 +1,10 @@
-import { paginationSchema, idParamSchema } from 'validationSchemas'
 import { validateRequestSchema, isAdmin } from 'middlewares'
 import express, { RequestHandler } from 'express'
+import {
+  universityEvaluationValidation,
+  paginationSchema,
+  idParamSchema,
+} from 'validationSchemas'
 import {
   getUniversityData,
   createUniversity,
@@ -21,6 +25,12 @@ router.get(
 
 router.get('/:id', idParamSchema, validateRequestSchema, getUniversityData)
 
-router.put('/:id/rate', idParamSchema, validateRequestSchema, rateUniversity)
+router.put(
+  '/:id/rate',
+  idParamSchema,
+  universityEvaluationValidation,
+  validateRequestSchema,
+  rateUniversity
+)
 
 export default router

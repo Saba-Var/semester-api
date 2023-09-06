@@ -1,4 +1,5 @@
 export * from './changeLoggedUserPasswordSchema'
+export * from './universityEvaluationValidation'
 export * from './common/refreshCookieSchema'
 export * from './learningActivitySchema'
 export * from './changePasswordSchema'

@@ -91,5 +91,7 @@
   "you_already_have_this_university_as_current": "You already have selected {{universityName}} as your current university!",
   "invalid_mongoDB_id": "Invalid mongoDB id!",
   "admin_privileges_are_required": "Admin privileges are required!",
-  "university_rated_successfully": "University rated successfully!"
+  "university_rated_successfully": "University rated successfully!",
+  "evaluation_criteria_range": "Evaluation criteria should be between 0 and 10!",
+  "evaluation_criteria_must_be_a_number": "Evaluation criteria must be a number!"
 }
