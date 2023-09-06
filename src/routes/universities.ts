@@ -1,10 +1,15 @@
-import { paginationSchema, idParamSchema } from 'validationSchemas'
 import { validateRequestSchema, isAdmin } from 'middlewares'
 import express, { RequestHandler } from 'express'
+import {
+  universityEvaluationValidation,
+  paginationSchema,
+  idParamSchema,
+} from 'validation'
 import {
   getUniversityData,
   createUniversity,
   getUniversities,
+  rateUniversity,
 } from 'controllers'
 
 const router = express.Router()
@@ -19,5 +24,13 @@ router.get(
 )
 
 router.get('/:id', idParamSchema, validateRequestSchema, getUniversityData)
+
+router.put(
+  '/:id/rate',
+  idParamSchema,
+  universityEvaluationValidation,
+  validateRequestSchema,
+  rateUniversity
+)
 
 export default router

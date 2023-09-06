@@ -12,7 +12,7 @@ import {
   semesterValidationSchema,
   idParamSchema,
   endDateSchema,
-} from 'validationSchemas'
+} from 'validation'
 
 const router = express.Router()
 

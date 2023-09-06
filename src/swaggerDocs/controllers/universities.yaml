@@ -105,3 +105,83 @@
         $ref: '#/components/responses/NotFound'
       500:
         $ref: '#/components/responses/InternalServerError'
+
+/universities/{id}/rate:
+  put:
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: University id
+        schema:
+          type: string
+          format: objectid
+    tags:
+      - Universities
+    description: Rate a university.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              employability:
+                type: number
+                example: 10
+              facilities:
+                type: number
+                example: 7
+              studentLife:
+                type: number
+                example: 5
+              supportServices:
+                type: number
+                example: 4
+              location:
+                type: number
+                example: 8
+              internshipAndJobs:
+                type: number
+                example: 6
+              alumniSuccess:
+                type: number
+                example: 9
+              affordability:
+                type: number
+                example: 9
+              buffet:
+                type: number
+                example: 9.5
+              staffEducation:
+                type: number
+                example: 8
+              library:
+                type: number
+                example: 2
+              techEquipment:
+                type: number
+                example: 1
+    responses:
+      200:
+        description: University rated successfully.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: University rated successfully!
+                _id:
+                  type: string
+                  example: 5f9b3b3b1c9d440000f3e9a0
+                  format: objectid
+      401:
+        $ref: '#/components/responses/UnauthorizedAccess'
+      404:
+        $ref: '#/components/responses/NotFound'
+      500:
+        $ref: '#/components/responses/InternalServerError'

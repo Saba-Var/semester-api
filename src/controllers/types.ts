@@ -1,3 +1,4 @@
+import { evaluationCriterias } from 'data'
 import type { UserImage } from 'types'
 import type { Types } from 'mongoose'
 
@@ -34,4 +35,8 @@ export interface UserUpdateReq {
   newPassword?: string
   image?: UserImage
   username?: string
+}
+
+export type UniversityRatingsRequestData = {
+  [keyof in typeof evaluationCriterias[number]]: number
 }

@@ -1,11 +1,16 @@
+import type { UniversityRatingsRequestData } from './types'
 import { type IUniversityModel, University } from 'models'
 import type { Response, NextFunction } from 'express'
+import { updateCriterias } from 'services'
+import { evaluationCriterias } from 'data'
 import { paginate } from 'utils'
+import mongoose from 'mongoose'
 import type {
   PaginationBaseQuery,
   RequestParams,
   RequestQuery,
   RequestBody,
+  AuthRequest,
   Id,
 } from 'types'
 
@@ -84,6 +89,66 @@ export const getUniversityData = async (
     }
 
     return res.status(200).json(university)
+  } catch (error: any) {
+    return next(error)
+  }
+}
+
+export const rateUniversity = async (
+  req: AuthRequest<UniversityRatingsRequestData, Id>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const university = await University.findById(req.params.id)
+    if (!university) {
+      return res.status(404).json({
+        message: req.t('university_not_found'),
+      })
+    }
+
+    const userObjectId = new mongoose.Types.ObjectId(req.currentUser?._id)
+    const userHasRated = university.evaluation.users.some((userId) =>
+      userId.equals(userObjectId)
+    )
+
+    if (userHasRated) {
+      return res.status(400).json({
+        message: req.t('user_already_rated_university', {
+          name: university.name.en,
+        }),
+      })
+    }
+
+    let criteriaTotalScore = 0
+
+    await Promise.all(
+      evaluationCriterias.map(async (criteriaName) => {
+        const criteriaScore = req.body[criteriaName]
+        await updateCriterias(university, criteriaName, criteriaScore)
+        criteriaTotalScore += criteriaScore
+      })
+    )
+
+    await university.updateOne({
+      $push: {
+        'evaluation.users': new mongoose.Types.ObjectId(req.currentUser?._id),
+      },
+      $inc: {
+        'evaluation.voteCount': 1,
+        totalScore: criteriaTotalScore,
+      },
+      $set: {
+        averageRating:
+          (university.totalScore + criteriaTotalScore) /
+          (university.evaluation.voteCount + 1),
+      },
+    })
+
+    return res.status(200).json({
+      message: req.t('university_rated_successfully'),
+      _id: university._id,
+    })
   } catch (error: any) {
     return next(error)
   }

@@ -1,10 +1,6 @@
 import { validateRequestSchema } from 'middlewares'
 import express from 'express'
-import {
-  userUpdateSchema,
-  newEmailSchema,
-  tokenSchema,
-} from 'validationSchemas'
+import { userUpdateSchema, newEmailSchema, tokenSchema } from 'validation'
 import {
   changeEmailRequest,
   updateUserDetails,

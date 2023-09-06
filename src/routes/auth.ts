@@ -17,7 +17,7 @@ import {
   userAuthSchema,
   signInSchema,
   tokenSchema,
-} from 'validationSchemas'
+} from 'validation'
 
 const router = express.Router()
 

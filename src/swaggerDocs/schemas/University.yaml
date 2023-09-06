@@ -31,6 +31,11 @@ University:
       required: true
       description: The average rating of the University.
       example: 9.5
+    totalScore:
+      type: number
+      required: true
+      description: The total score of the University.
+      example: 1000
     alias:
       type: string
       required: true
@@ -60,15 +65,6 @@ University:
         criterias:
           type: object
           properties:
-            qualityOfEducation:
-              type: object
-              properties:
-                totalScore:
-                  type: number
-                  example: 1000
-                averageScore:
-                  type: number
-                  example: 10
             employability:
               type: object
               properties:
