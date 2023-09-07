@@ -2,6 +2,7 @@ import type { Response, NextFunction } from 'express'
 import { sendEmail, generateAuthTokens } from 'utils'
 import type { UserUpdateReq } from './types'
 import { University, User } from 'models'
+import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import type {
@@ -65,23 +66,34 @@ export const updateUserDetails = async (
     }
 
     if (university) {
+      const isUniversityExist = await University.findById(university)
+
+      if (!isUniversityExist) {
+        return res.status(404).json({
+          message: req.t('university_not_found'),
+        })
+      }
+
       const { userUniversityInfo } = currentUser
 
       const universityUpdateDate = new Date()
 
+      const universityObjectId = new mongoose.Types.ObjectId(university)
+
       const selectUniversity = () => {
         userUniversityInfo.allUniversities.push({
           selectedDate: universityUpdateDate,
-          university,
+          university: universityObjectId,
         })
         userUniversityInfo.currentUniversity = {
-          universityId: university,
+          universityId: universityObjectId,
           selectedDate: universityUpdateDate,
         }
         userUniversityInfo.selectedDate = universityUpdateDate
       }
 
-      const universitySelectedDate = userUniversityInfo.selectedDate
+      const universitySelectedDate =
+        userUniversityInfo.currentUniversity.selectedDate
 
       if (!universitySelectedDate) {
         selectUniversity()
@@ -95,17 +107,17 @@ export const updateUserDetails = async (
             86400000
         )
 
-        const isUniversityExist = await University.findById(university)
-
-        if (!isUniversityExist) {
-          return res.status(404).json({
-            message: req.t('university_not_found'),
+        if (selectTimeDifferenceBetweenUniversitySelections < twoMonths) {
+          return res.status(403).json({
+            message: req.t('you_can_change_university_once_in_two_months', {
+              daysLeft,
+            }),
           })
         }
 
         if (
           isUniversityExist._id.toString() ===
-          userUniversityInfo.currentUniversity?.toString()
+          userUniversityInfo.currentUniversity?.universityId?.toString()
         ) {
           return res.status(409).json({
             message: req.t('you_already_have_this_university_as_current', {
@@ -115,13 +127,6 @@ export const updateUserDetails = async (
           })
         }
 
-        if (selectTimeDifferenceBetweenUniversitySelections < twoMonths) {
-          return res.status(403).json({
-            message: req.t('you_can_change_university_once_in_two_months', {
-              daysLeft,
-            }),
-          })
-        }
         selectUniversity()
       }
     }

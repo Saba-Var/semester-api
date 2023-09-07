@@ -1,5 +1,5 @@
+import { TEST_USER_CREDENTIALS } from 'data'
 import { testingAuthStore } from 'store'
-import { TEST_USER } from 'data'
 import {
   passwordChangeEmailRequest,
   activateAccountRequest,
@@ -14,7 +14,7 @@ describe('authorization', () => {
 
   describe('Sign up - POST /api/authentication/sign-up', () => {
     it('Should return 201 if user registered successfully', async () => {
-      const { status, body } = await signUpRequest(TEST_USER)
+      const { status, body } = await signUpRequest(TEST_USER_CREDENTIALS)
 
       expect(status).toBe(201)
       expect(body).toHaveProperty('token')
@@ -24,7 +24,7 @@ describe('authorization', () => {
     })
 
     it('Should return 409 if user with the same email is already registered', async () => {
-      const { status } = await signUpRequest(TEST_USER)
+      const { status } = await signUpRequest(TEST_USER_CREDENTIALS)
 
       expect(status).toBe(409)
     })
@@ -51,8 +51,8 @@ describe('authorization', () => {
 
     it('Should return 403 if account is not activated', async () => {
       const { body, status } = await signInRequest({
-        email: TEST_USER.email,
-        password: TEST_USER.password,
+        email: TEST_USER_CREDENTIALS.email,
+        password: TEST_USER_CREDENTIALS.password,
       })
 
       expect(status).toBe(403)
@@ -95,8 +95,8 @@ describe('authorization', () => {
 
     it('Should return 200 if user signed in successfully', async () => {
       const { body, status, headers } = await signInRequest({
-        email: TEST_USER.email,
-        password: TEST_USER.password,
+        email: TEST_USER_CREDENTIALS.email,
+        password: TEST_USER_CREDENTIALS.password,
       })
 
       const { accessToken } = body
@@ -139,7 +139,7 @@ describe('authorization', () => {
     describe('Email request - GET /api/authentication/change-password', () => {
       it('Should return 200 if email with password change link sent successfully', async () => {
         const { body, status } = await passwordChangeEmailRequest(
-          TEST_USER.email!
+          TEST_USER_CREDENTIALS.email!
         )
 
         expect(status).toBe(200)
@@ -190,8 +190,8 @@ describe('authorization', () => {
         const { body, status } = await changePasswordRequest(
           resetPasswordToken,
           {
-            confirmPassword: TEST_USER.password!,
-            password: TEST_USER.confirmPassword!,
+            confirmPassword: TEST_USER_CREDENTIALS.password!,
+            password: TEST_USER_CREDENTIALS.confirmPassword!,
           }
         )
 
