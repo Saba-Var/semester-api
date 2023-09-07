@@ -40,3 +40,9 @@ export interface UserUpdateReq {
 export type UniversityRatingsRequestData = {
   [keyof in typeof evaluationCriterias[number]]: number
 }
+
+export type UserNewPasswordData = {
+  confirmPassword: string
+  newPassword: string
+  oldPassword: string
+}

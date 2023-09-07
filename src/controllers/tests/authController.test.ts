@@ -1,5 +1,5 @@
-import { testingAuthStore } from 'store'
 import { TEST_USER_CREDENTIALS } from 'data'
+import { testingAuthStore } from 'store'
 import {
   passwordChangeEmailRequest,
   activateAccountRequest,
