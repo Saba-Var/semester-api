@@ -1,6 +1,6 @@
-import { userInfoPrivateRequest } from 'requests'
+import { userInfoPrivateRequest, updateUserDataRequest } from 'requests'
+import { TEST_USER_CREDENTIALS } from 'data'
 import { superTestMethods } from 'utils'
-import { TEST_USER } from 'data'
 
 describe('User Controller', () => {
   const { get } = superTestMethods.publicRequests
@@ -26,8 +26,8 @@ describe('User Controller', () => {
       expect(status).toBe(200)
       expect(body).toEqual({
         _id: expect.any(String),
-        username: TEST_USER.username,
-        email: TEST_USER.email,
+        username: TEST_USER_CREDENTIALS.username,
+        email: TEST_USER_CREDENTIALS.email,
         activeSemester: null,
         semesters: [],
         createdAt: expect.any(String),
@@ -36,6 +36,29 @@ describe('User Controller', () => {
         role: 'user',
         userUniversityInfo: expect.any(Object),
         lastActive: expect.any(String),
+      })
+    })
+  })
+
+  describe('Update user details - PUT /api/user', () => {
+    describe('Update username', () => {
+      it('Should return 422 if invalid username provided', async () => {
+        const { status } = await updateUserDataRequest({
+          username: 's',
+        })
+        expect(status).toBe(422)
+      })
+
+      it('Should return 200 if username changed successfully', async () => {
+        const updateResponse = await updateUserDataRequest({
+          username: TEST_USER_CREDENTIALS.username,
+        })
+        const userInfoResponse = await userInfoPrivateRequest()
+
+        expect(updateResponse.status).toBe(200)
+        expect(userInfoResponse.body.username).toBe(
+          TEST_USER_CREDENTIALS.username
+        )
       })
     })
   })
