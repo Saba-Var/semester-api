@@ -1,0 +1,1 @@
+import './universitiesSeeder.test'
