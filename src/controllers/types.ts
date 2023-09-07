@@ -1,6 +1,5 @@
 import { evaluationCriterias } from 'data'
 import type { UserImage } from 'types'
-import type { Types } from 'mongoose'
 
 export type Email = {
   email: string
@@ -29,10 +28,10 @@ export interface NewPasswordReq extends Password, Id {
 export interface AuthorizationReq extends Password, Email {}
 
 export interface UserUpdateReq {
-  university?: Types.ObjectId
   confirmPassword?: string
   oldPassword?: string
   newPassword?: string
+  university?: string
   image?: UserImage
   username?: string
 }
