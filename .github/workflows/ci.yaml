@@ -26,27 +26,10 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "TESTING_DATABASE_URI=${{ secrets.TESTING_DATABASE_URI }}" > .env
-          echo "TESTING_USER_EMAIL=${{ secrets.TESTING_USER_EMAIL }}" >> .env
-          echo "TESTING_USER_EMAIL_SECOND=${{ secrets.TESTING_USER_EMAIL_SECOND }}" >> .env
-          echo "TESTING_USER_PASSWORD=${{ secrets.TESTING_USER_PASSWORD }}" >> .env
-          echo "TESTING_USER_USERNAME=${{ secrets.TESTING_USER_USERNAME }}" >> .env
-          echo "MAILGUN_API_KEY=${{ secrets.MAILGUN_API_KEY }}" >> .env
-          echo "MAILGUN_DOMAIN=${{ secrets.MAILGUN_DOMAIN }}" >> .env
-          echo "EMAIL_SENDER=${{ secrets.EMAIL_SENDER }}" >> .env
-          echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> .env
-          echo "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}" >> .env
-          echo "ACTIVATION_TOKEN_SECRET=${{ secrets.ACTIVATION_TOKEN_SECRET }}" >> .env
-          echo "CHANGE_EMAIL_TOKEN_SECRET=${{ secrets.CHANGE_EMAIL_TOKEN_SECRET }}" >> .env
-          echo "CHANGE_PASSWORD_TOKEN_SECRET=${{ secrets.CHANGE_PASSWORD_TOKEN_SECRET }}" >> .env
-          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
-          echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
-          echo "FRONTEND_URI=${{ secrets.FRONTEND_URI }}" >> .env
-          echo "MONGO_PROTOCOL=${{ secrets.MONGO_PROTOCOL }}" >> .env
-          echo "MONGO_USER=${{ secrets.MONGO_USER }}" >> .env
-          echo "MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}" >> .env
-          echo "MONGO_HOST=${{ secrets.MONGO_HOST }}" >> .env
-          echo "MONGO_DATABASE=${{ secrets.MONGO_DATABASE }}" >> .env
+          for secret_name in $(gh secret list -R $GITHUB_REPOSITORY --json name --jq '.[].name' -q); do
+            secret_value=$(gh secret get -R $GITHUB_REPOSITORY --secret "$secret_name" -q)
+            echo "$secret_name=$secret_value"
+          done > .env
 
       - name: Load Environment Variables
         run: |
