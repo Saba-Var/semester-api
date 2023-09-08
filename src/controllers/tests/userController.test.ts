@@ -1,6 +1,7 @@
 import { signInWithCredentials, changePasswordSuccessfully } from './utils'
 import { TEST_USER_CREDENTIALS } from 'data'
 import { superTestMethods } from 'utils'
+import dotenv from 'dotenv'
 import {
   changeEmailRequestByGmail,
   universitiesDataRequest,
@@ -8,6 +9,8 @@ import {
   userInfoPrivateRequest,
   updateUserDataRequest,
 } from 'requests'
+
+dotenv.config()
 
 describe('User Controller', () => {
   const { get } = superTestMethods.publicRequests
