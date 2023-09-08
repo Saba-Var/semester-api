@@ -1,5 +1,5 @@
-import { TEST_USER_CREDENTIALS, TEST_USER_CREDENTIALS_SECOND_EMAIL } from 'data'
 import { signInWithCredentials, changePasswordSuccessfully } from './utils'
+import { TEST_USER_CREDENTIALS } from 'data'
 import { superTestMethods } from 'utils'
 import {
   changeEmailRequestByGmail,
@@ -214,7 +214,7 @@ describe('User Controller', () => {
 
       it('Should return 200 if change email sent successfully', async () => {
         const { status, body } = await changeEmailRequestByGmail(
-          TEST_USER_CREDENTIALS_SECOND_EMAIL!
+          process.env.TESTING_USER_EMAIL_SECOND!
         )
         firstEmailChangeToken = body.token
 
@@ -251,7 +251,7 @@ describe('User Controller', () => {
 
       it('Should return 200 if logged in with new email', async () => {
         await signInWithCredentials(
-          TEST_USER_CREDENTIALS_SECOND_EMAIL!,
+          process.env.TESTING_USER_EMAIL_SECOND!,
           TEST_USER_CREDENTIALS.password!
         )
       })
