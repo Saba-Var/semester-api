@@ -91,6 +91,7 @@
                 token:
                   type: objectId
                   example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+                  description: JWT token to activate the account. Only provided in development and test environments.
       422:
         $ref: '#/components/responses/UnprocessableEntity'
       409:
@@ -233,6 +234,7 @@
                 token:
                   type: objectId
                   example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+                  description: JWT token to change the password. Only provided in development and test environments.
       404:
         $ref: '#/components/responses/NotFound'
       500:
