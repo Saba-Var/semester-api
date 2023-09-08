@@ -217,7 +217,7 @@ describe('User Controller', () => {
 
       it('Should return 200 if change email sent successfully', async () => {
         const { status, body } = await changeEmailRequestByGmail(
-          process.env.TESTING_USER_EMAIL_2!
+          process.env.TESTING_USER_EMAIL_SECOND!
         )
         firstEmailChangeToken = body.token
 
@@ -254,7 +254,7 @@ describe('User Controller', () => {
 
       it('Should return 200 if logged in with new email', async () => {
         await signInWithCredentials(
-          process.env.TESTING_USER_EMAIL_2!,
+          process.env.TESTING_USER_EMAIL_SECOND!,
           TEST_USER_CREDENTIALS.password!
         )
       })
