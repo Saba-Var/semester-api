@@ -1,5 +1,5 @@
+import { coloredLogger } from 'utils'
 import mongoose from 'mongoose'
-import { coloredLogger } from 'bin'
 import dotenv from 'dotenv'
 
 dotenv.config()

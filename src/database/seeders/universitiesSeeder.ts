@@ -1,6 +1,6 @@
+import { coloredLogger } from '../../utils/coloredLogger'
 import { universities } from 'data'
 import { University } from 'models'
-import { coloredLogger } from 'bin'
 
 export const universitiesSeeder = async () => {
   try {
