@@ -1,4 +1,4 @@
-import { signInRequest, updateUserDataRequest } from 'requests'
+import { signInRequest, updateUserDataRequest } from 'services'
 import type { UserNewPasswordData } from 'controllers'
 
 export const signInWithCredentials = async (

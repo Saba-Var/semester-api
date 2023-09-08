@@ -7,7 +7,7 @@ import {
   refreshTokenRequest,
   signUpRequest,
   signInRequest,
-} from 'requests'
+} from 'services'
 
 describe('authorization', () => {
   let activationToken: string
