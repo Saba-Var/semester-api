@@ -1,7 +1,6 @@
+import { TEST_USER_CREDENTIALS, TEST_USER_CREDENTIALS_SECOND_EMAIL } from 'data'
 import { signInWithCredentials, changePasswordSuccessfully } from './utils'
-import { TEST_USER_CREDENTIALS } from 'data'
 import { superTestMethods } from 'utils'
-import dotenv from 'dotenv'
 import {
   changeEmailRequestByGmail,
   universitiesDataRequest,
@@ -9,8 +8,6 @@ import {
   userInfoPrivateRequest,
   updateUserDataRequest,
 } from 'requests'
-
-dotenv.config()
 
 describe('User Controller', () => {
   const { get } = superTestMethods.publicRequests
@@ -217,7 +214,7 @@ describe('User Controller', () => {
 
       it('Should return 200 if change email sent successfully', async () => {
         const { status, body } = await changeEmailRequestByGmail(
-          process.env.TESTING_USER_EMAIL_SECOND!
+          TEST_USER_CREDENTIALS_SECOND_EMAIL!
         )
         firstEmailChangeToken = body.token
 
@@ -254,7 +251,7 @@ describe('User Controller', () => {
 
       it('Should return 200 if logged in with new email', async () => {
         await signInWithCredentials(
-          process.env.TESTING_USER_EMAIL_SECOND!,
+          TEST_USER_CREDENTIALS_SECOND_EMAIL!,
           TEST_USER_CREDENTIALS.password!
         )
       })
