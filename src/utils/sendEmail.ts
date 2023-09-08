@@ -91,11 +91,14 @@ export const sendEmail = async (
     let responseData: { message: string; token?: string; _id?: string } = {
       _id: jwtData._id,
       message,
-      token,
     }
 
     if (emailTemplateType === 'change-email') {
       responseData = { message }
+    }
+
+    if (process.env.NODE_ENV !== 'production') {
+      responseData.token = token
     }
 
     return res.status(statusCode || 200).json(responseData)

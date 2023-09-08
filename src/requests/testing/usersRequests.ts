@@ -8,3 +8,9 @@ export const userInfoPrivateRequest = async () =>
 
 export const updateUserDataRequest = async (data: UserUpdateReq) =>
   privateRequests.put('/api/user', data)
+
+export const changeEmailRequestByGmail = async (newEmail: string) =>
+  privateRequests.get(`/api/user/change-email?newEmail=${newEmail}`)
+
+export const activateNewEmailRequest = async (token: string) =>
+  privateRequests.put(`/api/user/activate-email?token=${token}`)

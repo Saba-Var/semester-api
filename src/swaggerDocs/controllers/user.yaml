@@ -112,6 +112,10 @@
                 message:
                   type: string
                   example: Check yor gmail to reset your password!
+                token:
+                  type: string
+                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  description: JWT token to change the email. Only provided in development and test environments.
       404:
         $ref: '#/components/responses/NotFound'
       409:

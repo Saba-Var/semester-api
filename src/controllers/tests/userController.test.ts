@@ -2,7 +2,9 @@ import { signInWithCredentials, changePasswordSuccessfully } from './utils'
 import { TEST_USER_CREDENTIALS } from 'data'
 import { superTestMethods } from 'utils'
 import {
+  changeEmailRequestByGmail,
   universitiesDataRequest,
+  activateNewEmailRequest,
   userInfoPrivateRequest,
   updateUserDataRequest,
 } from 'requests'
@@ -189,6 +191,92 @@ describe('User Controller', () => {
         expect(
           userResponse.body.userUniversityInfo.allUniversities.length
         ).toBe(1)
+      })
+    })
+
+    describe('Update email', () => {
+      let firstEmailChangeToken = ''
+
+      it('Should return 422 if invalid email provided', async () => {
+        const { status } = await changeEmailRequestByGmail('@invalidEmail')
+
+        expect(status).toBe(422)
+      })
+
+      it('Should return 409 if email is in use', async () => {
+        const { status, body } = await changeEmailRequestByGmail(
+          TEST_USER_CREDENTIALS.email!
+        )
+
+        expect(status).toBe(409)
+        expect(body.email).toBe('Email is already in use!')
+      })
+
+      it('Should return 200 if change email sent successfully', async () => {
+        const { status, body } = await changeEmailRequestByGmail(
+          process.env.TESTING_USER_EMAIL_SECOND!
+        )
+        firstEmailChangeToken = body.token
+
+        expect(status).toBe(200)
+        expect(body).toHaveProperty('token')
+      })
+
+      it('Should return 403 if token is invalid', async () => {
+        const { status } = await activateNewEmailRequest('invalid_token')
+
+        expect(status).toBe(403)
+      })
+
+      it('Should return 200 if email activated successfully', async () => {
+        const { status, body, headers } = await activateNewEmailRequest(
+          firstEmailChangeToken
+        )
+
+        expect(status).toBe(200)
+        expect(body).toEqual({
+          message: expect.any(String),
+          _id: expect.any(String),
+          accessToken: expect.any(String),
+          email: expect.any(String),
+        })
+
+        const refreshToken = headers['set-cookie']
+          .find((el: string) => el.includes('refreshToken'))
+          .split('=')[1]
+          .split(';')[0]
+
+        expect(refreshToken).not.toBeUndefined()
+      })
+
+      it('Should return 200 if logged in with new email', async () => {
+        await signInWithCredentials(
+          process.env.TESTING_USER_EMAIL_SECOND!,
+          TEST_USER_CREDENTIALS.password!
+        )
+      })
+
+      it('Should return 409 if requested new email is in use', async () => {
+        const { status, body } = await activateNewEmailRequest(
+          firstEmailChangeToken
+        )
+
+        expect(status).toBe(409)
+        expect(body.message).toBe('Email is already in use!')
+      })
+
+      it('Should return 200 if email changed back to previous one', async () => {
+        const { body } = await changeEmailRequestByGmail(
+          TEST_USER_CREDENTIALS.email!
+        )
+        const emailActivationToken = body.token
+
+        await activateNewEmailRequest(emailActivationToken)
+
+        await signInWithCredentials(
+          TEST_USER_CREDENTIALS.email!,
+          TEST_USER_CREDENTIALS.password!
+        )
       })
     })
   })
