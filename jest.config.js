@@ -1,3 +1,5 @@
+const moduleNameMapper = require('./src/config/jestModuleNameMapper.ts')
+
 module.exports = {
   testEnvironment: 'node',
   testMatch: ['**/__tests__/**/*.test.ts'],
@@ -7,20 +9,5 @@ module.exports = {
   moduleFileExtensions: ['ts', 'js'],
   verbose: true,
   forceExit: true,
-  moduleNameMapper: {
-    '^config$': '<rootDir>/src/config',
-    '^utils$': '<rootDir>/src/utils',
-    '^controllers$': '<rootDir>/src/controllers',
-    '^middlewares$': '<rootDir>/src/middlewares',
-    '^models$': '<rootDir>/src/models',
-    '^services$': '<rootDir>/src/services',
-    '^routes$': '<rootDir>/src/routes',
-    '^store$': '<rootDir>/src/store',
-    '^validation$': '<rootDir>/src/validation',
-    '^database$': '<rootDir>/src/database',
-    '^server': '<rootDir>/src/server.ts',
-    '^data$': '<rootDir>/src/data',
-    '^types': '<rootDir>/src/types',
-    '^bin': '<rootDir>/src/bin',
-  },
+  moduleNameMapper,
 }
