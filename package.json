@@ -16,6 +16,7 @@
   "scripts": {
     "start": "node build/server.js",
     "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
+    "test:coverage": "npm run test -- --coverage",
     "dev": "concurrently \"npm run build:watch\" \"nodemon build/server.js\"",
     "build:watch": "babel src --out-dir build --extensions .ts --copy-files --watch",
     "build:prod": "babel src --out-dir build --extensions .ts --copy-files --minified",
