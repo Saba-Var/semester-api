@@ -1,1 +1,6 @@
+export * from './learningActivitiesTestRequests'
+export * from './universitiesTestRequests'
+export * from './semesterTestRequests'
 export * from './universityService'
+export * from './usersTestRequests'
+export * from './authTestRequests'

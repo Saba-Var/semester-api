@@ -7,7 +7,7 @@ import {
   activateNewEmailRequest,
   userInfoPrivateRequest,
   updateUserDataRequest,
-} from 'requests'
+} from 'services'
 
 describe('User Controller', () => {
   const { get } = superTestMethods.publicRequests

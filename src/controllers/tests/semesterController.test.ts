@@ -8,7 +8,7 @@ import {
   deleteSemesterRequest,
   updateSemesterRequest,
   endSemesterRequest,
-} from 'requests'
+} from 'services'
 
 describe('Semester Controller', () => {
   let firstSemesterId: string

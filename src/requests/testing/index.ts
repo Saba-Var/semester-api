@@ -1,5 +1,0 @@
-export * from './learningActivitiesRequests'
-export * from './universitiesRequests'
-export * from './semesterRequests'
-export * from './usersRequests'
-export * from './authRequests'

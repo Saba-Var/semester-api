@@ -17,11 +17,8 @@ module.exports = {
     '^routes$': '<rootDir>/src/routes',
     '^store$': '<rootDir>/src/store',
     '^validation$': '<rootDir>/src/validation',
-    '^controllers/authController$':
-      '<rootDir>/src/controllers/authController.ts',
     '^database$': '<rootDir>/src/database',
     '^server': '<rootDir>/src/server.ts',
-    '^requests$': '<rootDir>/src/requests',
     '^data$': '<rootDir>/src/data',
     '^types': '<rootDir>/src/types',
     '^bin': '<rootDir>/src/bin',

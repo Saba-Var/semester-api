@@ -1,4 +1,4 @@
-import { createLearningActivity } from 'requests'
+import { createLearningActivity } from 'services'
 
 describe('Learning Activities Controller', () => {
   describe('Create a new learning activity POST - /api/learning-activities', () => {
