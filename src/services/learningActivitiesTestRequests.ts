@@ -1,5 +1,5 @@
+import { superTestMethods } from './superTestMethods'
 import { LearningActivityPartial } from 'types'
-import { superTestMethods } from 'utils'
 
 const { post } = superTestMethods.privateRequests
 

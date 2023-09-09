@@ -1,5 +1,5 @@
+import { superTestMethods } from './superTestMethods'
 import { ChangePasswordData } from 'types'
-import { superTestMethods } from 'utils'
 
 const { post, get, put } = superTestMethods.publicRequests
 

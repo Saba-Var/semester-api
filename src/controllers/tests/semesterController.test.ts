@@ -1,5 +1,4 @@
 import { FALL_SEMESTER, SPRING_SEMESTER } from 'data'
-import { testingAuthStore } from 'store'
 import {
   allSemestersDataRequest,
   userInfoPrivateRequest,
@@ -8,6 +7,7 @@ import {
   deleteSemesterRequest,
   updateSemesterRequest,
   endSemesterRequest,
+  testingAuthStore,
 } from 'services'
 
 describe('Semester Controller', () => {

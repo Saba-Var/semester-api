@@ -1,7 +1,6 @@
 export * from './generateFieldError'
 export * from './generateAuthTokens'
 export * from './validateMongoDbId'
-export * from './superTestMethods'
 export * from './coloredLogger'
 export * from './sendEmail'
 export * from './jwtDecode'

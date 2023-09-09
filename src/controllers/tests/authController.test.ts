@@ -1,10 +1,10 @@
 import { TEST_USER_CREDENTIALS } from 'data'
-import { testingAuthStore } from 'store'
 import {
   passwordChangeEmailRequest,
   activateAccountRequest,
   changePasswordRequest,
   refreshTokenRequest,
+  testingAuthStore,
   signUpRequest,
   signInRequest,
 } from 'services'

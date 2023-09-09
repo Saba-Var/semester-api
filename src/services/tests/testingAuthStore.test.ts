@@ -1,4 +1,4 @@
-import { TestingAuthStore } from 'store'
+import { TestingAuthStore } from 'services'
 
 describe('TestingAuthStore', () => {
   let testingAuthStore: TestingAuthStore

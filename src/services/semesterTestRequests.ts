@@ -1,4 +1,4 @@
-import { superTestMethods } from 'utils'
+import { superTestMethods } from './superTestMethods'
 import { NewSemesterData } from 'types'
 
 const { post, get, del, put } = superTestMethods.privateRequests

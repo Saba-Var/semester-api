@@ -1,6 +1,6 @@
 import '../database/utils/tests'
 import '../database/seeders/tests'
-import '../store/tests'
+import '../services/tests'
 import '../controllers/tests'
 import '../middlewares/tests'
 import '../utils/tests'
