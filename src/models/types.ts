@@ -64,3 +64,15 @@ export interface IUniversityModel extends Document, IUniversitiesBaseData {
   createdAt?: Date
   updatedAt?: Date
 }
+
+export interface IUniversityEvaluationModel extends Document {
+  criterias: {
+    [key: string]: number
+  }
+  university: Types.ObjectId
+  user: Types.ObjectId
+  averageScore: number
+  totalScore: number
+  createdAt?: Date
+  updatedAt?: Date
+}
