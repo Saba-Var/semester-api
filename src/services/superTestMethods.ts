@@ -1,7 +1,7 @@
 import type { RateLimitRequestHandler } from 'express-rate-limit'
 import { PrivateRequests, RequestMethods } from 'types'
+import { testingAuthStore } from 'services'
 import { authLimiter } from 'middlewares'
-import { testingAuthStore } from 'store'
 import supertest from 'supertest'
 import server from 'server'
 
