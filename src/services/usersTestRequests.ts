@@ -1,5 +1,5 @@
+import { superTestMethods } from './superTestMethods'
 import type { UserUpdateReq } from 'controllers'
-import { superTestMethods } from 'utils'
 
 const { privateRequests } = superTestMethods
 

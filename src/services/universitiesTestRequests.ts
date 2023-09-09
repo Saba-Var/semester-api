@@ -1,4 +1,4 @@
-import { superTestMethods } from 'utils'
+import { superTestMethods } from './superTestMethods'
 
 const { get } = superTestMethods.privateRequests
 

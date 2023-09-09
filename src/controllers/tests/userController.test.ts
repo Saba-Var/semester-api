@@ -1,12 +1,12 @@
 import { signInWithCredentials, changePasswordSuccessfully } from './utils'
 import { TEST_USER_CREDENTIALS } from 'data'
-import { superTestMethods } from 'utils'
 import {
   changeEmailRequestByGmail,
   universitiesDataRequest,
   activateNewEmailRequest,
   userInfoPrivateRequest,
   updateUserDataRequest,
+  superTestMethods,
 } from 'services'
 
 describe('User Controller', () => {
