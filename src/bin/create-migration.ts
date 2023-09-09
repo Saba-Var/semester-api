@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { coloredLogger } from './coloredLogger'
+import { coloredLogger } from '../utils/coloredLogger'
 import fs from 'fs/promises'
 import path from 'path'
 
