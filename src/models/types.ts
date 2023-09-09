@@ -49,7 +49,7 @@ export type IUniversitiesBaseData = {
 
 export interface IUniversityModel extends Document, IUniversitiesBaseData {
   evaluation: {
-    users: Types.ObjectId[]
+    userEvaluations: Types.ObjectId[]
     voteCount: number
     criterias: {
       [key: string]: {

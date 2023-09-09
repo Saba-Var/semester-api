@@ -249,7 +249,7 @@ export const universities = universitiesBaseData.map((university) => ({
   logoSrc: `public/images/universities/${university.alias}.png`,
   evaluation: {
     criterias: ratingCriteriasObject,
-    users: [],
+    userEvaluations: [],
     voteCount: 0,
   },
   averageRating: 0,

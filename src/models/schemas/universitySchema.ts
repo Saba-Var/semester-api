@@ -73,11 +73,11 @@ const universitySchema = new Schema<IUniversityModel>(
         default: 0,
       },
 
-      users: {
+      userEvaluations: {
         type: [
           {
             type: Schema.Types.ObjectId,
-            ref: 'User',
+            ref: 'UniversityEvaluation',
           },
         ],
         required: true,
