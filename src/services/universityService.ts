@@ -5,15 +5,12 @@ export const updateCriterias = async (
   criteriaName: string,
   criteriaScore: number
 ) => {
-  if (!criteriaScore) return
-
   const criteriaData = targetUniversity.evaluation.criterias[criteriaName]
   const newTotalScore = criteriaData.totalScore + criteriaScore
   const newAverageScore =
     targetUniversity.evaluation.voteCount === 0
       ? criteriaScore
-      : (criteriaData.totalScore + criteriaScore) /
-        (targetUniversity.evaluation.voteCount + 1)
+      : newTotalScore / (targetUniversity.evaluation.voteCount + 1)
 
   criteriaData.totalScore = newTotalScore
   criteriaData.averageScore = newAverageScore

@@ -19,13 +19,13 @@ const universityEvaluationSchema = new Schema<IUniversityEvaluationModel>(
 
     university: {
       type: Schema.Types.ObjectId,
-      ref: 'University',
+      ref: 'university',
       required: true,
     },
 
     user: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'user',
       required: true,
     },
 

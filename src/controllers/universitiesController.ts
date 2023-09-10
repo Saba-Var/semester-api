@@ -172,13 +172,25 @@ export const rateUniversity = async (
         })
       )
 
+      const evaluationAverageScore =
+        criteriaTotalScore / evaluationCriterias.length
+
       const newUniversityEvaluation = await UniversityEvaluation.create({
         user: req.currentUser?._id,
         university: university._id,
         criterias: evaluationCriteriasObject,
-        averageScore: criteriaTotalScore / evaluationCriterias.length,
+        averageScore: evaluationAverageScore,
         totalScore: criteriaTotalScore,
       })
+
+      const allEvaluations = await UniversityEvaluation.find({
+        university: university._id,
+      })
+
+      const averageEvaluationRating = allEvaluations.reduce(
+        (acc, evaluation) => acc + evaluation.averageScore,
+        0
+      )
 
       await university.updateOne({
         $push: {
@@ -191,9 +203,7 @@ export const rateUniversity = async (
           totalScore: criteriaTotalScore,
         },
         $set: {
-          averageRating:
-            (university.totalScore + criteriaTotalScore) /
-            (university.evaluation.voteCount + 1),
+          averageRating: averageEvaluationRating / allEvaluations.length,
         },
       })
     }
