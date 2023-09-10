@@ -1,5 +1,5 @@
+import { type IUniversityModel, University, UniversityEvaluation } from 'models'
 import type { UniversityRatingsRequestData } from './types'
-import { type IUniversityModel, University } from 'models'
 import type { Response, NextFunction } from 'express'
 import { updateCriterias } from 'services'
 import { evaluationCriterias } from 'data'
@@ -107,43 +107,115 @@ export const rateUniversity = async (
       })
     }
 
-    const userObjectId = new mongoose.Types.ObjectId(req.currentUser?._id)
-    const userHasRated = university.evaluation.users.some((userId) =>
-      userId.equals(userObjectId)
-    )
+    const previousUniversityEvaluation = await UniversityEvaluation.findOne({
+      university: university._id,
+      user: req.currentUser?._id,
+    })
 
-    if (userHasRated) {
-      return res.status(400).json({
-        message: req.t('user_already_rated_university', {
-          name: university.name.en,
-        }),
-      })
-    }
+    const evaluationCriteriasObject: {
+      [keyof in typeof evaluationCriterias[number]]?: number
+    } = {}
 
     let criteriaTotalScore = 0
 
-    await Promise.all(
-      evaluationCriterias.map(async (criteriaName) => {
-        const criteriaScore = req.body[criteriaName]
-        await updateCriterias(university, criteriaName, criteriaScore)
-        criteriaTotalScore += criteriaScore
-      })
+    evaluationCriterias.forEach((criteriaName) => {
+      const criteriaValue = req.body[criteriaName]
+      evaluationCriteriasObject[criteriaName] = criteriaValue
+      criteriaTotalScore += criteriaValue
+    })
+
+    const allEvaluations = await UniversityEvaluation.find({
+      university: university._id,
+    })
+
+    const averageEvaluationRating = allEvaluations.reduce(
+      (acc, evaluation) => acc + evaluation.averageScore,
+      0
     )
 
-    await university.updateOne({
-      $push: {
-        'evaluation.users': new mongoose.Types.ObjectId(req.currentUser?._id),
-      },
-      $inc: {
-        'evaluation.voteCount': 1,
+    if (previousUniversityEvaluation) {
+      const newTotalScore =
+        university.totalScore -
+        previousUniversityEvaluation.totalScore +
+        criteriaTotalScore
+
+      await university.updateOne({
+        $set: {
+          averageRating:
+            (averageEvaluationRating -
+              previousUniversityEvaluation.averageScore +
+              criteriaTotalScore / evaluationCriterias.length) /
+            allEvaluations.length,
+          totalScore: newTotalScore,
+        },
+      })
+
+      await Promise.all(
+        evaluationCriterias.map(async (criteriaName) => {
+          const previousCriteriaScore =
+            previousUniversityEvaluation.criterias[criteriaName]
+          const universityCriteriaInfo =
+            university.evaluation.criterias[criteriaName]
+
+          if (req.body[criteriaName] !== previousCriteriaScore) {
+            const newTotalScore =
+              universityCriteriaInfo.totalScore -
+              previousCriteriaScore +
+              req.body[criteriaName]
+
+            const newAverageScore = newTotalScore / allEvaluations.length
+
+            await university.updateOne({
+              $set: {
+                [`evaluation.criterias.${criteriaName}.totalScore`]:
+                  newTotalScore,
+                [`evaluation.criterias.${criteriaName}.averageScore`]:
+                  newAverageScore,
+              },
+            })
+          }
+        })
+      )
+
+      await previousUniversityEvaluation.updateOne({
+        criterias: evaluationCriteriasObject,
+        averageScore: criteriaTotalScore / evaluationCriterias.length,
         totalScore: criteriaTotalScore,
-      },
-      $set: {
-        averageRating:
-          (university.totalScore + criteriaTotalScore) /
-          (university.evaluation.voteCount + 1),
-      },
-    })
+      })
+    } else {
+      await Promise.all(
+        evaluationCriterias.map(async (criteriaName) => {
+          const criteriaScore = req.body[criteriaName]
+          await updateCriterias(university, criteriaName, criteriaScore)
+        })
+      )
+
+      const newUniversityEvaluation = await UniversityEvaluation.create({
+        user: req.currentUser?._id,
+        university: university._id,
+        criterias: evaluationCriteriasObject,
+        averageScore: criteriaTotalScore / evaluationCriterias.length,
+        totalScore: criteriaTotalScore,
+      })
+
+      await university.updateOne({
+        $push: {
+          'evaluation.userEvaluations': new mongoose.Types.ObjectId(
+            newUniversityEvaluation._id
+          ),
+        },
+        $inc: {
+          'evaluation.voteCount': 1,
+          totalScore: criteriaTotalScore,
+        },
+        $set: {
+          averageRating:
+            (averageEvaluationRating +
+              criteriaTotalScore / evaluationCriterias.length) /
+            (allEvaluations.length + 1),
+        },
+      })
+    }
 
     return res.status(200).json({
       message: req.t('university_rated_successfully'),

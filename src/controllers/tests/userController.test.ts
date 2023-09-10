@@ -40,7 +40,7 @@ describe('User Controller', () => {
         createdAt: expect.any(String),
         updatedAt: expect.any(String),
         image: expect.any(Object),
-        role: 'user',
+        role: 'student',
         userUniversityInfo: expect.any(Object),
         lastActive: expect.any(String),
       })

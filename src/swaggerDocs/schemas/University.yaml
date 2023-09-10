@@ -173,8 +173,9 @@ University:
                 averageScore:
                   type: number
                   example: 9.5
-        users:
+        userEvaluations:
           type: array
+          description: The id of user evaluation of the University.
           items:
             type: string
           example:

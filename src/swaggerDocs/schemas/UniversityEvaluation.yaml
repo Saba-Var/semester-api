@@ -1,0 +1,140 @@
+UniversityEvaluation:
+  type: object
+  properties:
+    _id:
+      type: string
+      description: The unique identifier of the evaluation.
+      example: '609f1f0db1e9aa001f20a5d7'
+      unique: true
+      format: objectid
+    user:
+      type: string
+      description: The unique identifier of the user.
+      example: '609f1f0db1e9aa001f20a5d7'
+      format: objectid
+    university:
+      type: string
+      description: The unique identifier of the university.
+      example: '609f1f0db1e9aa001f20a5d7'
+      format: objectid
+    averageRating:
+      type: number
+      required: true
+      description: The average rating of the evaluation.
+      example: 8.4
+    totalScore:
+      type: number
+      required: true
+      description: The total score of the evaluation.
+      example: 98
+    criterias:
+      type: object
+      properties:
+        employability:
+          type: object
+          properties:
+            totalScore:
+              type: number
+              example: 941
+            averageScore:
+              type: number
+              example: 9.41
+        facilities:
+          type: object
+          properties:
+            totalScore:
+              type: number
+              example: 754
+            averageScore:
+              type: number
+              example: 7.54
+        studentLife:
+          type: object
+          properties:
+            totalScore:
+              type: number
+              example: 560
+            averageScore:
+              type: number
+              example: 5.6
+        supportServices:
+          type: object
+          properties:
+            totalScore:
+              type: number
+              example: 780
+            averageScore:
+              type: number
+              example: 7.8
+        location:
+          type: object
+          properties:
+            totalScore:
+              type: number
+              example: 833
+            averageScore:
+              type: number
+              example: 8.33
+        internshipAndJobs:
+          type: object
+          properties:
+            totalScore:
+              type: number
+              example: 600
+            averageScore:
+              type: number
+              example: 6
+        alumniSuccess:
+          type: object
+          properties:
+            totalScore:
+              type: number
+              example: 950
+            averageScore:
+              type: number
+              example: 9.5
+        affordability:
+          type: object
+          properties:
+            totalScore:
+              type: number
+              example: 950
+            averageScore:
+              type: number
+              example: 9.5
+        buffet:
+          type: object
+          properties:
+            totalScore:
+              type: number
+              example: 950
+            averageScore:
+              type: number
+              example: 9.5
+        staffEducation:
+          type: object
+          properties:
+            totalScore:
+              type: number
+              example: 311
+            averageScore:
+              type: number
+              example: 3.11
+        library:
+          type: object
+          properties:
+            totalScore:
+              type: number
+              example: 409
+            averageScore:
+              type: number
+              example: 4.09
+        techEquipment:
+          type: object
+          properties:
+            totalScore:
+              type: number
+              example: 950
+            averageScore:
+              type: number
+              example: 9.5

@@ -49,7 +49,7 @@ export type IUniversitiesBaseData = {
 
 export interface IUniversityModel extends Document, IUniversitiesBaseData {
   evaluation: {
-    users: Types.ObjectId[]
+    userEvaluations: Types.ObjectId[]
     voteCount: number
     criterias: {
       [key: string]: {
@@ -61,6 +61,18 @@ export interface IUniversityModel extends Document, IUniversitiesBaseData {
   averageRating: number
   totalScore: number
   logoSrc: string
+  createdAt?: Date
+  updatedAt?: Date
+}
+
+export interface IUniversityEvaluationModel extends Document {
+  criterias: {
+    [key: string]: number
+  }
+  university: Types.ObjectId
+  user: Types.ObjectId
+  averageScore: number
+  totalScore: number
   createdAt?: Date
   updatedAt?: Date
 }

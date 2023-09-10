@@ -4,7 +4,7 @@ import type { Request } from 'express'
 import type { Types } from 'mongoose'
 import supertest from 'supertest'
 
-export type UserRoles = 'user' | 'admin'
+export type UserRoles = 'student' | 'admin'
 
 export interface ExtendedAuthRequest extends Request {
   url: string

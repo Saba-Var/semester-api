@@ -22,7 +22,7 @@ const userSchema: Schema<IUserModel> = new Schema(
     },
 
     role: {
-      default: 'user',
+      default: 'student',
       type: String,
       immutable: true,
     },

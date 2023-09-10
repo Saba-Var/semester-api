@@ -1,3 +1,4 @@
+export { default as UniversityEvaluation } from './UniversityEvaluation'
 export { default as LearningActivity } from './LearningActivity'
 export { default as University } from './University'
 export { default as Semester } from './Semester'
