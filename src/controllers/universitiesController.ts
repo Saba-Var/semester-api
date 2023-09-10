@@ -162,6 +162,8 @@ export const rateUniversity = async (
         averageScore: criteriaTotalScore / evaluationCriterias.length,
         totalScore: criteriaTotalScore,
       })
+
+      await university.save()
     } else {
       await Promise.all(
         evaluationCriterias.map(async (criteriaName) => {

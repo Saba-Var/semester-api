@@ -21,6 +21,14 @@ User:
       default: false
       description: Indicates whether the user's account is active or not.
       example: true
+    role:
+      type: string
+      enum:
+        - student
+        - admin
+      default: student
+      description: The role of the user.
+      example: student
     activeSemester:
       type: string
       format: objectid
