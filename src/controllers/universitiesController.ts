@@ -115,7 +115,7 @@ export const rateUniversity = async (
     const user = await User.findById(req.currentUser?._id)
 
     const canRateUniversity = user?.userUniversityInfo.allUniversities.some(
-      (item) => item.university === university._id
+      (item) => item.university.toString() === university._id.toString()
     )
 
     if (!canRateUniversity) {
@@ -232,6 +232,15 @@ export const rateUniversity = async (
             (averageEvaluationRating +
               criteriaTotalScore / evaluationCriterias.length) /
             (allEvaluations.length + 1),
+        },
+      })
+
+      await user?.updateOne({
+        $push: {
+          'userUniversityInfo.ratedUniversities': {
+            university: university._id,
+            ratedDate: new Date(),
+          },
         },
       })
     }
