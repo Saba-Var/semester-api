@@ -92,5 +92,6 @@
   "university_rated_successfully": "უნივერსიტეტი წარმატებით შეფასდა!",
   "evaluation_criteria_range": "შეფასების კრიტერიუმი უნდა იყოს 0-დან 10-მდე!",
   "evaluation_criteria_must_be_a_number": "შეფასების კრიტერიუმი უნდა იყოს რიცხვი!",
-  "user_already_rated_university": "შენ უკვე შეფასებული გაქვს {{name}}"
+  "user_already_rated_university": "შენ უკვე შეფასებული გაქვს {{name}}",
+  "user_cannot_rate_university": "შენ არ შეგიძლია შეფასება, რადგან არ გისწავლია {{name}}-ში"
 }
