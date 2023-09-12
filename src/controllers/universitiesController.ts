@@ -1,10 +1,15 @@
-import { type IUniversityModel, University, UniversityEvaluation } from 'models'
 import type { UniversityRatingsRequestData } from './types'
 import type { Response, NextFunction } from 'express'
 import { updateCriterias } from 'services'
 import { evaluationCriterias } from 'data'
 import { paginate } from 'utils'
 import mongoose from 'mongoose'
+import {
+  type IUniversityModel,
+  UniversityEvaluation,
+  University,
+  User,
+} from 'models'
 import type {
   PaginationBaseQuery,
   RequestParams,
@@ -104,6 +109,20 @@ export const rateUniversity = async (
     if (!university) {
       return res.status(404).json({
         message: req.t('university_not_found'),
+      })
+    }
+
+    const user = await User.findById(req.currentUser?._id)
+
+    const canRateUniversity = user?.userUniversityInfo.allUniversities.some(
+      (item) => item.university.toString() === university._id.toString()
+    )
+
+    if (!canRateUniversity) {
+      return res.status(403).json({
+        message: req.t('user_cannot_rate_university', {
+          name: university.name[req.cookies.language || 'en'],
+        }),
       })
     }
 
@@ -213,6 +232,15 @@ export const rateUniversity = async (
             (averageEvaluationRating +
               criteriaTotalScore / evaluationCriterias.length) /
             (allEvaluations.length + 1),
+        },
+      })
+
+      await user?.updateOne({
+        $push: {
+          'userUniversityInfo.ratedUniversities': {
+            university: university._id,
+            ratedDate: new Date(),
+          },
         },
       })
     }

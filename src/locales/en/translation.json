@@ -94,5 +94,6 @@
   "university_rated_successfully": "University rated successfully!",
   "evaluation_criteria_range": "Evaluation criteria should be between 0 and 10!",
   "evaluation_criteria_must_be_a_number": "Evaluation criteria must be a number!",
-  "user_already_rated_university": "You already rated {{name}}"
+  "user_already_rated_university": "You already rated {{name}}",
+  "user_cannot_rate_university": "You cannot rate, because you have not studied in {{name}}"
 }
