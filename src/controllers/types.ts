@@ -1,4 +1,3 @@
-import { evaluationCriterias } from 'data'
 import type { UserImage } from 'types'
 
 export type Email = {
@@ -34,10 +33,6 @@ export interface UserUpdateReq {
   university?: string
   image?: UserImage
   username?: string
-}
-
-export type UniversityRatingsRequestData = {
-  [keyof in typeof evaluationCriterias[number]]: number
 }
 
 export type UserNewPasswordData = {

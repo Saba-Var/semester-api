@@ -1,5 +1,10 @@
-import { signInRequest, updateUserDataRequest } from 'services'
+import type { Response as SupertestResponse } from 'supertest'
 import type { UserNewPasswordData } from 'controllers'
+import {
+  userInfoPrivateRequest,
+  updateUserDataRequest,
+  signInRequest,
+} from 'services'
 
 export const signInWithCredentials = async (
   email: string,
@@ -38,4 +43,31 @@ export const haveMultipleProperties = async (
       expect(target).toHaveProperty(key)
     }
   }
+}
+
+export const checkRateUniversityResults = async (
+  response: SupertestResponse,
+  evaluationCriteriaValues: {
+    [key: string]: number
+  },
+  userUniversityId: string
+) => {
+  expect(response.body.evaluation.userEvaluations).toHaveLength(1)
+  expect(response.body.evaluation.voteCount).toBe(1)
+
+  const totalScore = Object.values(evaluationCriteriaValues).reduce(
+    (acc, curr) => acc + curr,
+    0
+  )
+  const averageRating =
+    totalScore / Object.keys(evaluationCriteriaValues).length
+
+  expect(response.body.averageRating).toBe(averageRating)
+  expect(response.body.totalScore).toBe(totalScore)
+
+  const updatedUser = await userInfoPrivateRequest()
+  expect(updatedUser.body.userUniversityInfo.ratedUniversities[0]).toEqual({
+    university: userUniversityId,
+    ratedDate: expect.any(String),
+  })
 }

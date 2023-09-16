@@ -1,3 +1,4 @@
+import { evaluationCriterias } from 'data'
 import { JwtPayload } from 'jsonwebtoken'
 import type { IUserModel } from 'models'
 import type { Request } from 'express'
@@ -129,4 +130,8 @@ export type PaginationBaseQuery = {
 
 export type Id = {
   id: string
+}
+
+export type UniversityRatingsRequestData = {
+  [keyof in typeof evaluationCriterias[number]]: number
 }

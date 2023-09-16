@@ -1,16 +1,10 @@
-import type { UniversityRatingsRequestData } from './types'
 import type { Response, NextFunction } from 'express'
 import { updateCriterias } from 'services'
 import { evaluationCriterias } from 'data'
 import { paginate } from 'utils'
 import mongoose from 'mongoose'
-import {
-  type IUniversityModel,
-  UniversityEvaluation,
-  University,
-  User,
-} from 'models'
 import type {
+  UniversityRatingsRequestData,
   PaginationBaseQuery,
   RequestParams,
   RequestQuery,
@@ -18,6 +12,12 @@ import type {
   AuthRequest,
   Id,
 } from 'types'
+import {
+  type IUniversityModel,
+  UniversityEvaluation,
+  University,
+  User,
+} from 'models'
 
 export const createUniversity = async (
   req: RequestBody<IUniversityModel>,
