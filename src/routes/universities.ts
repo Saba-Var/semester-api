@@ -25,7 +25,7 @@ router.get(
 
 router.get('/:id', idParamSchema, validateRequestSchema, getUniversityData)
 
-router.put(
+router.patch(
   '/:id/rate',
   idParamSchema,
   universityEvaluationValidation,

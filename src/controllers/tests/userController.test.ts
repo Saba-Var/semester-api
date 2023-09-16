@@ -47,7 +47,7 @@ describe('User Controller', () => {
     })
   })
 
-  describe('Update user details - PUT /api/user', () => {
+  describe('Update user details - PATCH /api/user', () => {
     describe('Update username', () => {
       it('Should return 422 if invalid username provided', async () => {
         const { status } = await updateUserDataRequest({

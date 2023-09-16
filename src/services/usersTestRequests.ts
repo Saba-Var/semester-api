@@ -7,7 +7,7 @@ export const userInfoPrivateRequest = async () =>
   privateRequests.get('/api/user')
 
 export const updateUserDataRequest = async (data: UserUpdateReq) =>
-  privateRequests.put('/api/user', data)
+  privateRequests.patch('/api/user', data)
 
 export const changeEmailRequestByGmail = async (newEmail: string) =>
   privateRequests.get(`/api/user/change-email?newEmail=${newEmail}`)

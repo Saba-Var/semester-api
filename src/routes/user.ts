@@ -12,7 +12,7 @@ const router = express.Router()
 
 router.get('/', getUserDetails)
 
-router.put('/', userUpdateSchema, validateRequestSchema, updateUserDetails)
+router.patch('/', userUpdateSchema, validateRequestSchema, updateUserDetails)
 
 router.get(
   '/change-email',

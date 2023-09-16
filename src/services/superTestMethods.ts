@@ -37,6 +37,9 @@ export class SuperTestMethods {
 
       del: (path: string, sendData?: object) =>
         this.privateRequest('delete', path, sendData),
+
+      patch: (path: string, sendData?: object) =>
+        this.privateRequest('patch', path, sendData),
     }
   }
 
