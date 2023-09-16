@@ -19,7 +19,7 @@
       500:
         $ref: '#/components/responses/InternalServerError'
 
-  put:
+  patch:
     security:
       - bearerAuth: []
     tags:

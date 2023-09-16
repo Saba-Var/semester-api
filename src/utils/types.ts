@@ -1,7 +1,7 @@
 export type PaginateParams = {
   model: any
   query?: {
-    limit?: string
-    page?: string
+    limit?: string | number
+    page?: string | number
   }
 }

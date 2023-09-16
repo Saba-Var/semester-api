@@ -101,7 +101,7 @@ export interface CustomError extends Error {
 
 export type UserId = Types.ObjectId
 
-export type RequestMethods = 'get' | 'post' | 'put' | 'delete'
+export type RequestMethods = 'get' | 'post' | 'put' | 'delete' | 'patch'
 
 export type SuperTestRequest = (
   path: string,
@@ -113,6 +113,7 @@ export type PrivateRequests = {
   post: SuperTestRequest
   put: SuperTestRequest
   del: SuperTestRequest
+  patch: SuperTestRequest
 }
 
 export type UserImage = {
@@ -122,8 +123,8 @@ export type UserImage = {
 }
 
 export type PaginationBaseQuery = {
-  page?: string
-  limit?: string
+  page?: string | number
+  limit?: string | number
 }
 
 export type Id = {
