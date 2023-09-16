@@ -1,4 +1,5 @@
-import { universitiesDataRequest } from 'services'
+import { universitiesDataRequest, oneUniversityDataRequest } from 'services'
+import { haveMultipleProperties } from './utils'
 import { universities } from 'data'
 
 describe('Universities Controller', () => {
@@ -14,10 +15,7 @@ describe('Universities Controller', () => {
         totalItems: expect.any(Number),
         lastPage: expect.any(Number),
       })
-      // eslint-disable-next-line guard-for-in
-      for (const key in universities[0]) {
-        expect(body.data[0]).toHaveProperty(key)
-      }
+      haveMultipleProperties(body.data[0], universities[0])
     })
 
     it('Should return 200 if universities are fetched successfully with pagination', async () => {
@@ -54,6 +52,36 @@ describe('Universities Controller', () => {
         limit: expect.any(Array),
         page: expect.any(Array),
       })
+    })
+  })
+
+  describe('Get information about specific university - GET /api/universities/:id', () => {
+    it("Should return 422 if university's id is invalid", async () => {
+      const { status, body } = await oneUniversityDataRequest('invalid')
+
+      expect(status).toBe(422)
+      expect(body.errors).toEqual({
+        id: ['Invalid mongoDB id!'],
+      })
+    })
+
+    it('Should return 404 if university not found', async () => {
+      const { status, body } = await oneUniversityDataRequest(
+        '6505e203fcb1022be8b31f75'
+      )
+
+      expect(status).toBe(404)
+      expect(body.message).toBe('University not found!')
+    })
+
+    it('Should return 200 if university data fetched successfully', async () => {
+      const allUniversitiesResponse = await universitiesDataRequest()
+      const { status, body } = await oneUniversityDataRequest(
+        allUniversitiesResponse.body.data[0]._id
+      )
+
+      expect(status).toBe(200)
+      haveMultipleProperties(body, universities[0])
     })
   })
 })

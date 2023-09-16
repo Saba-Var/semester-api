@@ -8,3 +8,6 @@ export const universitiesDataRequest = async ({
   page = 1,
 }: PaginationBaseQuery = {}) =>
   get(`/api/universities?limit=${limit}&page=${page}`)
+
+export const oneUniversityDataRequest = async (id: string) =>
+  get(`/api/universities/${id}`)

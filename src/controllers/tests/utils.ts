@@ -28,3 +28,14 @@ export const changePasswordSuccessfully = async ({
     _id: expect.any(String),
   })
 }
+
+export const haveMultipleProperties = async (
+  target: object,
+  compareObjectWithProperties: object
+) => {
+  for (const key in compareObjectWithProperties) {
+    if (key in compareObjectWithProperties) {
+      expect(target).toHaveProperty(key)
+    }
+  }
+}
