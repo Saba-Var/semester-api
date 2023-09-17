@@ -9,10 +9,11 @@ import {
   testingAuthStore,
 } from 'services'
 
-let newLearningActivityId: null | string = null
-let semesterIdOfNewLearningActivity: null | string = null
-
 describe('Learning Activities Controller', () => {
+  let newLearningActivityId: null | string = null
+  let semesterIdOfNewLearningActivity: null | string = null
+  const updatedSubjectName = 'Biology'
+
   describe('Create a new learning activity POST - /api/learning-activities', () => {
     it('Should return 422 if data not provided', async () => {
       const { status } = await createLearningActivity({} as any)
@@ -243,8 +244,6 @@ describe('Learning Activities Controller', () => {
       expect(semesterIdOfNewLearningActivity).not.toBeNull()
       expect(newLearningActivityId).not.toBeNull()
 
-      const updatedSubjectName = 'Biology'
-
       const { status } = await updateLearningActivityRequest(
         newLearningActivityId as string,
         {
@@ -264,6 +263,35 @@ describe('Learning Activities Controller', () => {
       expect(learningActivityDataResponse.body.subjectName).toBe(
         updatedSubjectName
       )
+    })
+  })
+
+  describe('Get data of learning activity GET - /api/learning-activities/:id', () => {
+    it('Should return 404 if learning activity not found', async () => {
+      const { status } = await getOneLearningActivityRequest(
+        '609f1f0db1e9aa001f20a5d6'
+      )
+
+      expect(status).toBe(404)
+    })
+
+    it('Should return 200 if learning activity data returned successfully', async () => {
+      expect(newLearningActivityId).not.toBeNull()
+
+      const { status, body } = await getOneLearningActivityRequest(
+        newLearningActivityId as string
+      )
+
+      expect(status).toBe(200)
+      expect(body).toEqual({
+        ...LEARNING_ACTIVITY_REQUEST_DATA,
+        subjectName: updatedSubjectName,
+        _id: newLearningActivityId,
+        semester: semesterIdOfNewLearningActivity,
+        user: testingAuthStore.currentUserId,
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      })
     })
   })
 })
