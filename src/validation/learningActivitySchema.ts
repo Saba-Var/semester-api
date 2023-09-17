@@ -1,5 +1,5 @@
 import { check, ValidationChain } from 'express-validator'
-import { Weekday, ActivityType } from 'types'
+import { weekdays, activityTypes } from 'data'
 import { mongo } from 'mongoose'
 
 export const learningActivitySchema: ValidationChain[] = [
@@ -27,14 +27,14 @@ export const learningActivitySchema: ValidationChain[] = [
     .trim()
     .notEmpty()
     .withMessage('week_day_is_required')
-    .isIn(Object.values(Weekday || []))
+    .isIn(weekdays)
     .withMessage('allowed_week_days'),
 
   check('activityType')
     .trim()
     .notEmpty()
     .withMessage('activity_type_is_required')
-    .isIn(Object.values(ActivityType || []))
+    .isIn(activityTypes)
     .withMessage('allowed_activity_type'),
 
   check('semester').custom((value) => {
