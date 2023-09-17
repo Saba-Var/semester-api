@@ -98,5 +98,11 @@
   "user_cannot_rate_university": "You cannot rate, because you have not studied in {{name}}",
   "sign_up_success_instructions": "Account activation email sent. Check your gmail to activate your account!",
   "reset_password_email_instructions": "Check yor gmail to reset your password!",
-  "change_email_request_email_instructions": "Check yor gmail to change your email!"
+  "change_email_request_email_instructions": "Check yor gmail to change your email!",
+  "activate_your_account": "Activate your account",
+  "reset_your_password": "Reset your password",
+  "change_email_confirmation": "Change email confirmation",
+  "email_ling_usage_instruction": "If that does not works, copy and paste the following link in your browser",
+  "account_activation_instruction": "Thank you for signing up to our platform. Please click on the button below to activate your account.",
+  "welcome": "Welcome"
 }

@@ -9,10 +9,10 @@ export type PaginateParams = {
 }
 
 export type SendEmailParameters = {
+  renderFileOptions?: object
   callbackFn?: () => void
   htmlViewPath?: string
   responseData?: object
-  redirectUri?: string
   statusCode?: number
   subject: string
   token?: string

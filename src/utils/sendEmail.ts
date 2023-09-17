@@ -8,10 +8,10 @@ import pug from 'pug'
 dotenv.config()
 
 export const sendEmail = async ({
+  renderFileOptions = {},
+  callbackFn = () => {},
   htmlViewPath,
   responseData,
-  redirectUri,
-  callbackFn,
   statusCode,
   subject,
   token,
@@ -25,9 +25,7 @@ export const sendEmail = async ({
 
   const html = pug.renderFile(
     path.join(__dirname, `../views/${htmlViewPath}`),
-    {
-      redirectUri,
-    }
+    renderFileOptions
   )
 
   const mailgunData = {

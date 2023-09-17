@@ -53,10 +53,10 @@ export const registerUser = async (
 
     return sendEmail({
       htmlViewPath: 'emails/templates/account-activation.pug',
-      subject: 'Activate your account!',
+      subject: req.t('activate_your_account'),
+      renderFileOptions: { redirectUri },
       statusCode: 201,
       responseData,
-      redirectUri,
       to: email,
       token,
       res,
@@ -198,11 +198,19 @@ export const passwordChangeRequestEmail = async (
       language === 'en' ? '/en' : ''
     }/reset-password?token=${token}`
 
+    const renderFileOptions = {
+      accountActivationInstruction: req.t('account_activation_instruction'),
+      emailLingUsageInstruction: req.t('email_ling_usage_instruction'),
+      title: req.t('activate_your_account'),
+      welcomeMessage: req.t('welcome'),
+      redirectUri,
+    }
+
     return sendEmail({
       htmlViewPath: 'emails/templates/reset-password.pug',
-      subject: 'Reset your password!',
+      subject: req.t('reset_your_password'),
+      renderFileOptions,
       responseData,
-      redirectUri,
       to: email,
       token,
       res,

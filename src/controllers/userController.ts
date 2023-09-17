@@ -183,10 +183,10 @@ export const changeEmailRequest = async (
 
     return sendEmail({
       htmlViewPath: 'emails/templates/change-email.pug',
-      subject: 'Change email confirmation',
+      subject: req.t('change_email_confirmation'),
+      renderFileOptions: { redirectUri },
       to: newEmail,
       responseData,
-      redirectUri,
       token,
       res,
     })
