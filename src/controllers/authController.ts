@@ -1,9 +1,14 @@
-import { sendEmail, generateFieldError, generateAuthTokens } from 'utils'
 import { AuthorizationReq, NewUserReqBody, Email } from './types'
 import type { Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { User } from 'models'
+import {
+  generateRedirectUri,
+  generateFieldError,
+  generateAuthTokens,
+  sendEmail,
+} from 'utils'
 import type {
   ExtendedAuthRequest,
   AccessTokenPayload,
@@ -42,19 +47,28 @@ export const registerUser = async (
       expiresIn: '3h',
     })
 
-    const redirectUri = `${process.env.FRONTEND_URI!}${
-      language === 'en' ? '/en' : ''
-    }/sign-up/account-activation?token=${token}`
+    const redirectUri = generateRedirectUri(
+      language,
+      `sign-up/account-activation?token=${token}`
+    )
 
     const responseData = {
       message: req.t('sign_up_success_instructions'),
       _id: jwtData._id,
     }
 
+    const renderFileOptions = {
+      accountActivationInstruction: req.t('account_activation_instruction'),
+      emailLingUsageInstruction: req.t('email_ling_usage_instruction'),
+      title: req.t('activate_your_account'),
+      welcomeMessage: req.t('welcome'),
+      redirectUri,
+    }
+
     return sendEmail({
       htmlViewPath: 'emails/templates/account-activation.pug',
       subject: req.t('activate_your_account'),
-      renderFileOptions: { redirectUri },
+      renderFileOptions,
       statusCode: 201,
       responseData,
       to: email,
@@ -194,15 +208,15 @@ export const passwordChangeRequestEmail = async (
       _id: jwtData._id,
     }
 
-    const redirectUri = `${process.env.FRONTEND_URI!}${
-      language === 'en' ? '/en' : ''
-    }/reset-password?token=${token}`
+    const redirectUri = generateRedirectUri(
+      language,
+      `reset-password?token=${token}`
+    )
 
     const renderFileOptions = {
-      accountActivationInstruction: req.t('account_activation_instruction'),
-      emailLingUsageInstruction: req.t('email_ling_usage_instruction'),
-      title: req.t('activate_your_account'),
-      welcomeMessage: req.t('welcome'),
+      resetPasswordEmailInstructions: req.t('reset_password_email_instruction'),
+      emailLinkUsageInstruction: req.t('email_ling_usage_instruction'),
+      title: req.t('reset_password'),
       redirectUri,
     }
 

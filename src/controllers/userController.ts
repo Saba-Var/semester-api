@@ -1,5 +1,5 @@
+import { sendEmail, generateAuthTokens, generateRedirectUri } from 'utils'
 import type { Response, NextFunction } from 'express'
-import { sendEmail, generateAuthTokens } from 'utils'
 import type { UserUpdateReq } from './types'
 import { University, User } from 'models'
 import mongoose from 'mongoose'
@@ -177,9 +177,10 @@ export const changeEmailRequest = async (
       message: req.t('change_email_request_email_instructions'),
     }
 
-    const redirectUri = `${process.env.FRONTEND_URI!}${
-      language === 'en' ? '/en' : ''
-    }/profile?emailToken=${token}`
+    const redirectUri = generateRedirectUri(
+      language,
+      `profile?emailToken=${token}`
+    )
 
     return sendEmail({
       htmlViewPath: 'emails/templates/change-email.pug',
