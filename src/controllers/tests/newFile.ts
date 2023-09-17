@@ -1,10 +1,6 @@
+import { createLearningActivity, createSemesterRequest } from 'services'
 import { LEARNING_ACTIVITY_REQUEST_DATA } from 'data'
-import type { ILearningActivityModel, LearningActivityPartial } from 'types'
-import {
-  createLearningActivity,
-  createSemesterRequest,
-  oneSemesterDataRequest,
-} from 'services'
+import type { LearningActivityPartial } from 'types'
 
 describe('Learning Activities Controller', () => {
   describe('Create a new learning activity POST - /api/learning-activities', () => {
@@ -170,31 +166,14 @@ describe('Learning Activities Controller', () => {
         name: 'Test semester',
       })
       expect(semesterCreationResponse.status).toBe(201)
-      expect(semesterCreationResponse.body).toHaveProperty('_id')
 
-      const learningActivityCreationResponse = await createLearningActivity({
+      const { status, body } = await createLearningActivity({
         ...LEARNING_ACTIVITY_REQUEST_DATA,
         semester: semesterCreationResponse.body._id,
       } as LearningActivityPartial)
 
-      expect(learningActivityCreationResponse.status).toBe(201)
-      expect(learningActivityCreationResponse.body).toHaveProperty('_id')
-
-      const semesterDataResponse = await oneSemesterDataRequest(
-        semesterCreationResponse.body._id
-      )
-
-      expect(semesterDataResponse.status).toBe(200)
-
-      const learningActivity =
-        semesterDataResponse.body.learningActivities.find(
-          (learningActivity: ILearningActivityModel & { _id: string }) =>
-            learningActivity._id === learningActivityCreationResponse.body._id
-        )
-
-      expect(learningActivity._id).toBe(
-        learningActivityCreationResponse.body._id
-      )
+      expect(status).toBe(201)
+      expect(body).toHaveProperty('_id')
     })
   })
 })

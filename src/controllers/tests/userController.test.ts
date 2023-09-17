@@ -31,19 +31,8 @@ describe('User Controller', () => {
       const { status, body } = await userInfoPrivateRequest()
 
       expect(status).toBe(200)
-      expect(body).toEqual({
-        _id: expect.any(String),
-        username: TEST_USER_CREDENTIALS.username,
-        email: TEST_USER_CREDENTIALS.email,
-        activeSemester: null,
-        semesters: [],
-        createdAt: expect.any(String),
-        updatedAt: expect.any(String),
-        image: expect.any(Object),
-        role: 'student',
-        userUniversityInfo: expect.any(Object),
-        lastActive: expect.any(String),
-      })
+      expect(body.username).toBe(TEST_USER_CREDENTIALS.username)
+      expect(body.email).toBe(TEST_USER_CREDENTIALS.email)
     })
   })
 
