@@ -4,6 +4,7 @@ import {
   getLearningActivitiesOfSemesterRequest,
   updateLearningActivityRequest,
   getOneLearningActivityRequest,
+  deleteLearningActivityRequest,
   createLearningActivity,
   oneSemesterDataRequest,
   createSemesterRequest,
@@ -295,7 +296,7 @@ describe('Learning Activities Controller', () => {
       })
     })
 
-    describe('Get all learning activities of semester GET - /api/learning-activities/:id', () => {
+    describe('Get all learning activities of semester GET - /api/learning-activities/semester/:id', () => {
       it('Should return 200 if learning activities fetched successfully', async () => {
         const { status, body } = await getLearningActivitiesOfSemesterRequest(
           semesterIdOfNewLearningActivity as string
@@ -304,6 +305,45 @@ describe('Learning Activities Controller', () => {
         expect(status).toBe(200)
         expect(body).not.toHaveLength(0)
         expect(body).toEqual(expect.any(Array))
+      })
+    })
+
+    describe('Delete learning activity DELETE - /api/learning-activities/:id', () => {
+      it('Should return 404 if learning activity not found', async () => {
+        const { status } = await deleteLearningActivityRequest(
+          '609f1f0db1e9aa001f20a5d6'
+        )
+
+        expect(status).toBe(404)
+      })
+
+      it('Should return 200 if learning activity deleted successfully', async () => {
+        expect(newLearningActivityId).not.toBeNull()
+
+        const { status } = await deleteLearningActivityRequest(
+          newLearningActivityId as string
+        )
+
+        expect(status).toBe(200)
+
+        const learningActivityDataResponse =
+          await getOneLearningActivityRequest(newLearningActivityId as string)
+
+        expect(learningActivityDataResponse.status).toBe(404)
+
+        const semesterDataResponse = await oneSemesterDataRequest(
+          semesterIdOfNewLearningActivity as string
+        )
+
+        expect(semesterDataResponse.status).toBe(200)
+
+        const isLearningActivityInSemester =
+          semesterDataResponse.body.learningActivities.some(
+            (learningActivity: ILearningActivityModel & { _id: string }) =>
+              learningActivity._id === newLearningActivityId
+          )
+
+        expect(isLearningActivityInSemester).toBe(false)
       })
     })
   })
