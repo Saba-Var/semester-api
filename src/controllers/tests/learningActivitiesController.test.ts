@@ -1,6 +1,7 @@
 import type { ILearningActivityModel, LearningActivityPartial } from 'types'
 import { LEARNING_ACTIVITY_REQUEST_DATA } from 'data'
 import {
+  getLearningActivitiesOfSemesterRequest,
   updateLearningActivityRequest,
   getOneLearningActivityRequest,
   createLearningActivity,
@@ -291,6 +292,18 @@ describe('Learning Activities Controller', () => {
         user: testingAuthStore.currentUserId,
         createdAt: expect.any(String),
         updatedAt: expect.any(String),
+      })
+    })
+
+    describe('Get all learning activities of semester GET - /api/learning-activities/:id', () => {
+      it('Should return 200 if learning activities fetched successfully', async () => {
+        const { status, body } = await getLearningActivitiesOfSemesterRequest(
+          semesterIdOfNewLearningActivity as string
+        )
+
+        expect(status).toBe(200)
+        expect(body).not.toHaveLength(0)
+        expect(body).toEqual(expect.any(Array))
       })
     })
   })
