@@ -1,10 +1,16 @@
-import { LEARNING_ACTIVITY_REQUEST_DATA } from 'data'
 import type { ILearningActivityModel, LearningActivityPartial } from 'types'
+import { LEARNING_ACTIVITY_REQUEST_DATA } from 'data'
 import {
+  updateLearningActivityRequest,
+  getOneLearningActivityRequest,
   createLearningActivity,
-  createSemesterRequest,
   oneSemesterDataRequest,
+  createSemesterRequest,
+  testingAuthStore,
 } from 'services'
+
+let newLearningActivityId: null | string = null
+let semesterIdOfNewLearningActivity: null | string = null
 
 describe('Learning Activities Controller', () => {
   describe('Create a new learning activity POST - /api/learning-activities', () => {
@@ -172,28 +178,91 @@ describe('Learning Activities Controller', () => {
       expect(semesterCreationResponse.status).toBe(201)
       expect(semesterCreationResponse.body).toHaveProperty('_id')
 
+      semesterIdOfNewLearningActivity = semesterCreationResponse.body._id
+
       const learningActivityCreationResponse = await createLearningActivity({
         ...LEARNING_ACTIVITY_REQUEST_DATA,
-        semester: semesterCreationResponse.body._id,
+        semester: semesterIdOfNewLearningActivity as any,
       } as LearningActivityPartial)
 
       expect(learningActivityCreationResponse.status).toBe(201)
-      expect(learningActivityCreationResponse.body).toHaveProperty('_id')
+      newLearningActivityId = learningActivityCreationResponse.body._id
 
       const semesterDataResponse = await oneSemesterDataRequest(
-        semesterCreationResponse.body._id
+        semesterIdOfNewLearningActivity as string
       )
 
       expect(semesterDataResponse.status).toBe(200)
+      expect(semesterDataResponse.body).toHaveProperty('_id')
+
+      const isLearningActivityInSemester =
+        semesterDataResponse.body.learningActivities.some(
+          (learningActivity: ILearningActivityModel & { _id: string }) =>
+            learningActivity._id === newLearningActivityId
+        )
+
+      expect(isLearningActivityInSemester).toBe(true)
 
       const learningActivity =
         semesterDataResponse.body.learningActivities.find(
           (learningActivity: ILearningActivityModel & { _id: string }) =>
-            learningActivity._id === learningActivityCreationResponse.body._id
+            learningActivity._id === newLearningActivityId
         )
 
-      expect(learningActivity._id).toBe(
-        learningActivityCreationResponse.body._id
+      expect(learningActivity._id).toBe(newLearningActivityId)
+
+      const learningActivityDataResponse = await getOneLearningActivityRequest(
+        newLearningActivityId as string
+      )
+
+      expect(learningActivityDataResponse.status).toBe(200)
+      expect(learningActivityDataResponse.body._id).toBe(newLearningActivityId)
+      expect(learningActivityDataResponse.body.user).toBe(
+        testingAuthStore.currentUserId
+      )
+      expect(learningActivityDataResponse.body.semester).toBe(
+        semesterIdOfNewLearningActivity
+      )
+    })
+  })
+
+  describe('Update a learning activity PUT - /api/learning-activities/:id', () => {
+    it('Should return 404 if learning activity not found', async () => {
+      const { status } = await updateLearningActivityRequest(
+        '609f1f0db1e9aa001f20a5d6',
+        {
+          ...LEARNING_ACTIVITY_REQUEST_DATA,
+          semester: semesterIdOfNewLearningActivity as any,
+        } as LearningActivityPartial
+      )
+
+      expect(status).toBe(404)
+    })
+
+    it('Should return 200 if learning activity updated successfully', async () => {
+      expect(semesterIdOfNewLearningActivity).not.toBeNull()
+      expect(newLearningActivityId).not.toBeNull()
+
+      const updatedSubjectName = 'Biology'
+
+      const { status } = await updateLearningActivityRequest(
+        newLearningActivityId as string,
+        {
+          ...LEARNING_ACTIVITY_REQUEST_DATA,
+          semester: semesterIdOfNewLearningActivity as any,
+          subjectName: updatedSubjectName,
+        } as LearningActivityPartial
+      )
+
+      expect(status).toBe(200)
+
+      const learningActivityDataResponse = await getOneLearningActivityRequest(
+        newLearningActivityId as string
+      )
+
+      expect(learningActivityDataResponse.status).toBe(200)
+      expect(learningActivityDataResponse.body.subjectName).toBe(
+        updatedSubjectName
       )
     })
   })
