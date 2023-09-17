@@ -253,6 +253,9 @@
               password:
                 type: string
                 description: New password.
+              confirmPassword:
+                type: string
+                description: Confirm new password.
     parameters:
       - in: query
         name: accessToken

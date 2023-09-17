@@ -93,5 +93,8 @@
   "evaluation_criteria_range": "შეფასების კრიტერიუმი უნდა იყოს 0-დან 10-მდე!",
   "evaluation_criteria_must_be_a_number": "შეფასების კრიტერიუმი უნდა იყოს რიცხვი!",
   "user_already_rated_university": "შენ უკვე შეფასებული გაქვს {{name}}",
-  "user_cannot_rate_university": "შენ არ შეგიძლია შეფასება, რადგან არ გისწავლია {{name}}-ში"
+  "user_cannot_rate_university": "შენ არ შეგიძლია შეფასება, რადგან არ გისწავლია {{name}}-ში",
+  "sign_up_success_instructions": "ანგარიშის გასსაქტიურებელი მეილი გამოიგზავნა. შეამოწმე ელ-ფოსტა და გაააქტიურე ანგარიში!",
+  "reset_password_email_instructions": "შეამოწმე ელ-ფოსტა, რათა შეცვალო პაროლი.",
+  "change_email_request_email_instructions": "შეამოწმე ელ-ფოსტა (ახალი), რათა შეცვალო მიმდინარე ელ-ფოსტა."
 }

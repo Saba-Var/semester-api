@@ -95,5 +95,8 @@
   "evaluation_criteria_range": "Evaluation criteria should be between 0 and 10!",
   "evaluation_criteria_must_be_a_number": "Evaluation criteria must be a number!",
   "user_already_rated_university": "You already rated {{name}}",
-  "user_cannot_rate_university": "You cannot rate, because you have not studied in {{name}}"
+  "user_cannot_rate_university": "You cannot rate, because you have not studied in {{name}}",
+  "sign_up_success_instructions": "Account activation email sent. Check your gmail to activate your account!",
+  "reset_password_email_instructions": "Check yor gmail to reset your password!",
+  "change_email_request_email_instructions": "Check yor gmail to change your email!"
 }

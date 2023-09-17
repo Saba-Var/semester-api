@@ -36,18 +36,31 @@ export const registerUser = async (
       password: hashedPassword,
     })
 
-    return sendEmail(
-      'Activate your account!',
-      'account-activation',
-      email,
+    const jwtData = { _id: newUser._id, email }
+
+    const token = jwt.sign(jwtData, process.env.ACTIVATION_TOKEN_SECRET!, {
+      expiresIn: '3h',
+    })
+
+    const redirectUri = `${process.env.FRONTEND_URI!}${
+      language === 'en' ? '/en' : ''
+    }/sign-up/account-activation?token=${token}`
+
+    const responseData = {
+      message: req.t('sign_up_success_instructions'),
+      _id: jwtData._id,
+    }
+
+    return sendEmail({
+      htmlViewPath: 'emails/templates/account-activation.pug',
+      subject: 'Activate your account!',
+      statusCode: 201,
+      responseData,
+      redirectUri,
+      to: email,
+      token,
       res,
-      {
-        _id: newUser._id,
-        email,
-      },
-      language,
-      201
-    )
+    })
   } catch (error) {
     return next(error)
   }
@@ -170,17 +183,30 @@ export const passwordChangeRequestEmail = async (
       return res.status(404).json({ message: req.t('user_not_found') })
     }
 
-    return sendEmail(
-      'Change password',
-      'reset-password',
-      email,
+    const jwtData = { _id: existingUser._id, email }
+
+    const token = jwt.sign(jwtData, process.env.CHANGE_PASSWORD_TOKEN_SECRET!, {
+      expiresIn: '3h',
+    })
+
+    const responseData = {
+      message: req.t('reset_password_email_instructions'),
+      _id: jwtData._id,
+    }
+
+    const redirectUri = `${process.env.FRONTEND_URI!}${
+      language === 'en' ? '/en' : ''
+    }/reset-password?token=${token}`
+
+    return sendEmail({
+      htmlViewPath: 'emails/templates/reset-password.pug',
+      subject: 'Reset your password!',
+      responseData,
+      redirectUri,
+      to: email,
+      token,
       res,
-      {
-        _id: existingUser._id,
-        email,
-      },
-      language
-    )
+    })
   } catch (error) {
     return next(error)
   }

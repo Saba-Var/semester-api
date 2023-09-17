@@ -5,12 +5,15 @@ import { University, User } from 'models'
 import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
+import dotenv from 'dotenv'
 import type {
   ExtendedAuthRequest,
   RequestQuery,
   RequestBody,
   Token,
 } from 'types'
+
+dotenv.config()
 
 export const getUserDetails = async (
   req: ExtendedAuthRequest,
@@ -164,16 +167,29 @@ export const changeEmailRequest = async (
       })
     }
 
-    return sendEmail(
-      'Change email confirmation',
-      'change-email',
-      newEmail,
+    const jwtData = { newEmail }
+
+    const token = jwt.sign(jwtData, process.env.CHANGE_EMAIL_TOKEN_SECRET!, {
+      expiresIn: '3h',
+    })
+
+    const responseData = {
+      message: req.t('change_email_request_email_instructions'),
+    }
+
+    const redirectUri = `${process.env.FRONTEND_URI!}${
+      language === 'en' ? '/en' : ''
+    }/profile?emailToken=${token}`
+
+    return sendEmail({
+      htmlViewPath: 'emails/templates/change-email.pug',
+      subject: 'Change email confirmation',
+      to: newEmail,
+      responseData,
+      redirectUri,
+      token,
       res,
-      {
-        newEmail,
-      },
-      language
-    )
+    })
   } catch (error) {
     return next(error)
   }
