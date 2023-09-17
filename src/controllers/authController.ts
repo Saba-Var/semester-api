@@ -59,7 +59,7 @@ export const registerUser = async (
 
     const renderFileOptions = {
       accountActivationInstruction: req.t('account_activation_instruction'),
-      emailLingUsageInstruction: req.t('email_ling_usage_instruction'),
+      emailLingUsageInstruction: req.t('email_link_usage_instruction'),
       title: req.t('activate_your_account'),
       welcomeMessage: req.t('welcome'),
       redirectUri,
@@ -215,7 +215,7 @@ export const passwordChangeRequestEmail = async (
 
     const renderFileOptions = {
       resetPasswordEmailInstructions: req.t('reset_password_email_instruction'),
-      emailLinkUsageInstruction: req.t('email_ling_usage_instruction'),
+      emailLinkUsageInstruction: req.t('email_link_usage_instruction'),
       title: req.t('reset_password'),
       redirectUri,
     }

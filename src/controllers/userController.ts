@@ -182,10 +182,17 @@ export const changeEmailRequest = async (
       `profile?emailToken=${token}`
     )
 
+    const renderFileOptions = {
+      emailLinkUsageInstruction: req.t('email_link_usage_instruction'),
+      emailChangeInstruction: req.t('email_change_instruction'),
+      title: req.t('change_email'),
+      redirectUri,
+    }
+
     return sendEmail({
       htmlViewPath: 'emails/templates/change-email.pug',
       subject: req.t('change_email_confirmation'),
-      renderFileOptions: { redirectUri },
+      renderFileOptions,
       to: newEmail,
       responseData,
       token,
