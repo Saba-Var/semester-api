@@ -6,13 +6,13 @@ html(lang="en")
         link(rel="stylesheet", href="../styles/verification-template.css")
         style
             include ../styles/verification-template.css
-        title Account activation
+        title #{title}
     body
         div.template-wrapper
             div.email-container
-                h1 Welcome!
-                p Thank you for signing up to our platform. Please click on the button below to activate your account.
+                h1 #{welcomeMessage}
+                p #{accountActivationInstruction}
                 div.activation-button
-                    a.activation-link(href=redirectUri) Activate account
-                p If that does not works, copy and paste the following link in your browser:
+                    a.activation-link(href=redirectUri) #{title}
+                p #{emailLingUsageInstruction}:
                 p #{redirectUri}

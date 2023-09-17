@@ -1,16 +1,19 @@
+import { sendEmail, generateAuthTokens, generateRedirectUri } from 'utils'
 import type { Response, NextFunction } from 'express'
-import { sendEmail, generateAuthTokens } from 'utils'
 import type { UserUpdateReq } from './types'
 import { University, User } from 'models'
 import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
+import dotenv from 'dotenv'
 import type {
   ExtendedAuthRequest,
   RequestQuery,
   RequestBody,
   Token,
 } from 'types'
+
+dotenv.config()
 
 export const getUserDetails = async (
   req: ExtendedAuthRequest,
@@ -164,16 +167,37 @@ export const changeEmailRequest = async (
       })
     }
 
-    return sendEmail(
-      'Change email confirmation',
-      'change-email',
-      newEmail,
-      res,
-      {
-        newEmail,
-      },
-      language
+    const jwtData = { newEmail }
+
+    const token = jwt.sign(jwtData, process.env.CHANGE_EMAIL_TOKEN_SECRET!, {
+      expiresIn: '3h',
+    })
+
+    const responseData = {
+      message: req.t('change_email_request_email_instructions'),
+    }
+
+    const redirectUri = generateRedirectUri(
+      language,
+      `profile?emailToken=${token}`
     )
+
+    const renderFileOptions = {
+      emailLinkUsageInstruction: req.t('email_link_usage_instruction'),
+      emailChangeInstruction: req.t('email_change_instruction'),
+      title: req.t('change_email'),
+      redirectUri,
+    }
+
+    return sendEmail({
+      htmlViewPath: 'emails/templates/change-email.pug',
+      subject: req.t('change_email_confirmation'),
+      renderFileOptions,
+      to: newEmail,
+      responseData,
+      token,
+      res,
+    })
   } catch (error) {
     return next(error)
   }

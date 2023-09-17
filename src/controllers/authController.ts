@@ -1,9 +1,14 @@
-import { sendEmail, generateFieldError, generateAuthTokens } from 'utils'
 import { AuthorizationReq, NewUserReqBody, Email } from './types'
 import type { Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { User } from 'models'
+import {
+  generateRedirectUri,
+  generateFieldError,
+  generateAuthTokens,
+  sendEmail,
+} from 'utils'
 import type {
   ExtendedAuthRequest,
   AccessTokenPayload,
@@ -36,18 +41,40 @@ export const registerUser = async (
       password: hashedPassword,
     })
 
-    return sendEmail(
-      'Activate your account!',
-      'account-activation',
-      email,
-      res,
-      {
-        _id: newUser._id,
-        email,
-      },
+    const jwtData = { _id: newUser._id, email }
+
+    const token = jwt.sign(jwtData, process.env.ACTIVATION_TOKEN_SECRET!, {
+      expiresIn: '3h',
+    })
+
+    const redirectUri = generateRedirectUri(
       language,
-      201
+      `sign-up/account-activation?token=${token}`
     )
+
+    const responseData = {
+      message: req.t('sign_up_success_instructions'),
+      _id: jwtData._id,
+    }
+
+    const renderFileOptions = {
+      accountActivationInstruction: req.t('account_activation_instruction'),
+      emailLingUsageInstruction: req.t('email_link_usage_instruction'),
+      title: req.t('activate_your_account'),
+      welcomeMessage: req.t('welcome'),
+      redirectUri,
+    }
+
+    return sendEmail({
+      htmlViewPath: 'emails/templates/account-activation.pug',
+      subject: req.t('activate_your_account'),
+      renderFileOptions,
+      statusCode: 201,
+      responseData,
+      to: email,
+      token,
+      res,
+    })
   } catch (error) {
     return next(error)
   }
@@ -170,17 +197,38 @@ export const passwordChangeRequestEmail = async (
       return res.status(404).json({ message: req.t('user_not_found') })
     }
 
-    return sendEmail(
-      'Change password',
-      'reset-password',
-      email,
-      res,
-      {
-        _id: existingUser._id,
-        email,
-      },
-      language
+    const jwtData = { _id: existingUser._id, email }
+
+    const token = jwt.sign(jwtData, process.env.CHANGE_PASSWORD_TOKEN_SECRET!, {
+      expiresIn: '3h',
+    })
+
+    const responseData = {
+      message: req.t('reset_password_email_instructions'),
+      _id: jwtData._id,
+    }
+
+    const redirectUri = generateRedirectUri(
+      language,
+      `reset-password?token=${token}`
     )
+
+    const renderFileOptions = {
+      resetPasswordEmailInstructions: req.t('reset_password_email_instruction'),
+      emailLinkUsageInstruction: req.t('email_link_usage_instruction'),
+      title: req.t('reset_password'),
+      redirectUri,
+    }
+
+    return sendEmail({
+      htmlViewPath: 'emails/templates/reset-password.pug',
+      subject: req.t('reset_your_password'),
+      renderFileOptions,
+      responseData,
+      to: email,
+      token,
+      res,
+    })
   } catch (error) {
     return next(error)
   }

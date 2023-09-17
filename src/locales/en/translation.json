@@ -95,5 +95,18 @@
   "evaluation_criteria_range": "Evaluation criteria should be between 0 and 10!",
   "evaluation_criteria_must_be_a_number": "Evaluation criteria must be a number!",
   "user_already_rated_university": "You already rated {{name}}",
-  "user_cannot_rate_university": "You cannot rate, because you have not studied in {{name}}"
+  "user_cannot_rate_university": "You cannot rate, because you have not studied in {{name}}",
+  "sign_up_success_instructions": "Account activation email sent. Check your gmail to activate your account!",
+  "reset_password_email_instructions": "Check yor gmail to reset your password!",
+  "change_email_request_email_instructions": "Check yor gmail to change your email!",
+  "activate_your_account": "Activate your account",
+  "reset_your_password": "Reset your password",
+  "change_email_confirmation": "Change email confirmation",
+  "email_link_usage_instruction": "If the button does not works, copy and paste the following link in your browser",
+  "account_activation_instruction": "Thank you for signing up to our platform. Please click on the button below to activate your account.",
+  "welcome": "Welcome",
+  "reset_password": "Reset password",
+  "reset_password_email_instruction": "You are receiving this email because you requested a password reset. If you did not request this change, you can safely ignore this email. If you did request this change, please reset your password:",
+  "email_change_instruction": "You are receiving this email because you requested a changing current email. If you did not request this change, you can safely ignore this email. If you did request this change, please change your email",
+  "change_email": "Change email"
 }
